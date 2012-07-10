@@ -781,9 +781,13 @@ void __bea_callspec__ BuildCompleteInstruction(PDISASM pMyDisasm)
     i = strlen((char*) &(*pMyDisasm).CompleteInstr);
 
     /* =============== if TAB = 1, add tabulation */
-    if (GV.TAB_ == 1) {
-       (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, space_tab[i>10 ? 0 : 10-i]);
+    if (GV.TAB_ == 1 && i < 10) {
+        (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, space_tab[10-i]);
         i = strlen((char*) &(*pMyDisasm).CompleteInstr);
+    }
+    else {
+        (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, " ");
+        i++;
     }
     /* =============== if Arg1.IsMemoryType, add decoration-example == "dword ptr ds:[" */
     if ((GV.MemDecoration >0) && (GV.MemDecoration < 99)) {
@@ -969,9 +973,13 @@ void __bea_callspec__ BuildCompleteInstructionATSyntax(PDISASM pMyDisasm)
         }
     }
     /* =============== if TAB = 1, add tabulation */
-    if (GV.TAB_ == 1) {
-       (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, space_tab[i>10 ? 0 : 10-i]);
+    if (GV.TAB_ == 1 && i < 10) {
+        (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, space_tab[10-i]);
         i = strlen((char*) &(*pMyDisasm).CompleteInstr);
+    }
+    else {
+        (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, " ");
+        i++;
     }
 
     /* =============== if Arg3.Exists, display it */
