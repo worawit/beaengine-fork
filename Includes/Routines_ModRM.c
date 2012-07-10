@@ -3073,7 +3073,7 @@ size_t __bea_callspec__ SIB_0(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
     /* ======================== Interpret Index */
 
 
-    if (GV.INDEX_  != 4) {
+    if (GV.INDEX_  != 4 || GV.REX.X_) {
         if (GV.SYNTAX_ == ATSyntax) {
             if (GV.BASE_  == 5) {
                 #ifndef BEA_LIGHT_DISASSEMBLY
@@ -3129,7 +3129,7 @@ size_t __bea_callspec__ SIB_0(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
         }
     }
     (*pMyArgument).Memory.Scale = 1;
-    if ((GV.SYNTAX_ == ATSyntax) && ((GV.BASE_  != 5) || (GV.INDEX_  != 4))) {
+    if ((GV.SYNTAX_ == ATSyntax) && ((GV.BASE_  != 5) || (GV.INDEX_  != 4 || GV.REX.X_))) {
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
         #endif
@@ -3198,7 +3198,7 @@ size_t __bea_callspec__ SIB_1(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
     }
     /* ======================== Interpret Index */
 
-    if (GV.INDEX_  != 4) {
+    if (GV.INDEX_  != 4 || GV.REX.X_) {
         if (GV.SYNTAX_ == ATSyntax) {
             if (GV.BASE_  == 5) {
                 #ifndef BEA_LIGHT_DISASSEMBLY
@@ -3254,7 +3254,7 @@ size_t __bea_callspec__ SIB_1(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
         }
         (*pMyArgument).Memory.Scale = 2;
         if (GV.SYNTAX_ == ATSyntax) {
-            if ((GV.BASE_  != 5) || (GV.INDEX_  != 4)) {
+            if ((GV.BASE_  != 5) || (GV.INDEX_  != 4 || GV.REX.X_)) {
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ",2");
                 #endif
@@ -3269,7 +3269,7 @@ size_t __bea_callspec__ SIB_1(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
             i+=2;
         }
     }
-    if ((GV.SYNTAX_ == ATSyntax) && ((GV.BASE_  != 5) || (GV.INDEX_  != 4))) {
+    if ((GV.SYNTAX_ == ATSyntax) && ((GV.BASE_  != 5) || (GV.INDEX_  != 4 || GV.REX.X_))) {
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
         #endif
@@ -3338,7 +3338,7 @@ size_t __bea_callspec__ SIB_2(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
     }
     /* ======================== Interpret Index */
 
-    if (GV.INDEX_  != 4) {
+    if (GV.INDEX_  != 4 || GV.REX.X_) {
         if (GV.SYNTAX_ == ATSyntax) {
             if (GV.BASE_  == 5) {
                 #ifndef BEA_LIGHT_DISASSEMBLY
@@ -3394,7 +3394,7 @@ size_t __bea_callspec__ SIB_2(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
         }
         (*pMyArgument).Memory.Scale = 4;
         if (GV.SYNTAX_ == ATSyntax) {
-            if ((GV.BASE_  != 5) || (GV.INDEX_  != 4)) {
+            if ((GV.BASE_  != 5) || (GV.INDEX_  != 4 || GV.REX.X_)) {
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ",4");
                 #endif
@@ -3408,7 +3408,7 @@ size_t __bea_callspec__ SIB_2(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
             i+=2;
         }
     }
-    if ((GV.SYNTAX_ == ATSyntax) && ((GV.BASE_  != 5) || (GV.INDEX_  != 4))) {
+    if ((GV.SYNTAX_ == ATSyntax) && ((GV.BASE_  != 5) || (GV.INDEX_  != 4 || GV.REX.X_))) {
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
         #endif
@@ -3477,7 +3477,7 @@ size_t __bea_callspec__ SIB_3(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
     }
     /* ======================== Interpret Index */
 
-    if (GV.INDEX_  != 4) {
+    if (GV.INDEX_  != 4 || GV.REX.X_) {
         if (GV.SYNTAX_ == ATSyntax) {
             if (GV.BASE_  == 5) {
                 #ifndef BEA_LIGHT_DISASSEMBLY
@@ -3533,7 +3533,7 @@ size_t __bea_callspec__ SIB_3(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
         }
         (*pMyArgument).Memory.Scale = 8;
         if (GV.SYNTAX_ == ATSyntax) {
-            if ((GV.BASE_  != 5) || (GV.INDEX_  != 4)) {
+            if ((GV.BASE_  != 5) || (GV.INDEX_  != 4 || GV.REX.X_)) {
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ",8");
                 #endif
@@ -3547,7 +3547,7 @@ size_t __bea_callspec__ SIB_3(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
             i+=2;
         }
     }
-    if ((GV.SYNTAX_ == ATSyntax) && ((GV.BASE_  != 5) || (GV.INDEX_  != 4))) {
+    if ((GV.SYNTAX_ == ATSyntax) && ((GV.BASE_  != 5) || (GV.INDEX_  != 4 || GV.REX.X_))) {
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
         #endif
