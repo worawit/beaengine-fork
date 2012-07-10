@@ -37,29 +37,19 @@ void __bea_callspec__ pclmulqdq_(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.Immediat = *((UInt8*)(UIntPtr) (GV.EIP_- 1));
 
         if ((*pMyDisasm).Instruction.Immediat == 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmullqlqdq ");
-            #endif
+            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmullqlqdq");
         }
         else if ((*pMyDisasm).Instruction.Immediat == 0x01 ) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmulhqlqdq ");
-            #endif
+            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmulhqlqdq");
         }
         else if ((*pMyDisasm).Instruction.Immediat == 0x10 ) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmullqhqdq ");
-            #endif
+            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmullqhqdq");
         }
         else if ((*pMyDisasm).Instruction.Immediat == 0x011 ) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmulhqhqdq ");
-            #endif
+            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmulhqhqdq");
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmulqdq ");
-            #endif
+            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmulqdq");
             GV.third_arg = 1;
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) CopyFormattedNumber(pMyDisasm, (char*) (*pMyDisasm).Argument3.ArgMnemonic, "%.2X",(Int64) *((UInt8*)(UIntPtr) (GV.EIP_- 1)));

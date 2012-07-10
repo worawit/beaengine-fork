@@ -33,9 +33,7 @@ void __bea_callspec__ G14_(PDISASM pMyDisasm)
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
             GV.SSE_ = 0;
             if (GV.MOD_== 0x3) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psrlq ");
-                #endif
+                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psrlq");
             }
             else {
                 FailDecode(pMyDisasm);
@@ -59,9 +57,7 @@ void __bea_callspec__ G14_(PDISASM pMyDisasm)
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
             GV.MMX_ = 0;
             if (GV.MOD_== 0x3) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psrlq ");
-                #endif
+                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psrlq");
             }
             else {
                 FailDecode(pMyDisasm);
@@ -87,9 +83,7 @@ void __bea_callspec__ G14_(PDISASM pMyDisasm)
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
             GV.SSE_ = 0;
             if (GV.MOD_== 0x3) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psrldq ");
-                #endif
+                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psrldq");
             }
             else {
                 FailDecode(pMyDisasm);
@@ -119,9 +113,7 @@ void __bea_callspec__ G14_(PDISASM pMyDisasm)
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
             GV.SSE_ = 0;
             if (GV.MOD_== 0x3) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psllq ");
-                #endif
+                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psllq");
             }
             else {
                 FailDecode(pMyDisasm);
@@ -145,9 +137,7 @@ void __bea_callspec__ G14_(PDISASM pMyDisasm)
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
             GV.MMX_ = 0;
             if (GV.MOD_== 0x3) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psllq ");
-                #endif
+                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psllq");
             }
             else {
                 FailDecode(pMyDisasm);
@@ -173,9 +163,7 @@ void __bea_callspec__ G14_(PDISASM pMyDisasm)
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
             GV.SSE_ = 0;
             if (GV.MOD_== 0x3) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pslldq ");
-                #endif
+                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pslldq");
             }
             else {
                 FailDecode(pMyDisasm);
