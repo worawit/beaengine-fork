@@ -33,7 +33,7 @@ void __bea_callspec__ G9_(PDISASM pMyDisasm)
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0+REG2;
             (*pMyDisasm).Argument1.ArgSize = 128;
             (*pMyDisasm).Argument1.AccessMode = READ;
-            FillFlags(pMyDisasm, 23);
+            FillFlags(pMyDisasm, EFLAGS_CMPXCHGG8B);
             GV.EIP_ += GV.DECALAGE_EIP+2;
         }
         else {
@@ -42,7 +42,7 @@ void __bea_callspec__ G9_(PDISASM pMyDisasm)
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0+REG2;
             (*pMyDisasm).Argument1.ArgSize = 64;
             (*pMyDisasm).Argument1.AccessMode = READ;
-            FillFlags(pMyDisasm, 23);
+            FillFlags(pMyDisasm, EFLAGS_CMPXCHGG8B);
             GV.EIP_ += GV.DECALAGE_EIP+2;
         }
     }

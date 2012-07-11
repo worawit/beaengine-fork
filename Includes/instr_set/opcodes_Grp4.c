@@ -29,7 +29,7 @@ void __bea_callspec__ G4_Eb(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "inc");
         Eb(pMyDisasm);
-        FillFlags(pMyDisasm, 40);
+        FillFlags(pMyDisasm, EFLAGS_INC);
     }
     else if (GV.REGOPCODE == 1) {
         if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
@@ -38,7 +38,7 @@ void __bea_callspec__ G4_Eb(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "dec");
         Eb(pMyDisasm);
-        FillFlags(pMyDisasm, 30);
+        FillFlags(pMyDisasm, EFLAGS_DEC);
     }
     else {
         FailDecode(pMyDisasm);

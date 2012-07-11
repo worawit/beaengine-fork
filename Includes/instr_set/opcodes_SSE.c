@@ -3355,7 +3355,7 @@ void __bea_callspec__ popcnt_(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = SSE42_INSTRUCTION+DATA_TRANSFER;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "popcnt");
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm,114);
+    FillFlags(pMyDisasm, EFLAGS_POPCNT);
 }
 
 

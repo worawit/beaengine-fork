@@ -105,7 +105,7 @@ void __bea_callspec__ or_EbGb(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "or");
     EbGb(pMyDisasm);
-    FillFlags(pMyDisasm,74);
+    FillFlags(pMyDisasm, EFLAGS_OR);
 }
 
 /* =======================================
@@ -119,7 +119,7 @@ void __bea_callspec__ or_EvGv(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "or");
     EvGv(pMyDisasm);
-    FillFlags(pMyDisasm,74);
+    FillFlags(pMyDisasm, EFLAGS_OR);
 }
 
 /* =======================================
@@ -133,7 +133,7 @@ void __bea_callspec__ or_GbEb(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "or");
     GbEb(pMyDisasm);
-    FillFlags(pMyDisasm,74);
+    FillFlags(pMyDisasm, EFLAGS_OR);
 }
 
 /* =======================================
@@ -147,7 +147,7 @@ void __bea_callspec__ or_GvEv(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "or");
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm,74);
+    FillFlags(pMyDisasm, EFLAGS_OR);
 }
 
 /* =======================================
@@ -161,7 +161,7 @@ void __bea_callspec__ or_ALIb(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "or");
     ALIb(pMyDisasm);
-    FillFlags(pMyDisasm,74);
+    FillFlags(pMyDisasm, EFLAGS_OR);
 }
 
 /* =======================================
@@ -175,7 +175,7 @@ void __bea_callspec__ or_eAX_Iv(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "or");
     eAX_Iv(pMyDisasm);
-    FillFlags(pMyDisasm,74);
+    FillFlags(pMyDisasm, EFLAGS_OR);
 }
 
 
@@ -199,7 +199,7 @@ void __bea_callspec__ outsb_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument2.Memory.BaseRegister = REG6;
     (*pMyDisasm).Argument2.ArgSize = 8;
     GV.EIP_++;
-    FillFlags(pMyDisasm, 76);
+    FillFlags(pMyDisasm, EFLAGS_OUTS);
 }
 
 /* =======================================
@@ -223,7 +223,7 @@ void __bea_callspec__ outsw_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument2.Memory.BaseRegister = REG6;
         (*pMyDisasm).Argument2.ArgSize = 32;
         GV.EIP_++;
-        FillFlags(pMyDisasm, 76);
+        FillFlags(pMyDisasm, EFLAGS_OUTS);
     }
 
     else {
@@ -235,7 +235,7 @@ void __bea_callspec__ outsw_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument2.Memory.BaseRegister = REG6;
         (*pMyDisasm).Argument2.ArgSize = 16;
         GV.EIP_++;
-        FillFlags(pMyDisasm, 76);
+        FillFlags(pMyDisasm, EFLAGS_OUTS);
     }
 }
 
@@ -902,7 +902,7 @@ void __bea_callspec__ popfd_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument2.ArgSize = 64;
         (*pMyDisasm).Argument2.Memory.BaseRegister = REG4;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
-        FillFlags(pMyDisasm, 78);
+        FillFlags(pMyDisasm, EFLAGS_POPF);
     }
     else if (GV.OperandSize == 32) {
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "popfd");
@@ -913,7 +913,7 @@ void __bea_callspec__ popfd_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument2.ArgSize = 32;
         (*pMyDisasm).Argument2.Memory.BaseRegister = REG4;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
-        FillFlags(pMyDisasm, 78);
+        FillFlags(pMyDisasm, EFLAGS_POPF);
     }
     else {
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "popf");
@@ -924,7 +924,7 @@ void __bea_callspec__ popfd_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument2.ArgSize = 16;
         (*pMyDisasm).Argument2.Memory.BaseRegister = REG4;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
-        FillFlags(pMyDisasm, 78);
+        FillFlags(pMyDisasm, EFLAGS_POPF);
     }
 }
 
@@ -1580,7 +1580,7 @@ void __bea_callspec__ pushfd_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.ArgSize = 64;
         (*pMyDisasm).Argument1.Memory.BaseRegister = REG4;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
-        FillFlags(pMyDisasm, 78);
+        FillFlags(pMyDisasm, EFLAGS_POPF);
     }
     else if (GV.OperandSize == 32) {
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pushfd");
@@ -1591,7 +1591,7 @@ void __bea_callspec__ pushfd_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.ArgSize = 32;
         (*pMyDisasm).Argument1.Memory.BaseRegister = REG4;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
-        FillFlags(pMyDisasm, 78);
+        FillFlags(pMyDisasm, EFLAGS_POPF);
     }
     else {
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pushf");
@@ -1602,7 +1602,7 @@ void __bea_callspec__ pushfd_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.ArgSize = 16;
         (*pMyDisasm).Argument1.Memory.BaseRegister = REG4;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
-        FillFlags(pMyDisasm, 78);
+        FillFlags(pMyDisasm, EFLAGS_POPF);
     }
 }
 
@@ -1774,7 +1774,7 @@ void __bea_callspec__ rsm_(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = SYSTEM_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "rsm");
     GV.EIP_++;
-    FillFlags(pMyDisasm, 89);
+    FillFlags(pMyDisasm, EFLAGS_RSM);
 }
 
 /* =======================================
@@ -1843,7 +1843,7 @@ void __bea_callspec__ scasb_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument2.ArgSize = 8;
     (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG7;
     GV.EIP_++;
-    FillFlags(pMyDisasm, 94);
+    FillFlags(pMyDisasm, EFLAGS_SCAS);
 }
 
 /* =======================================
@@ -1868,7 +1868,7 @@ void __bea_callspec__ scas_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument2.ArgSize = 64;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG7;
         GV.EIP_++;
-        FillFlags(pMyDisasm, 94);
+        FillFlags(pMyDisasm, EFLAGS_SCAS);
     }
     else if (GV.OperandSize == 32) {
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "scasd");
@@ -1880,7 +1880,7 @@ void __bea_callspec__ scas_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument2.ArgSize = 32;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG7;
         GV.EIP_++;
-        FillFlags(pMyDisasm, 94);
+        FillFlags(pMyDisasm, EFLAGS_SCAS);
     }
     else {
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "scasw");
@@ -1892,7 +1892,7 @@ void __bea_callspec__ scas_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument2.ArgSize = 16;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG7;
         GV.EIP_++;
-        FillFlags(pMyDisasm, 94);
+        FillFlags(pMyDisasm, EFLAGS_SCAS);
     }
 }
 
@@ -1906,7 +1906,7 @@ void __bea_callspec__ stc_(PDISASM pMyDisasm)
     GV.EIP_++;
     (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+SPECIAL_REG+REG0;
     (*pMyDisasm).Argument1.ArgSize = 1;
-    FillFlags(pMyDisasm, 98);
+    FillFlags(pMyDisasm, EFLAGS_STC);
 }
 
 /* =======================================
@@ -1919,7 +1919,7 @@ void __bea_callspec__ sti_(PDISASM pMyDisasm)
     GV.EIP_++;
     (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+SPECIAL_REG+REG0;
     (*pMyDisasm).Argument1.ArgSize = 1;
-    FillFlags(pMyDisasm, 100);
+    FillFlags(pMyDisasm, EFLAGS_STI);
 }
 
 
@@ -1943,7 +1943,7 @@ void __bea_callspec__ stos_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument1.ArgSize = 8;
     (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG7;
     GV.EIP_++;
-    FillFlags(pMyDisasm, 101);
+    FillFlags(pMyDisasm, EFLAGS_STOS);
 }
 
 /* =======================================
@@ -1967,7 +1967,7 @@ void __bea_callspec__ stosw_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.ArgSize = 64;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG7;
         GV.EIP_++;
-        FillFlags(pMyDisasm, 101);
+        FillFlags(pMyDisasm, EFLAGS_STOS);
     }
     else if (GV.OperandSize == 32) {
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "stosd");
@@ -1978,7 +1978,7 @@ void __bea_callspec__ stosw_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.ArgSize = 32;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG7;
         GV.EIP_++;
-        FillFlags(pMyDisasm, 101);
+        FillFlags(pMyDisasm, EFLAGS_STOS);
     }
     else {
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "stosw");
@@ -1989,7 +1989,7 @@ void __bea_callspec__ stosw_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.ArgSize = 16;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG7;
         GV.EIP_++;
-        FillFlags(pMyDisasm, 101);
+        FillFlags(pMyDisasm, EFLAGS_STOS);
     }
 }
 
@@ -2040,7 +2040,7 @@ void __bea_callspec__ sbb_EbGb(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sbb");
     EbGb(pMyDisasm);
-    FillFlags(pMyDisasm,93);
+    FillFlags(pMyDisasm, EFLAGS_SBB);
 }
 
 /* =======================================
@@ -2054,7 +2054,7 @@ void __bea_callspec__ sbb_EvGv(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sbb");
     EvGv(pMyDisasm);
-    FillFlags(pMyDisasm,93);
+    FillFlags(pMyDisasm, EFLAGS_SBB);
 }
 
 /* =======================================
@@ -2068,7 +2068,7 @@ void __bea_callspec__ sbb_GbEb(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sbb");
     GbEb(pMyDisasm);
-    FillFlags(pMyDisasm,93);
+    FillFlags(pMyDisasm, EFLAGS_SBB);
 }
 
 /* =======================================
@@ -2082,7 +2082,7 @@ void __bea_callspec__ sbb_GvEv(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sbb");
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm,93);
+    FillFlags(pMyDisasm, EFLAGS_SBB);
 }
 
 /* =======================================
@@ -2096,7 +2096,7 @@ void __bea_callspec__ sbb_ALIb(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sbb");
     ALIb(pMyDisasm);
-    FillFlags(pMyDisasm,93);
+    FillFlags(pMyDisasm, EFLAGS_SBB);
 }
 
 /* =======================================
@@ -2110,7 +2110,7 @@ void __bea_callspec__ sbb_eAX_Iv(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sbb");
     eAX_Iv(pMyDisasm);
-    FillFlags(pMyDisasm,93);
+    FillFlags(pMyDisasm, EFLAGS_SBB);
 }
 
 /* =======================================
@@ -2125,7 +2125,7 @@ void __bea_callspec__ seto_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm,95);
+    FillFlags(pMyDisasm, EFLAGS_SETcc);
 }
 
 /* =======================================
@@ -2140,7 +2140,7 @@ void __bea_callspec__ setno_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm,95);
+    FillFlags(pMyDisasm, EFLAGS_SETcc);
 }
 
 /* =======================================
@@ -2155,7 +2155,7 @@ void __bea_callspec__ setb_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm,95);
+    FillFlags(pMyDisasm, EFLAGS_SETcc);
 }
 
 /* =======================================
@@ -2170,7 +2170,7 @@ void __bea_callspec__ setnb_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm,95);
+    FillFlags(pMyDisasm, EFLAGS_SETcc);
 }
 
 /* =======================================
@@ -2185,7 +2185,7 @@ void __bea_callspec__ sete_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm,95);
+    FillFlags(pMyDisasm, EFLAGS_SETcc);
 }
 
 /* =======================================
@@ -2200,7 +2200,7 @@ void __bea_callspec__ setne_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm,95);
+    FillFlags(pMyDisasm, EFLAGS_SETcc);
 }
 
 /* =======================================
@@ -2215,7 +2215,7 @@ void __bea_callspec__ setbe_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm,95);
+    FillFlags(pMyDisasm, EFLAGS_SETcc);
 }
 
 /* =======================================
@@ -2230,7 +2230,7 @@ void __bea_callspec__ setnbe_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm,95);
+    FillFlags(pMyDisasm, EFLAGS_SETcc);
 }
 
 /* =======================================
@@ -2245,7 +2245,7 @@ void __bea_callspec__ sets_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm,95);
+    FillFlags(pMyDisasm, EFLAGS_SETcc);
 }
 
 /* =======================================
@@ -2260,7 +2260,7 @@ void __bea_callspec__ setns_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm,95);
+    FillFlags(pMyDisasm, EFLAGS_SETcc);
 }
 
 /* =======================================
@@ -2275,7 +2275,7 @@ void __bea_callspec__ setp_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm,95);
+    FillFlags(pMyDisasm, EFLAGS_SETcc);
 }
 
 /* =======================================
@@ -2290,7 +2290,7 @@ void __bea_callspec__ setnp_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm,95);
+    FillFlags(pMyDisasm, EFLAGS_SETcc);
 }
 
 /* =======================================
@@ -2305,7 +2305,7 @@ void __bea_callspec__ setge_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm,95);
+    FillFlags(pMyDisasm, EFLAGS_SETcc);
 }
 
 /* =======================================
@@ -2320,7 +2320,7 @@ void __bea_callspec__ setnge_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm,95);
+    FillFlags(pMyDisasm, EFLAGS_SETcc);
 }
 
 /* =======================================
@@ -2335,7 +2335,7 @@ void __bea_callspec__ setle_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm,95);
+    FillFlags(pMyDisasm, EFLAGS_SETcc);
 }
 
 /* =======================================
@@ -2350,7 +2350,7 @@ void __bea_callspec__ setnle_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm,95);
+    FillFlags(pMyDisasm, EFLAGS_SETcc);
 }
 
 
@@ -2373,7 +2373,7 @@ void __bea_callspec__ shld_EvGvIb(PDISASM pMyDisasm)
     (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     (*pMyDisasm).Argument3.ArgSize = 8;
 
-    FillFlags(pMyDisasm, 97);
+    FillFlags(pMyDisasm, EFLAGS_SHIFTDP);
 }
 
 
@@ -2391,7 +2391,7 @@ void __bea_callspec__ shld_EvGvCL(PDISASM pMyDisasm)
     #endif
     (*pMyDisasm).Argument3.ArgType = REGISTER_TYPE+GENERAL_REG+REG1;
     (*pMyDisasm).Argument3.ArgSize = 8;
-    FillFlags(pMyDisasm, 97);
+    FillFlags(pMyDisasm, EFLAGS_SHIFTDP);
 }
 
 /* =======================================
@@ -2413,7 +2413,7 @@ void __bea_callspec__ shrd_EvGvIb(PDISASM pMyDisasm)
     (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     (*pMyDisasm).Argument3.ArgSize = 8;
 
-    FillFlags(pMyDisasm, 97);
+    FillFlags(pMyDisasm, EFLAGS_SHIFTDP);
 }
 
 
@@ -2431,7 +2431,7 @@ void __bea_callspec__ shrd_EvGvCL(PDISASM pMyDisasm)
     #endif
     (*pMyDisasm).Argument3.ArgType = REGISTER_TYPE+GENERAL_REG+REG1;
     (*pMyDisasm).Argument3.ArgSize = 8;
-    FillFlags(pMyDisasm, 97);
+    FillFlags(pMyDisasm, EFLAGS_SHIFTDP);
 }
 
 
@@ -2445,7 +2445,7 @@ void __bea_callspec__ std_(PDISASM pMyDisasm)
     GV.EIP_++;
     (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+SPECIAL_REG+REG0;
     (*pMyDisasm).Argument1.ArgSize = 1;
-    FillFlags(pMyDisasm, 99);
+    FillFlags(pMyDisasm, EFLAGS_STD);
 }
 
 
@@ -2460,7 +2460,7 @@ void __bea_callspec__ sub_EbGb(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sub");
     EbGb(pMyDisasm);
-    FillFlags(pMyDisasm,103);
+    FillFlags(pMyDisasm, EFLAGS_SUB);
 }
 
 /* =======================================
@@ -2474,7 +2474,7 @@ void __bea_callspec__ sub_EvGv(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sub");
     EvGv(pMyDisasm);
-    FillFlags(pMyDisasm,103);
+    FillFlags(pMyDisasm, EFLAGS_SUB);
 }
 
 /* =======================================
@@ -2488,7 +2488,7 @@ void __bea_callspec__ sub_GbEb(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sub");
     GbEb(pMyDisasm);
-    FillFlags(pMyDisasm,103);
+    FillFlags(pMyDisasm, EFLAGS_SUB);
 }
 
 /* =======================================
@@ -2502,7 +2502,7 @@ void __bea_callspec__ sub_GvEv(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sub");
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm,103);
+    FillFlags(pMyDisasm, EFLAGS_SUB);
 }
 
 /* =======================================
@@ -2516,7 +2516,7 @@ void __bea_callspec__ sub_ALIb(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sub");
     ALIb(pMyDisasm);
-    FillFlags(pMyDisasm,103);
+    FillFlags(pMyDisasm, EFLAGS_SUB);
 }
 
 /* =======================================
@@ -2530,7 +2530,7 @@ void __bea_callspec__ sub_eAX_Iv(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sub");
     eAX_Iv(pMyDisasm);
-    FillFlags(pMyDisasm,103);
+    FillFlags(pMyDisasm, EFLAGS_SUB);
 }
 
 /* =======================================
@@ -2542,7 +2542,7 @@ void __bea_callspec__ test_EbGb(PDISASM pMyDisasm)
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "test");
     (*pMyDisasm).Argument1.AccessMode = READ;
     EbGb(pMyDisasm);
-    FillFlags(pMyDisasm,104);
+    FillFlags(pMyDisasm, EFLAGS_TEST);
 }
 
 /* =======================================
@@ -2554,7 +2554,7 @@ void __bea_callspec__ test_EvGv(PDISASM pMyDisasm)
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "test");
     (*pMyDisasm).Argument1.AccessMode = READ;
     EvGv(pMyDisasm);
-    FillFlags(pMyDisasm,104);
+    FillFlags(pMyDisasm, EFLAGS_TEST);
 }
 
 /* =======================================
@@ -2566,7 +2566,7 @@ void __bea_callspec__ test_GbEb(PDISASM pMyDisasm)
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "test");
     (*pMyDisasm).Argument1.AccessMode = READ;
     GbEb(pMyDisasm);
-    FillFlags(pMyDisasm,104);
+    FillFlags(pMyDisasm, EFLAGS_TEST);
 }
 
 /* =======================================
@@ -2578,7 +2578,7 @@ void __bea_callspec__ test_GvEv(PDISASM pMyDisasm)
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "test");
     (*pMyDisasm).Argument1.AccessMode = READ;
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm,104);
+    FillFlags(pMyDisasm, EFLAGS_TEST);
 }
 
 /* =======================================
@@ -2590,7 +2590,7 @@ void __bea_callspec__ test_ALIb(PDISASM pMyDisasm)
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "test");
     (*pMyDisasm).Argument1.AccessMode = READ;
     ALIb(pMyDisasm);
-    FillFlags(pMyDisasm,104);
+    FillFlags(pMyDisasm, EFLAGS_TEST);
 }
 
 /* =======================================
@@ -2602,7 +2602,7 @@ void __bea_callspec__ test_eAX_Iv(PDISASM pMyDisasm)
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "test");
     (*pMyDisasm).Argument1.AccessMode = READ;
     eAX_Iv(pMyDisasm);
-    FillFlags(pMyDisasm,104);
+    FillFlags(pMyDisasm, EFLAGS_TEST);
 }
 
 /* =======================================
@@ -2691,7 +2691,7 @@ void __bea_callspec__ xadd_EbGb(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xadd");
     EbGb(pMyDisasm);
-    FillFlags(pMyDisasm,110);
+    FillFlags(pMyDisasm, EFLAGS_XADD);
 }
 
 /* =======================================
@@ -2705,7 +2705,7 @@ void __bea_callspec__ xadd_EvGv(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xadd");
     EvGv(pMyDisasm);
-    FillFlags(pMyDisasm,110);
+    FillFlags(pMyDisasm, EFLAGS_XADD);
 }
 
 /* =======================================
@@ -3255,7 +3255,7 @@ void __bea_callspec__ xor_EbGb(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xor");
     EbGb(pMyDisasm);
-    FillFlags(pMyDisasm,113);
+    FillFlags(pMyDisasm, EFLAGS_XOR);
 }
 
 /* =======================================
@@ -3269,7 +3269,7 @@ void __bea_callspec__ xor_EvGv(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xor");
     EvGv(pMyDisasm);
-    FillFlags(pMyDisasm,113);
+    FillFlags(pMyDisasm, EFLAGS_XOR);
 }
 
 /* =======================================
@@ -3283,7 +3283,7 @@ void __bea_callspec__ xor_GbEb(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xor");
     GbEb(pMyDisasm);
-    FillFlags(pMyDisasm,113);
+    FillFlags(pMyDisasm, EFLAGS_XOR);
 }
 
 /* =======================================
@@ -3297,7 +3297,7 @@ void __bea_callspec__ xor_GvEv(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xor");
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm,113);
+    FillFlags(pMyDisasm, EFLAGS_XOR);
 }
 
 /* =======================================
@@ -3311,7 +3311,7 @@ void __bea_callspec__ xor_ALIb(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xor");
     ALIb(pMyDisasm);
-    FillFlags(pMyDisasm,113);
+    FillFlags(pMyDisasm, EFLAGS_XOR);
 }
 
 /* =======================================
@@ -3325,7 +3325,7 @@ void __bea_callspec__ xor_eAX_Iv(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xor");
     eAX_Iv(pMyDisasm);
-    FillFlags(pMyDisasm,113);
+    FillFlags(pMyDisasm, EFLAGS_XOR);
 }
 
 
@@ -3340,7 +3340,7 @@ void __bea_callspec__ xchg_EbGb(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xchg");
     EbGb(pMyDisasm);
-    FillFlags(pMyDisasm,113);
+    FillFlags(pMyDisasm, EFLAGS_XOR);
     (*pMyDisasm).Argument2.AccessMode = WRITE;
 }
 
@@ -3355,6 +3355,6 @@ void __bea_callspec__ xchg_EvGv(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xchg");
     EvGv(pMyDisasm);
-    FillFlags(pMyDisasm,113);
+    FillFlags(pMyDisasm, EFLAGS_XOR);
     (*pMyDisasm).Argument2.AccessMode = WRITE;
 }
