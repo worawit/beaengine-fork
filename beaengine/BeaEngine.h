@@ -289,6 +289,9 @@ enum ARGUMENTS_TYPE
   MEMORY_TYPE = 0x40000000,
   CONSTANT_TYPE = (int)0x80000000,
 
+  IMPLICIT_ARG = 0x8000000,
+
+  /* value for register type */
   MMX_REG = 0x10000,
   GENERAL_REG = 0x20000,
   FPU_REG = 0x40000,
@@ -299,9 +302,11 @@ enum ARGUMENTS_TYPE
   MEMORY_MANAGEMENT_REG = 0x800000,
   SEGMENT_REG = 0x1000000,
 
-  RELATIVE_ = 0x4000000,
-  ABSOLUTE_ = 0x8000000,
+  /* value for constant type */
+  RELATIVE_ = 0x10000,
+  ABSOLUTE_ = 0x20000,
 
+  /* argument access mode */
   READ = 0x1,
   WRITE = 0x2,
 
