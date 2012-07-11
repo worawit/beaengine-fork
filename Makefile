@@ -1,11 +1,23 @@
 
-all: shared
+CC = gcc
+CFLAGS = -O3 -fPIC -shared
+SRC = BeaEngine.c
+ALLSRCS = $(SRC) $(wildcard beaengine/*.h) $(wildcard Includes/*.[ch]) $(wildcard Includes/instr_set/*.[ch])
 
-shared:
-	gcc -O3 -fPIC -shared -o libBeaEngine.so BeaEngine.c
-	strip -s libBeaEngine.so
+all: shared lite
 
-lite:
-	gcc -O3 -fPIC -shared -DBEA_LIGHT_DISASSEMBLY -o libBeaEngineLite.so BeaEngine.c
-	strip -s libBeaEngineLite.so
+libBeaEngine.so: $(ALLSRCS)
+	$(CC) $(CFLAGS) -o $@ $(SRC)
+	strip -s $@
+
+libBeaEngineLite.so: $(ALLSRCS)
+	$(CC) $(CFLAGS) -DBEA_LIGHT_DISASSEMBLY -o $@ $(SRC)
+	strip -s $@
+
+shared: libBeaEngine.so
+
+lite: libBeaEngineLite.so
+
+clean:
+	rm libBeaEngine.so libBeaEngineLite.so
 
