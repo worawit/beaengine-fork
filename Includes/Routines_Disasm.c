@@ -57,9 +57,6 @@ int __bea_callspec__ Disasm (PDISASM pMyDisasm) {
  * ==================================================================== */
 void __bea_callspec__ CompleteInstructionFields (PDISASM pMyDisasm) {
 
-    if (((*pMyDisasm).Instruction.BranchType == JmpType) || ((*pMyDisasm).Instruction.BranchType == CallType)) {
-        (*pMyDisasm).Argument1.AccessMode = READ;
-    }
 }
 
 /* ====================================================================
