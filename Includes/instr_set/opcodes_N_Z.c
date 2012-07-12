@@ -2161,10 +2161,10 @@ void __bea_callspec__ setb_(PDISASM pMyDisasm)
 /* =======================================
  *      0f90h
  * ======================================= */
-void __bea_callspec__ setnb_(PDISASM pMyDisasm)
+void __bea_callspec__ setae_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
-    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "setnb");
+    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "setae");
     GV.MemDecoration = Arg2byte;
     GV.OperandSize = 8;
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
@@ -2221,10 +2221,10 @@ void __bea_callspec__ setbe_(PDISASM pMyDisasm)
 /* =======================================
  *      0f90h
  * ======================================= */
-void __bea_callspec__ setnbe_(PDISASM pMyDisasm)
+void __bea_callspec__ seta_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
-    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "setnbe");
+    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "seta");
     GV.MemDecoration = Arg2byte;
     GV.OperandSize = 8;
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
@@ -2299,7 +2299,7 @@ void __bea_callspec__ setnp_(PDISASM pMyDisasm)
 void __bea_callspec__ setge_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
-    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "setnl");
+    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "setge");
     GV.MemDecoration = Arg2byte;
     GV.OperandSize = 8;
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
@@ -2311,7 +2311,7 @@ void __bea_callspec__ setge_(PDISASM pMyDisasm)
 /* =======================================
  *      0f90h
  * ======================================= */
-void __bea_callspec__ setnge_(PDISASM pMyDisasm)
+void __bea_callspec__ setl_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "setl");
@@ -2341,10 +2341,10 @@ void __bea_callspec__ setle_(PDISASM pMyDisasm)
 /* =======================================
  *      0f90h
  * ======================================= */
-void __bea_callspec__ setnle_(PDISASM pMyDisasm)
+void __bea_callspec__ setg_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
-    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "setnle");
+    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "setg");
     GV.MemDecoration = Arg2byte;
     GV.OperandSize = 8;
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);

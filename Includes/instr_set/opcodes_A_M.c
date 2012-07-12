@@ -1177,10 +1177,10 @@ void __bea_callspec__ cmovb_(PDISASM pMyDisasm)
 /* =======================================
  *
  * ======================================= */
-void __bea_callspec__ cmovnb_(PDISASM pMyDisasm)
+void __bea_callspec__ cmovae_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
-    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovnb");
+    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovae");
     GvEv(pMyDisasm);
     FillFlags(pMyDisasm, EFLAGS_CMOVcc);
 }
@@ -1221,10 +1221,10 @@ void __bea_callspec__ cmovbe_(PDISASM pMyDisasm)
 /* =======================================
  *
  * ======================================= */
-void __bea_callspec__ cmovnbe_(PDISASM pMyDisasm)
+void __bea_callspec__ cmova_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
-    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovnbe");
+    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmova");
     GvEv(pMyDisasm);
     FillFlags(pMyDisasm, EFLAGS_CMOVcc);
 }
@@ -1287,10 +1287,10 @@ void __bea_callspec__ cmovl_(PDISASM pMyDisasm)
 /* =======================================
  *
  * ======================================= */
-void __bea_callspec__ cmovnl_(PDISASM pMyDisasm)
+void __bea_callspec__ cmovge_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
-    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovnl");
+    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovge");
     GvEv(pMyDisasm);
     FillFlags(pMyDisasm, EFLAGS_CMOVcc);
 }
@@ -1309,10 +1309,10 @@ void __bea_callspec__ cmovle_(PDISASM pMyDisasm)
 /* =======================================
  *
  * ======================================= */
-void __bea_callspec__ cmovnle_(PDISASM pMyDisasm)
+void __bea_callspec__ cmovg_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
-    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovnle");
+    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovg");
     GvEv(pMyDisasm);
     FillFlags(pMyDisasm, EFLAGS_CMOVcc);
 }
