@@ -18,8 +18,8 @@
 
 void __bea_callspec__ FailDecode(PDISASM pMyDisasm)
 {
-(void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "???");
-	GV.ERROR_OPCODE = 1;
+    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "???");
+    GV.ERROR_OPCODE = 1;
 }
 /* ====================================================================
  *
@@ -4675,6 +4675,7 @@ void __bea_callspec__ loop_(PDISASM pMyDisasm)
         }
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Argument1.ArgSize = GV.OperandSize;
+        (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+RELATIVE_;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=2;
@@ -4689,11 +4690,11 @@ void __bea_callspec__ loop_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Argument1.ArgSize = GV.OperandSize;
+        (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+RELATIVE_;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=2;
         FillFlags(pMyDisasm, EFLAGS_LOOP);
-        (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+RELATIVE_;
     }
 }
 
@@ -4723,6 +4724,7 @@ void __bea_callspec__ loopne_(PDISASM pMyDisasm)
         }
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Argument1.ArgSize = GV.OperandSize;
+        (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+RELATIVE_;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=2;
@@ -4737,11 +4739,11 @@ void __bea_callspec__ loopne_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Argument1.ArgSize = GV.OperandSize;
+        (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+RELATIVE_;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=2;
         FillFlags(pMyDisasm, EFLAGS_LOOPcc);
-
     }
 }
 
@@ -4771,6 +4773,7 @@ void __bea_callspec__ loope_(PDISASM pMyDisasm)
         }
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Argument1.ArgSize = GV.OperandSize;
+        (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+RELATIVE_;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=2;
@@ -4785,11 +4788,11 @@ void __bea_callspec__ loope_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Argument1.ArgSize = GV.OperandSize;
+        (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+RELATIVE_;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=2;
         FillFlags(pMyDisasm, EFLAGS_LOOPcc);
-
     }
 }
 
