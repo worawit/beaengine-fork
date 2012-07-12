@@ -294,7 +294,9 @@ void __bea_callspec__ EvIv(PDISASM pMyDisasm)
  * ==================================================================== */
 void __bea_callspec__ EvIb(PDISASM pMyDisasm)
 {
+    #ifndef BEA_LIGHT_DISASSEMBLY
     Int8 MyNumber;
+    #endif
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     (*pMyDisasm).Argument2.ArgSize = 8;
     GV.ImmediatSize = 8;
