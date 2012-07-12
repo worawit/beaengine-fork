@@ -3337,7 +3337,7 @@ void __bea_callspec__ xchg_EbGb(PDISASM pMyDisasm)
     if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
         (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
     }
-    (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
+    (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xchg");
     EbGb(pMyDisasm);
     FillFlags(pMyDisasm, EFLAGS_XOR);
@@ -3352,7 +3352,7 @@ void __bea_callspec__ xchg_EvGv(PDISASM pMyDisasm)
     if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
         (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
     }
-    (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
+    (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xchg");
     EvGv(pMyDisasm);
     FillFlags(pMyDisasm, EFLAGS_XOR);
