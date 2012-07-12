@@ -166,11 +166,8 @@ void __bea_callspec__ FixArgSizeForMemoryOperand (PDISASM pMyDisasm) {
  * ==================================================================== */
 void __bea_callspec__ FixREXPrefixes (PDISASM pMyDisasm) {
 
-    (*pMyDisasm).Prefix.REX.W_ = GV.REX.W_;
-    (*pMyDisasm).Prefix.REX.R_ = GV.REX.R_;
-    (*pMyDisasm).Prefix.REX.X_ = GV.REX.X_;
-    (*pMyDisasm).Prefix.REX.B_ = GV.REX.B_;
-    (*pMyDisasm).Prefix.REX.state = GV.REX.state;
+    /* let compiler do optimization */
+    (*pMyDisasm).Prefix.REX = GV.REX;
 
 }
 
