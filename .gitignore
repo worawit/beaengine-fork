@@ -15,4 +15,8 @@
 *.exp
 
 # Build directory
-build
+/build
+
+# tag file
+/tags
+
