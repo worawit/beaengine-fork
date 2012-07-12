@@ -27,26 +27,31 @@ void __bea_callspec__ G2_EbIb(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+SHIFT_ROTATE;
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "rol");
         FillFlags(pMyDisasm, EFLAGS_ROT);
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
     }
     else if (GV.REGOPCODE == 1) {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+SHIFT_ROTATE;
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "ror");
         FillFlags(pMyDisasm, EFLAGS_ROT);
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
     }
     else if (GV.REGOPCODE == 2) {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+SHIFT_ROTATE;
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "rcl");
         FillFlags(pMyDisasm, EFLAGS_ROTC);
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
     }
     else if (GV.REGOPCODE == 3) {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+SHIFT_ROTATE;
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "rcr");
         FillFlags(pMyDisasm, EFLAGS_ROTC);
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
     }
     else if (GV.REGOPCODE == 4) {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+SHIFT_ROTATE;
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "shl");
         FillFlags(pMyDisasm, EFLAGS_SHIFT);
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
     }
     else if (GV.REGOPCODE == 5) {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+SHIFT_ROTATE;
@@ -57,11 +62,13 @@ void __bea_callspec__ G2_EbIb(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+SHIFT_ROTATE;
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sal");
         FillFlags(pMyDisasm, EFLAGS_SHIFT);
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
     }
     else if (GV.REGOPCODE == 7) {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+SHIFT_ROTATE;
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sar");
         FillFlags(pMyDisasm, EFLAGS_SHIFT);
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
     }
 }
 

@@ -31,6 +31,7 @@ void __bea_callspec__ G14_(PDISASM pMyDisasm)
             GV.ImmediatSize = 8;
             GV.SSE_ = 1;
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
+            (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
             GV.SSE_ = 0;
             if (GV.MOD_== 0x3) {
                 (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psrlq");
@@ -58,6 +59,7 @@ void __bea_callspec__ G14_(PDISASM pMyDisasm)
             GV.MMX_ = 0;
             if (GV.MOD_== 0x3) {
                 (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psrlq");
+                (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
             }
             else {
                 FailDecode(pMyDisasm);
@@ -81,6 +83,7 @@ void __bea_callspec__ G14_(PDISASM pMyDisasm)
             GV.ImmediatSize = 8;
             GV.SSE_ = 1;
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
+            (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
             GV.SSE_ = 0;
             if (GV.MOD_== 0x3) {
                 (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psrldq");
@@ -111,6 +114,7 @@ void __bea_callspec__ G14_(PDISASM pMyDisasm)
             GV.ImmediatSize = 8;
             GV.SSE_ = 1;
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
+            (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
             GV.SSE_ = 0;
             if (GV.MOD_== 0x3) {
                 (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psllq");
@@ -135,6 +139,7 @@ void __bea_callspec__ G14_(PDISASM pMyDisasm)
             GV.ImmediatSize = 8;
             GV.MMX_ = 1;
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
+            (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
             GV.MMX_ = 0;
             if (GV.MOD_== 0x3) {
                 (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psllq");
@@ -161,6 +166,7 @@ void __bea_callspec__ G14_(PDISASM pMyDisasm)
             GV.ImmediatSize = 8;
             GV.SSE_ = 1;
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
+            (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
             GV.SSE_ = 0;
             if (GV.MOD_== 0x3) {
                 (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pslldq");

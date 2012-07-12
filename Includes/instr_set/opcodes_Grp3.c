@@ -43,12 +43,14 @@ void __bea_callspec__ G3_Eb(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "not");
         Eb(pMyDisasm);
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         FillFlags(pMyDisasm, EFLAGS_NOT);
     }
     else if (GV.REGOPCODE == 3) {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "neg");
         Eb(pMyDisasm);
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         FillFlags(pMyDisasm, EFLAGS_NEG);
     }
     else if (GV.REGOPCODE == 4) {
@@ -59,8 +61,9 @@ void __bea_callspec__ G3_Eb(PDISASM pMyDisasm)
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
         GV.OperandSize = 32;
         GV.EIP_ += GV.DECALAGE_EIP+2;
-        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0+REG2;
+        (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+GENERAL_REG+REG0;
         (*pMyDisasm).Argument1.ArgSize = 8;
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = REGISTER_TYPE+GENERAL_REG+REG0;
         FillFlags(pMyDisasm, EFLAGS_MUL);
     }
@@ -72,8 +75,10 @@ void __bea_callspec__ G3_Eb(PDISASM pMyDisasm)
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
         GV.OperandSize = 32;
         GV.EIP_ += GV.DECALAGE_EIP+2;
-        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0+REG2;
+        (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+GENERAL_REG+REG0;
         (*pMyDisasm).Argument1.ArgSize = 8;
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = REGISTER_TYPE+GENERAL_REG+REG0;
         FillFlags(pMyDisasm, EFLAGS_IMUL);
     }
     else if (GV.REGOPCODE == 6) {
@@ -84,8 +89,10 @@ void __bea_callspec__ G3_Eb(PDISASM pMyDisasm)
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
         GV.OperandSize = 32;
         GV.EIP_ += GV.DECALAGE_EIP+2;
-        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0+REG2;
+        (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+GENERAL_REG+REG0;
         (*pMyDisasm).Argument1.ArgSize = 8;
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = REGISTER_TYPE+GENERAL_REG+REG0;
         FillFlags(pMyDisasm, EFLAGS_DIV);
     }
     else if (GV.REGOPCODE == 7) {
@@ -96,8 +103,9 @@ void __bea_callspec__ G3_Eb(PDISASM pMyDisasm)
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
         GV.OperandSize = 32;
         GV.EIP_ += GV.DECALAGE_EIP+2;
-        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0+REG2;
+        (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+GENERAL_REG+REG0;
         (*pMyDisasm).Argument1.ArgSize = 8;
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = REGISTER_TYPE+GENERAL_REG+REG0;
         FillFlags(pMyDisasm, EFLAGS_IDIV);
     }
@@ -130,12 +138,14 @@ void __bea_callspec__ G3_Ev(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "not");
         Ev(pMyDisasm);
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         FillFlags(pMyDisasm, EFLAGS_NOT);
     }
     else if (GV.REGOPCODE == 3) {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "neg");
         Ev(pMyDisasm);
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         FillFlags(pMyDisasm, EFLAGS_NEG);
     }
     else if (GV.REGOPCODE == 4) {
@@ -155,7 +165,8 @@ void __bea_callspec__ G3_Ev(PDISASM pMyDisasm)
         }
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
         GV.EIP_ += GV.DECALAGE_EIP+2;
-        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0;
+        (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+GENERAL_REG+REG0;
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = REGISTER_TYPE+GENERAL_REG+REG0+REG2;
         FillFlags(pMyDisasm, EFLAGS_MUL);
     }
@@ -176,7 +187,8 @@ void __bea_callspec__ G3_Ev(PDISASM pMyDisasm)
         }
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
         GV.EIP_ += GV.DECALAGE_EIP+2;
-        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0;
+        (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+GENERAL_REG+REG0;
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = REGISTER_TYPE+GENERAL_REG+REG0+REG2;
         FillFlags(pMyDisasm, EFLAGS_IMUL);
     }
@@ -197,7 +209,8 @@ void __bea_callspec__ G3_Ev(PDISASM pMyDisasm)
         }
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
         GV.EIP_ += GV.DECALAGE_EIP+2;
-        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0+REG2;
+        (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+GENERAL_REG+REG0+REG2;
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = REGISTER_TYPE+GENERAL_REG+REG0+REG2;		
         FillFlags(pMyDisasm, EFLAGS_DIV);
     }
@@ -218,7 +231,8 @@ void __bea_callspec__ G3_Ev(PDISASM pMyDisasm)
         }
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
         GV.EIP_ += GV.DECALAGE_EIP+2;
-        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0+REG2;
+        (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+GENERAL_REG+REG0+REG2;
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = REGISTER_TYPE+GENERAL_REG+REG0+REG2;		
         FillFlags(pMyDisasm, EFLAGS_IDIV);
     }

@@ -29,7 +29,7 @@ void __bea_callspec__ G15_(PDISASM pMyDisasm)
             (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+STATE_MANAGEMENT;
             (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fxsave");
             (*pMyDisasm).Argument1.ArgSize = 512;
-            (*pMyDisasm).Argument2.ArgType = REGISTER_TYPE+FPU_REG+MMX_REG+SSE_REG;
+            (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+REGISTER_TYPE+FPU_REG+MMX_REG+SSE_REG;
             (*pMyDisasm).Argument2.ArgSize = 512;
         }
         else {
@@ -43,7 +43,7 @@ void __bea_callspec__ G15_(PDISASM pMyDisasm)
             (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+STATE_MANAGEMENT;
             (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fxrstor");
             (*pMyDisasm).Argument2.ArgSize = 512;
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+FPU_REG+MMX_REG+SSE_REG;
+            (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+FPU_REG+MMX_REG+SSE_REG;
             (*pMyDisasm).Argument1.ArgSize = 512;
         }
         else {
@@ -57,7 +57,7 @@ void __bea_callspec__ G15_(PDISASM pMyDisasm)
             GV.MemDecoration = Arg2dword;
             (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+STATE_MANAGEMENT;
             (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "ldmxcsr");
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+SPECIAL_REG+REG1;
+            (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+SPECIAL_REG+REG1;
             (*pMyDisasm).Argument1.ArgSize = 32;
         }
         else {
@@ -71,7 +71,7 @@ void __bea_callspec__ G15_(PDISASM pMyDisasm)
             GV.MemDecoration = Arg1dword;
             (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+STATE_MANAGEMENT;
             (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "stmxcsr");
-            (*pMyDisasm).Argument2.ArgType = REGISTER_TYPE+SPECIAL_REG+REG1;
+            (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+REGISTER_TYPE+SPECIAL_REG+REG1;
             (*pMyDisasm).Argument2.ArgSize = 32;
         }
         else {
@@ -87,7 +87,7 @@ void __bea_callspec__ G15_(PDISASM pMyDisasm)
             (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+STATE_MANAGEMENT;
             (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xsave");
             (*pMyDisasm).Argument1.ArgSize = 512;
-            (*pMyDisasm).Argument2.ArgType = REGISTER_TYPE+FPU_REG+MMX_REG+SSE_REG;
+            (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+REGISTER_TYPE+FPU_REG+MMX_REG+SSE_REG;
             (*pMyDisasm).Argument2.ArgSize = 512;
         }
         else {
@@ -107,7 +107,7 @@ void __bea_callspec__ G15_(PDISASM pMyDisasm)
             (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+STATE_MANAGEMENT;
             (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xrstor");
             (*pMyDisasm).Argument2.ArgSize = 512;
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+FPU_REG+MMX_REG+SSE_REG;
+            (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+FPU_REG+MMX_REG+SSE_REG;
             (*pMyDisasm).Argument1.ArgSize = 512;
         }
 

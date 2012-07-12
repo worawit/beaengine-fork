@@ -25,23 +25,24 @@ void __bea_callspec__ G9_(PDISASM pMyDisasm)
     GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
     GV.MemDecoration = Arg2qword;
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
+    (*pMyDisasm).Argument2.AccessMode = READ+WRITE;
     if (GV.REGOPCODE == 1) {
         if (GV.REX.W_ == 1) {
             GV.MemDecoration = Arg2dqword;
             (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
             (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmpxchg16b");
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0+REG2;
+            (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+GENERAL_REG+REG0+REG2;
             (*pMyDisasm).Argument1.ArgSize = 128;
-            (*pMyDisasm).Argument1.AccessMode = READ;
+            (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
             FillFlags(pMyDisasm, EFLAGS_CMPXCHGG8B);
             GV.EIP_ += GV.DECALAGE_EIP+2;
         }
         else {
             (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
             (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmpxchg8b");
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0+REG2;
+            (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+GENERAL_REG+REG0+REG2;
             (*pMyDisasm).Argument1.ArgSize = 64;
-            (*pMyDisasm).Argument1.AccessMode = READ;
+            (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
             FillFlags(pMyDisasm, EFLAGS_CMPXCHGG8B);
             GV.EIP_ += GV.DECALAGE_EIP+2;
         }
