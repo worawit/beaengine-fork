@@ -67,9 +67,9 @@
 #   define bea__api_import__
 #  endif
 # else
-#  if defined(_WIN32) && defined(__GNUC__) && __GNUC__ >= 4
-#   define bea__api_export__		__attribubea__ ((visibility("default")))
-#   define bea__api_import__		__attribubea__ ((visibility("default")))
+#  if defined(__GNUC__) && __GNUC__ >= 4
+#   define bea__api_export__		__attribute__ ((visibility("default")))
+#   define bea__api_import__		__attribute__ ((visibility("default")))
 #  else
 #   define bea__api_export__
 #   define bea__api_import__
