@@ -2800,7 +2800,7 @@ void __bea_callspec__ jno_(PDISASM pMyDisasm)
 /* =======================================
  *      72h
  * ======================================= */
-void __bea_callspec__ jc_(PDISASM pMyDisasm)
+void __bea_callspec__ jb_(PDISASM pMyDisasm)
 {
     UInt64 MyAddress;
     signed long MyNumber;
@@ -2813,8 +2813,8 @@ void __bea_callspec__ jc_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.BranchTaken = InUsePrefix;
     }
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+CONTROL_TRANSFER;
-    (*pMyDisasm).Instruction.BranchType = JC;
-    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "jc");
+    (*pMyDisasm).Instruction.BranchType = JB;
+    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "jb");
     if (!Security(1, pMyDisasm)) return;
     MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+1));
     CalculateRelativeAddress(&MyAddress,(Int64) GV.NB_PREFIX+2+MyNumber, pMyDisasm);
@@ -2840,7 +2840,7 @@ void __bea_callspec__ jc_(PDISASM pMyDisasm)
 /* =======================================
  *      73h
  * ======================================= */
-void __bea_callspec__ jnc_(PDISASM pMyDisasm)
+void __bea_callspec__ jae_(PDISASM pMyDisasm)
 {
     UInt64 MyAddress;
     signed long MyNumber;
@@ -2853,8 +2853,8 @@ void __bea_callspec__ jnc_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.BranchTaken = InUsePrefix;
     }
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+CONTROL_TRANSFER;
-    (*pMyDisasm).Instruction.BranchType = JNC;
-    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "jnc");
+    (*pMyDisasm).Instruction.BranchType = JNB;
+    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "jae");
     if (!Security(1, pMyDisasm)) return;
     MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+1));
     CalculateRelativeAddress(&MyAddress,(Int64) GV.NB_PREFIX+2+MyNumber, pMyDisasm);
@@ -2999,7 +2999,7 @@ void __bea_callspec__ jbe_(PDISASM pMyDisasm)
 /* =======================================
  *      77h
  * ======================================= */
-void __bea_callspec__ jnbe_(PDISASM pMyDisasm)
+void __bea_callspec__ ja_(PDISASM pMyDisasm)
 {
     UInt64 MyAddress;
     signed long MyNumber;
@@ -3013,7 +3013,7 @@ void __bea_callspec__ jnbe_(PDISASM pMyDisasm)
     }
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+CONTROL_TRANSFER;
     (*pMyDisasm).Instruction.BranchType = JA;
-    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "jnbe");
+    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "ja");
     if (!Security(1, pMyDisasm)) return;
     MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+1));
     CalculateRelativeAddress(&MyAddress,(Int64) GV.NB_PREFIX+2+MyNumber, pMyDisasm);
@@ -3239,7 +3239,7 @@ void __bea_callspec__ jl_(PDISASM pMyDisasm)
 /* =======================================
  *      7dh
  * ======================================= */
-void __bea_callspec__ jnl_(PDISASM pMyDisasm)
+void __bea_callspec__ jge_(PDISASM pMyDisasm)
 {
     UInt64 MyAddress;
     signed long MyNumber;
@@ -3253,7 +3253,7 @@ void __bea_callspec__ jnl_(PDISASM pMyDisasm)
     }
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+CONTROL_TRANSFER;
     (*pMyDisasm).Instruction.BranchType = JNL;
-    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "jnl");
+    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "jge");
     if (!Security(1, pMyDisasm)) return;
     MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+1));
     CalculateRelativeAddress(&MyAddress,(Int64) GV.NB_PREFIX+2+MyNumber, pMyDisasm);
@@ -3319,7 +3319,7 @@ void __bea_callspec__ jle_(PDISASM pMyDisasm)
 /* =======================================
  *      7fh
  * ======================================= */
-void __bea_callspec__ jnle_(PDISASM pMyDisasm)
+void __bea_callspec__ jg_(PDISASM pMyDisasm)
 {
     UInt64 MyAddress;
     signed long MyNumber;
@@ -3333,7 +3333,7 @@ void __bea_callspec__ jnle_(PDISASM pMyDisasm)
     }
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+CONTROL_TRANSFER;
     (*pMyDisasm).Instruction.BranchType = JG;
-    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "jnle");
+    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "jg");
     if (!Security(1, pMyDisasm)) return;
     MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+1));
     CalculateRelativeAddress(&MyAddress,(Int64) GV.NB_PREFIX+2+MyNumber, pMyDisasm);
@@ -3473,7 +3473,7 @@ void __bea_callspec__ jno_near(PDISASM pMyDisasm)
 /* =======================================
  *      0f82h
  * ======================================= */
-void __bea_callspec__ jc_near(PDISASM pMyDisasm)
+void __bea_callspec__ jb_near(PDISASM pMyDisasm)
 {
     UInt64 MyAddress;
     long MyNumber;
@@ -3486,9 +3486,9 @@ void __bea_callspec__ jc_near(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.BranchTaken = InUsePrefix;
     }
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+CONTROL_TRANSFER;
-    (*pMyDisasm).Instruction.BranchType = JC;
+    (*pMyDisasm).Instruction.BranchType = JB;
     (*pMyDisasm).Argument1.ArgSize = GV.OperandSize;
-    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "jc");
+    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "jb");
     if (GV.OperandSize >= 32) {
         if (!Security(5, pMyDisasm)) return;
         MyNumber = *((Int32*)(UIntPtr) (GV.EIP_+1));
@@ -3528,7 +3528,7 @@ void __bea_callspec__ jc_near(PDISASM pMyDisasm)
 /* =======================================
  *      0f83h
  * ======================================= */
-void __bea_callspec__ jnc_near(PDISASM pMyDisasm)
+void __bea_callspec__ jae_near(PDISASM pMyDisasm)
 {
     UInt64 MyAddress;
     long MyNumber;
@@ -3541,9 +3541,9 @@ void __bea_callspec__ jnc_near(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.BranchTaken = InUsePrefix;
     }
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+CONTROL_TRANSFER;
-    (*pMyDisasm).Instruction.BranchType = JNC;
+    (*pMyDisasm).Instruction.BranchType = JNB;
     (*pMyDisasm).Argument1.ArgSize = GV.OperandSize;
-    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "jnc");
+    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "jae");
     if (GV.OperandSize >= 32) {
         if (!Security(5, pMyDisasm)) return;
         MyNumber = *((Int32*)(UIntPtr) (GV.EIP_+1));
@@ -4078,7 +4078,7 @@ void __bea_callspec__ jl_near(PDISASM pMyDisasm)
 /* =======================================
  *      0f8dh
  * ======================================= */
-void __bea_callspec__ jnl_near(PDISASM pMyDisasm)
+void __bea_callspec__ jge_near(PDISASM pMyDisasm)
 {
     UInt64 MyAddress;
     long MyNumber;
@@ -4093,7 +4093,7 @@ void __bea_callspec__ jnl_near(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+CONTROL_TRANSFER;
     (*pMyDisasm).Instruction.BranchType = JNL;
     (*pMyDisasm).Argument1.ArgSize = GV.OperandSize;
-    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "jnl");
+    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "jge");
     if (GV.OperandSize >= 32) {
         if (!Security(5, pMyDisasm)) return;
         MyNumber = *((Int32*)(UIntPtr) (GV.EIP_+1));
@@ -4188,7 +4188,7 @@ void __bea_callspec__ jle_near(PDISASM pMyDisasm)
 /* =======================================
  *      0f8fh
  * ======================================= */
-void __bea_callspec__ jnle_near(PDISASM pMyDisasm)
+void __bea_callspec__ jg_near(PDISASM pMyDisasm)
 {
     UInt64 MyAddress;
     Int64 MyNumber;
