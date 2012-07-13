@@ -253,7 +253,7 @@ void __bea_callspec__ outsw_(PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ out_IbAL(PDISASM pMyDisasm)
 {
-    long MyNumber;
+    Int32 MyNumber;
 
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+InOutINSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "out");
@@ -280,7 +280,7 @@ void __bea_callspec__ out_IbAL(PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ out_Ib_eAX(PDISASM pMyDisasm)
 {
-    long MyNumber;
+    Int32 MyNumber;
 
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+InOutINSTRUCTION;
     (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "out");

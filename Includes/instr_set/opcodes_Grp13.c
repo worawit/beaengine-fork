@@ -21,7 +21,7 @@
  * ==================================================================== */
 void __bea_callspec__ G13_(PDISASM pMyDisasm)
 {
-    long MyNumber;
+    Int32 MyNumber;
 
     GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
     if (GV.REGOPCODE == 2) {
