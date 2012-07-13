@@ -160,6 +160,7 @@ typedef struct _Disasm {
    ARGTYPE Argument2;
    ARGTYPE Argument3;
    PREFIXINFO Prefix;
+   char alignment[2];
    InternalDatas Reserved_;
 } DISASM, *PDISASM, *LPDISASM;
 #pragma pack()
