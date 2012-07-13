@@ -34,10 +34,12 @@ MODIFICATIONS
 ==============
 Here is a list of my modifications:
 
-* INSTRTYPE.MnemonicId
+INSTRTYPE.MnemonicId
+-------------
 Added in order to know the mnemonic in light version
 
-* IMPLICIT_ARG flag (in progress)
+IMPLICIT_ARG flag (in progress)
+-------------
 The implicited argument now is flag with IMPLICIT_ARG. With this and 
 MnemonicId, we can construct assembly in light version easily.
 
@@ -47,7 +49,8 @@ See below example from "pushad"
 (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+REGISTER_TYPE+GENERAL_REG+REG0+REG1+REG2+REG3+REG4+REG5+REG6+REG7;
 </pre>
 
-* signess of immediate
+signess of immediate
+-------------
 For instruction that size of immediate is less than another operand, 
 immediate is sign-extened. In original version, immediate is always unsigned.
 
@@ -61,21 +64,27 @@ While the operand size and immediate size is same, the immediate value is
 still unsigned. I have no reason to change it because all value is computed 
 as 2's complement. It anyone has a good reason to change this case, tell me.
 
-* ARGTYPE.AccessMode
+ARGTYPE.AccessMode
+-------------
 READ and WRITE is flag. Many assembly argument is used and defined.
 Here is a common list that argument is READ+WRITE
 - add/sub/or/xor/and/not/inc/dec/adc/sbb - 1st argument is READ+WRITE
 - xchg - both arguments are READ+WRITE
 
-* Conditional instructions (jxx, cmovxx, setxx, loopxx)
+Conditional instructions (jxx, cmovxx, setxx, loopxx)
+-------------
 In assembly, some condition is written differently but have same meaning 
 such as 'jb', 'jc', 'jnae'. I changed this to use only condition that easy 
 to map to C comparison operator (<, <=, ==, !=, >=, >). So the mnemonic 
-has only 'jo', 'jno', 'jb', 'jbe', 'ja', 'jae', 'je', 'jne', 'jl', 'jle',
-'jg', 'jge', 'js', 'jns', 'jp', 'jnp'
+has only
+<pre>
+jo, jno, jb, jbe, ja, jae, je, jne, jl, jle, jg, jge, js, jns, jp, jnp
+</pre>
 
-* BranchType
+BranchType
+-------------
 After modification
 
-* Register flags for condition instructions
+Register flags for condition instructions
+-------------
 After modification
