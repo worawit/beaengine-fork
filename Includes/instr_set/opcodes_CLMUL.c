@@ -37,19 +37,34 @@ void __bea_callspec__ pclmulqdq_(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.Immediat = *((UInt8*)(UIntPtr) (GV.EIP_- 1));
 
         if ((*pMyDisasm).Instruction.Immediat == 0) {
-            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmullqlqdq");
+            (*pMyDisasm).Instruction.MnemonicId = I_PCLMULLQLQDQ;
+            #ifndef BEA_LIGHT_DISASSEMBLY
+               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmullqlqdq");
+            #endif
         }
         else if ((*pMyDisasm).Instruction.Immediat == 0x01 ) {
-            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmulhqlqdq");
+            (*pMyDisasm).Instruction.MnemonicId = I_PCLMULHQLQDQ;
+            #ifndef BEA_LIGHT_DISASSEMBLY
+               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmulhqlqdq");
+            #endif
         }
         else if ((*pMyDisasm).Instruction.Immediat == 0x10 ) {
-            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmullqhqdq");
+            (*pMyDisasm).Instruction.MnemonicId = I_PCLMULLQHQDQ;
+            #ifndef BEA_LIGHT_DISASSEMBLY
+               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmullqhqdq");
+            #endif
         }
         else if ((*pMyDisasm).Instruction.Immediat == 0x011 ) {
-            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmulhqhqdq");
+            (*pMyDisasm).Instruction.MnemonicId = I_PCLMULHQHQDQ;
+            #ifndef BEA_LIGHT_DISASSEMBLY
+               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmulhqhqdq");
+            #endif
         }
         else {
-            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmulqdq");
+            (*pMyDisasm).Instruction.MnemonicId = I_PCLMULQDQ;
+            #ifndef BEA_LIGHT_DISASSEMBLY
+               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmulqdq");
+            #endif
             GV.third_arg = 1;
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) CopyFormattedNumber(pMyDisasm, (char*) (*pMyDisasm).Argument3.ArgMnemonic, "%.2X",(Int64) *((UInt8*)(UIntPtr) (GV.EIP_- 1)));

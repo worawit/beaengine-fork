@@ -25,7 +25,10 @@ void __bea_callspec__ G8_EvIb(PDISASM pMyDisasm)
     EvIb(pMyDisasm);
     if (GV.REGOPCODE == 4) {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "bt");
+        (*pMyDisasm).Instruction.MnemonicId = I_BT;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "bt");
+        #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
         FillFlags(pMyDisasm, EFLAGS_BTEST);
     }
@@ -34,7 +37,10 @@ void __bea_callspec__ G8_EvIb(PDISASM pMyDisasm)
             (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
         }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "bts");
+        (*pMyDisasm).Instruction.MnemonicId = I_BTS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "bts");
+        #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
         FillFlags(pMyDisasm, EFLAGS_BTEST);
     }
@@ -43,7 +49,10 @@ void __bea_callspec__ G8_EvIb(PDISASM pMyDisasm)
             (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
         }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "btr");
+        (*pMyDisasm).Instruction.MnemonicId = I_BTR;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "btr");
+        #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
         FillFlags(pMyDisasm, EFLAGS_BTEST);
     }
@@ -52,7 +61,10 @@ void __bea_callspec__ G8_EvIb(PDISASM pMyDisasm)
             (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
         }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "btc");
+        (*pMyDisasm).Instruction.MnemonicId = I_BTC;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "btc");
+        #endif
         (*pMyDisasm).Argument1.AccessMode = READ;
         FillFlags(pMyDisasm, EFLAGS_BTEST);
     }

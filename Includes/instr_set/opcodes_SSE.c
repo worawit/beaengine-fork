@@ -26,7 +26,10 @@ void __bea_callspec__ addps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "addsd");
+        (*pMyDisasm).Instruction.MnemonicId = I_ADDSD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "addsd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -36,7 +39,10 @@ void __bea_callspec__ addps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2dword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "addss");
+        (*pMyDisasm).Instruction.MnemonicId = I_ADDSS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "addss");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -47,7 +53,10 @@ void __bea_callspec__ addps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "addpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_ADDPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "addpd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -55,7 +64,10 @@ void __bea_callspec__ addps_VW(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "addps");
+        (*pMyDisasm).Instruction.MnemonicId = I_ADDPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "addps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -72,7 +84,10 @@ void __bea_callspec__ addsubpd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE3_INSTRUCTION+SIMD_FP_PACKED;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "addsubps");
+        (*pMyDisasm).Instruction.MnemonicId = I_ADDSUBPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "addsubps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -84,7 +99,10 @@ void __bea_callspec__ addsubpd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE3_INSTRUCTION+SIMD_FP_PACKED;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "addsubpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_ADDSUBPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "addsubpd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -106,7 +124,10 @@ void __bea_callspec__ andnps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+LOGICAL_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "andnpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_ANDNPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "andnpd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -114,7 +135,10 @@ void __bea_callspec__ andnps_VW(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+LOGICAL_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "andnps");
+        (*pMyDisasm).Instruction.MnemonicId = I_ANDNPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "andnps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -133,7 +157,10 @@ void __bea_callspec__ andps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+LOGICAL_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "andpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_ANDPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "andpd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -141,7 +168,10 @@ void __bea_callspec__ andps_VW(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+LOGICAL_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "andps");
+        (*pMyDisasm).Instruction.MnemonicId = I_ANDPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "andps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -160,7 +190,10 @@ void __bea_callspec__ blendpd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+PACKED_BLENDING_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "blendpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_BLENDPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "blendpd");
+        #endif
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -195,7 +228,10 @@ void __bea_callspec__ blendps_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+PACKED_BLENDING_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "blendps");
+        (*pMyDisasm).Instruction.MnemonicId = I_BLENDPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "blendps");
+        #endif
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -228,7 +264,10 @@ void __bea_callspec__ blendvpd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+PACKED_BLENDING_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "blendvpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_BLENDVPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "blendvpd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -251,7 +290,10 @@ void __bea_callspec__ blendvps_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+PACKED_BLENDING_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "blendvps");
+        (*pMyDisasm).Instruction.MnemonicId = I_BLENDVPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "blendvps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -274,7 +316,10 @@ void __bea_callspec__ cmpps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+COMPARISON_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmpsd");
+        (*pMyDisasm).Instruction.MnemonicId = I_CMPSD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmpsd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -284,7 +329,10 @@ void __bea_callspec__ cmpps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2dword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+COMPARISON_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmpss");
+        (*pMyDisasm).Instruction.MnemonicId = I_CMPSS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmpss");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -295,7 +343,10 @@ void __bea_callspec__ cmpps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+COMPARISON_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmppd");
+        (*pMyDisasm).Instruction.MnemonicId = I_CMPPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmppd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -303,7 +354,10 @@ void __bea_callspec__ cmpps_VW(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+COMPARISON_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmpps");
+        (*pMyDisasm).Instruction.MnemonicId = I_CMPPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmpps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -331,7 +385,10 @@ void __bea_callspec__ crc32_GvEb(PDISASM pMyDisasm)
     if (GV.PrefRepne == 1) {
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         (*pMyDisasm).Instruction.Category = SSE42_INSTRUCTION+ACCELERATOR_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "crc32");
+        (*pMyDisasm).Instruction.MnemonicId = I_CRC32;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "crc32");
+        #endif
         if (GV.OperandSize == 64) {
             GV.MemDecoration = Arg2byte;
             GV.OperandSize = 8;
@@ -373,7 +430,10 @@ void __bea_callspec__ crc32_GvEv(PDISASM pMyDisasm)
     if (GV.PrefRepne == 1) {
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         (*pMyDisasm).Instruction.Category = SSE42_INSTRUCTION+ACCELERATOR_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "crc32");
+        (*pMyDisasm).Instruction.MnemonicId = I_CRC32;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "crc32");
+        #endif
 
         if (GV.OperandSize == 64) {
             GV.MemDecoration = Arg2qword;
@@ -413,7 +473,10 @@ void __bea_callspec__ comiss_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+COMPARISON_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "comisd");
+        (*pMyDisasm).Instruction.MnemonicId = I_COMISD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "comisd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -421,7 +484,10 @@ void __bea_callspec__ comiss_VW(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+COMPARISON_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "comiss");
+        (*pMyDisasm).Instruction.MnemonicId = I_COMISS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "comiss");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -438,7 +504,10 @@ void __bea_callspec__ cvtps2pd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtsd2ss");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTSD2SS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtsd2ss");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -448,7 +517,10 @@ void __bea_callspec__ cvtps2pd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2dword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtss2sd");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTSS2SD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtss2sd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -459,7 +531,10 @@ void __bea_callspec__ cvtps2pd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtpd2ps");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTPD2PS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtpd2ps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -467,7 +542,10 @@ void __bea_callspec__ cvtps2pd_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtps2pd");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTPS2PD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtps2pd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -485,7 +563,10 @@ void __bea_callspec__ cvtdq2ps_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvttps2dq");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTTPS2DQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvttps2dq");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -496,7 +577,10 @@ void __bea_callspec__ cvtdq2ps_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtps2dq");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTPS2DQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtps2dq");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -504,7 +588,10 @@ void __bea_callspec__ cvtdq2ps_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtdq2ps");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTDQ2PS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtdq2ps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -521,7 +608,10 @@ void __bea_callspec__ cvtpi2ps_(PDISASM pMyDisasm)
     if (GV.PrefRepne == 1) {
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtsi2sd");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTSI2SD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtsi2sd");
+        #endif
         if (GV.REX.W_ == 1) {
             GV.MemDecoration = Arg2qword;
             MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
@@ -543,7 +633,10 @@ void __bea_callspec__ cvtpi2ps_(PDISASM pMyDisasm)
     else if (GV.PrefRepe == 1) {
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtsi2ss");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTSI2SS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtsi2ss");
+        #endif
         if (GV.REX.W_ == 1) {
             GV.MemDecoration = Arg2qword;
             MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
@@ -566,7 +659,10 @@ void __bea_callspec__ cvtpi2ps_(PDISASM pMyDisasm)
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtpi2pd");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTPI2PD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtpi2pd");
+        #endif
         GV.MemDecoration = Arg2qword;
         GV.MMX_ = 1;
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
@@ -578,7 +674,10 @@ void __bea_callspec__ cvtpi2ps_(PDISASM pMyDisasm)
     }
     else {
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtpi2ps");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTPI2PS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtpi2ps");
+        #endif
         GV.MemDecoration = Arg2qword;
         GV.MMX_ = 1;
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
@@ -600,7 +699,10 @@ void __bea_callspec__ cvtps2pi_(PDISASM pMyDisasm)
     if (GV.PrefRepne == 1) {
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtsd2si");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTSD2SI;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtsd2si");
+        #endif
         if (GV.REX.W_ == 1) {
             GV.MemDecoration = Arg2qword;
             GV.SSE_ = 1;
@@ -622,7 +724,10 @@ void __bea_callspec__ cvtps2pi_(PDISASM pMyDisasm)
     else if (GV.PrefRepe == 1) {
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtss2si");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTSS2SI;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtss2si");
+        #endif
         if (GV.REX.W_ == 1) {
             GV.MemDecoration = Arg2dword;
             GV.SSE_ = 1;
@@ -645,7 +750,10 @@ void __bea_callspec__ cvtps2pi_(PDISASM pMyDisasm)
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtpd2pi");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTPD2PI;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtpd2pi");
+        #endif
         GV.MemDecoration = Arg2dqword;
         GV.SSE_ = 1;
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
@@ -657,7 +765,10 @@ void __bea_callspec__ cvtps2pi_(PDISASM pMyDisasm)
     }
     else {
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtps2pi");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTPS2PI;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtps2pi");
+        #endif
         GV.MemDecoration = Arg2qword;
         GV.SSE_ = 1;
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
@@ -679,7 +790,10 @@ void __bea_callspec__ cvttps2pi_(PDISASM pMyDisasm)
     if (GV.PrefRepne == 1) {
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvttsd2si");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTTSD2SI;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvttsd2si");
+        #endif
         if (GV.REX.W_ == 1) {
             GV.MemDecoration = Arg2qword;
             GV.SSE_ = 1;
@@ -701,7 +815,10 @@ void __bea_callspec__ cvttps2pi_(PDISASM pMyDisasm)
     else if (GV.PrefRepe == 1) {
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvttss2si");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTTSS2SI;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvttss2si");
+        #endif
         GV.MemDecoration = Arg2dword;
         GV.SSE_ = 1;
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
@@ -714,7 +831,10 @@ void __bea_callspec__ cvttps2pi_(PDISASM pMyDisasm)
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvttpd2pi");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTTPD2PI;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvttpd2pi");
+        #endif
         GV.MemDecoration = Arg2dqword;
         GV.SSE_ = 1;
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
@@ -726,7 +846,10 @@ void __bea_callspec__ cvttps2pi_(PDISASM pMyDisasm)
     }
     else {
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvttps2pi");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTTPS2PI;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvttps2pi");
+        #endif
         GV.MemDecoration = Arg2qword;
         GV.SSE_ = 1;
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
@@ -749,7 +872,10 @@ void __bea_callspec__ cvtpd2dq_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtpd2dq");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTPD2DQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtpd2dq");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -759,7 +885,10 @@ void __bea_callspec__ cvtpd2dq_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtdq2pd");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTDQ2PD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvtdq2pd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -770,7 +899,10 @@ void __bea_callspec__ cvtpd2dq_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvttpd2dq");
+        (*pMyDisasm).Instruction.MnemonicId = I_CVTTPD2DQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cvttpd2dq");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -792,7 +924,10 @@ void __bea_callspec__ dppd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+DOT_PRODUCT;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "dppd");
+        (*pMyDisasm).Instruction.MnemonicId = I_DPPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "dppd");
+        #endif
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -826,7 +961,10 @@ void __bea_callspec__ dpps_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+DOT_PRODUCT;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "dpps");
+        (*pMyDisasm).Instruction.MnemonicId = I_DPPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "dpps");
+        #endif
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -860,7 +998,10 @@ void __bea_callspec__ divps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "divsd");
+        (*pMyDisasm).Instruction.MnemonicId = I_DIVSD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "divsd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -870,7 +1011,10 @@ void __bea_callspec__ divps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2dword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "divss");
+        (*pMyDisasm).Instruction.MnemonicId = I_DIVSS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "divss");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -881,7 +1025,10 @@ void __bea_callspec__ divps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "divpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_DIVPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "divpd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -889,7 +1036,10 @@ void __bea_callspec__ divps_VW(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "divps");
+        (*pMyDisasm).Instruction.MnemonicId = I_DIVPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "divps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -908,7 +1058,10 @@ void __bea_callspec__ extractps_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg1dword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+INSERTION_EXTRACTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "extractps");
+        (*pMyDisasm).Instruction.MnemonicId = I_EXTRACTPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "extractps");
+        #endif
         GV.ImmediatSize = 8;
         MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
         GV.SSE_ = 1;
@@ -946,7 +1099,10 @@ void __bea_callspec__ haddpd_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE3_INSTRUCTION+SIMD_FP_HORIZONTAL;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "haddpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_HADDPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "haddpd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -954,7 +1110,10 @@ void __bea_callspec__ haddpd_VW(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE3_INSTRUCTION+SIMD_FP_HORIZONTAL;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "haddps");
+        (*pMyDisasm).Instruction.MnemonicId = I_HADDPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "haddps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -974,7 +1133,10 @@ void __bea_callspec__ hsubpd_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE3_INSTRUCTION+SIMD_FP_HORIZONTAL;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "hsubpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_HSUBPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "hsubpd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -982,7 +1144,10 @@ void __bea_callspec__ hsubpd_VW(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE3_INSTRUCTION+SIMD_FP_HORIZONTAL;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "hsubps");
+        (*pMyDisasm).Instruction.MnemonicId = I_HSUBPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "hsubps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1000,7 +1165,10 @@ void __bea_callspec__ insertps_(PDISASM pMyDisasm)
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+INSERTION_EXTRACTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "insertps");
+        (*pMyDisasm).Instruction.MnemonicId = I_INSERTPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "insertps");
+        #endif
         GV.SSE_ = 1;
         GV.MOD_= ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6) & 0x3;
         if (GV.MOD_== 0x3) {
@@ -1047,7 +1215,10 @@ void __bea_callspec__ lddqu_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE3_INSTRUCTION+SPECIALIZED_128bits;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "lddqu");
+        (*pMyDisasm).Instruction.MnemonicId = I_LDDQU;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "lddqu");
+        #endif
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
         GV.SSE_ = 1;
         Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
@@ -1072,7 +1243,10 @@ void __bea_callspec__ maskmovq_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CACHEABILITY_CONTROL;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "maskmovdqu");
+        (*pMyDisasm).Instruction.MnemonicId = I_MASKMOVDQU;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "maskmovdqu");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1080,7 +1254,10 @@ void __bea_callspec__ maskmovq_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+CACHEABILITY_CONTROL;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "maskmovq");
+        (*pMyDisasm).Instruction.MnemonicId = I_MASKMOVQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "maskmovq");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -1098,7 +1275,10 @@ void __bea_callspec__ maxps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "maxsd");
+        (*pMyDisasm).Instruction.MnemonicId = I_MAXSD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "maxsd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1108,7 +1288,10 @@ void __bea_callspec__ maxps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2dword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "maxss");
+        (*pMyDisasm).Instruction.MnemonicId = I_MAXSS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "maxss");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1119,7 +1302,10 @@ void __bea_callspec__ maxps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "maxpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_MAXPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "maxpd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1127,7 +1313,10 @@ void __bea_callspec__ maxps_VW(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "maxps");
+        (*pMyDisasm).Instruction.MnemonicId = I_MAXPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "maxps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1145,7 +1334,10 @@ void __bea_callspec__ minps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "minsd");
+        (*pMyDisasm).Instruction.MnemonicId = I_MINSD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "minsd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1155,7 +1347,10 @@ void __bea_callspec__ minps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2dword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "minss");
+        (*pMyDisasm).Instruction.MnemonicId = I_MINSS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "minss");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1166,7 +1361,10 @@ void __bea_callspec__ minps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "minpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_MINPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "minpd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1174,7 +1372,10 @@ void __bea_callspec__ minps_VW(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "minps");
+        (*pMyDisasm).Instruction.MnemonicId = I_MINPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "minps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1192,7 +1393,10 @@ void __bea_callspec__ movaps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+DATA_TRANSFER;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movapd");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVAPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movapd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1200,7 +1404,10 @@ void __bea_callspec__ movaps_VW(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+DATA_TRANSFER;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movaps");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVAPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movaps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1218,7 +1425,10 @@ void __bea_callspec__ movaps_WV(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg1dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+DATA_TRANSFER;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movapd");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVAPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movapd");
+        #endif
         GV.SSE_ = 1;
         ExGx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1226,7 +1436,10 @@ void __bea_callspec__ movaps_WV(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+DATA_TRANSFER;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movaps");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVAPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movaps");
+        #endif
         GV.SSE_ = 1;
         ExGx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1245,7 +1458,10 @@ void __bea_callspec__ movhps_VM(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE3_INSTRUCTION+DATA_TRANSFER;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movshdup");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVSHDUP;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movshdup");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1256,7 +1472,10 @@ void __bea_callspec__ movhps_VM(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+DATA_TRANSFER;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movhpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVHPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movhpd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1266,10 +1485,16 @@ void __bea_callspec__ movhps_VM(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+DATA_TRANSFER;
         GV.MOD_= ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6) & 0x3;
         if (GV.MOD_== 0x3) {
-            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movlhps");
+            (*pMyDisasm).Instruction.MnemonicId = I_MOVLHPS;
+            #ifndef BEA_LIGHT_DISASSEMBLY
+               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movlhps");
+            #endif
         }
         else {
-            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movhps");
+            (*pMyDisasm).Instruction.MnemonicId = I_MOVHPS;
+            #ifndef BEA_LIGHT_DISASSEMBLY
+               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movhps");
+            #endif
         }
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -1290,7 +1515,10 @@ void __bea_callspec__ movhps_MV(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg1qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+DATA_TRANSFER;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movhpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVHPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movhpd");
+        #endif
         GV.SSE_ = 1;
         ExGx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1298,7 +1526,10 @@ void __bea_callspec__ movhps_MV(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg1qword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+DATA_TRANSFER;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movhps");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVHPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movhps");
+        #endif
         GV.SSE_ = 1;
         ExGx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1316,7 +1547,10 @@ void __bea_callspec__ movlps_VM(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE3_INSTRUCTION+DATA_TRANSFER;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movddup");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVDDUP;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movddup");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1326,7 +1560,10 @@ void __bea_callspec__ movlps_VM(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE3_INSTRUCTION+DATA_TRANSFER;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movsldup");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVSLDUP;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movsldup");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1337,7 +1574,10 @@ void __bea_callspec__ movlps_VM(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+DATA_TRANSFER;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movlpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVLPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movlpd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1346,10 +1586,16 @@ void __bea_callspec__ movlps_VM(PDISASM pMyDisasm)
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+DATA_TRANSFER;
         if (GV.MOD_== 0x3) {
-            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movhlps");
+            (*pMyDisasm).Instruction.MnemonicId = I_MOVHLPS;
+            #ifndef BEA_LIGHT_DISASSEMBLY
+               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movhlps");
+            #endif
         }
         else {
-            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movlps");
+            (*pMyDisasm).Instruction.MnemonicId = I_MOVLPS;
+            #ifndef BEA_LIGHT_DISASSEMBLY
+               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movlps");
+            #endif
         }
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -1370,7 +1616,10 @@ void __bea_callspec__ movlps_MV(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg1qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+DATA_TRANSFER;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movlpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVLPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movlpd");
+        #endif
         GV.SSE_ = 1;
         ExGx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1378,7 +1627,10 @@ void __bea_callspec__ movlps_MV(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg1qword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+DATA_TRANSFER;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movlps");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVLPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movlps");
+        #endif
         GV.SSE_ = 1;
         ExGx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1401,7 +1653,10 @@ void __bea_callspec__ movmskps_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+DATA_TRANSFER;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movmskpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVMSKPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movmskpd");
+        #endif
         GV.SSE_ = 1;
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
         GV.SSE_ = 0;
@@ -1412,7 +1667,10 @@ void __bea_callspec__ movmskps_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+DATA_TRANSFER;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movmskps");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVMSKPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movmskps");
+        #endif
         GV.SSE_ = 1;
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
         GV.SSE_ = 0;
@@ -1435,7 +1693,10 @@ void __bea_callspec__ movntdqa_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+STREAMING_LOAD;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movntdqa");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVNTDQA;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movntdqa");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1452,7 +1713,10 @@ void __bea_callspec__ movntdqa_(PDISASM pMyDisasm)
 void __bea_callspec__ movnti_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CACHEABILITY_CONTROL;
-    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movnti");
+    (*pMyDisasm).Instruction.MnemonicId = I_MOVNTI;
+    #ifndef BEA_LIGHT_DISASSEMBLY
+       (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movnti");
+    #endif
     EvGv(pMyDisasm);
 
 }
@@ -1473,7 +1737,10 @@ void __bea_callspec__ movntps_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg1dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CACHEABILITY_CONTROL;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movntpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVNTPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movntpd");
+        #endif
         GV.SSE_ = 1;
         Reg_Opcode(&(*pMyDisasm).Argument2, pMyDisasm);
         GV.SSE_ = 0;
@@ -1484,7 +1751,10 @@ void __bea_callspec__ movntps_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg1dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CACHEABILITY_CONTROL;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movntps");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVNTPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movntps");
+        #endif
         GV.SSE_ = 1;
         Reg_Opcode(&(*pMyDisasm).Argument2, pMyDisasm);
         GV.SSE_ = 0;
@@ -1510,7 +1780,10 @@ void __bea_callspec__ movntq_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg1dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CACHEABILITY_CONTROL;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movntdq");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVNTDQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movntdq");
+        #endif
         GV.SSE_ = 1;
         ExGx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1518,7 +1791,10 @@ void __bea_callspec__ movntq_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg1qword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+CACHEABILITY_CONTROL;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movntq");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVNTQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movntq");
+        #endif
         GV.MMX_ = 1;
         ExGx(pMyDisasm);
         GV.MMX_ = 0;
@@ -1536,7 +1812,10 @@ void __bea_callspec__ movups_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movsd");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVSD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movsd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1546,7 +1825,10 @@ void __bea_callspec__ movups_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2dword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movss");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVSS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movss");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1557,7 +1839,10 @@ void __bea_callspec__ movups_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movupd");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVUPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movupd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1565,7 +1850,10 @@ void __bea_callspec__ movups_VW(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movups");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVUPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movups");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1584,7 +1872,10 @@ void __bea_callspec__ movups_WV(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         GV.MemDecoration = Arg1qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movsd");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVSD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movsd");
+        #endif
         GV.SSE_ = 1;
         ExGx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1594,7 +1885,10 @@ void __bea_callspec__ movups_WV(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg1dword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movss");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVSS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movss");
+        #endif
         GV.SSE_ = 1;
         ExGx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1605,7 +1899,10 @@ void __bea_callspec__ movups_WV(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg1dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movupd");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVUPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movupd");
+        #endif
         GV.SSE_ = 1;
         ExGx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1613,7 +1910,10 @@ void __bea_callspec__ movups_WV(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg1dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movups");
+        (*pMyDisasm).Instruction.MnemonicId = I_MOVUPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "movups");
+        #endif
         GV.SSE_ = 1;
         ExGx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1632,7 +1932,10 @@ void __bea_callspec__ mpsadbw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+SAD_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mpsadbw");
+        (*pMyDisasm).Instruction.MnemonicId = I_MPSADBW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mpsadbw");
+        #endif
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -1666,7 +1969,10 @@ void __bea_callspec__ mulps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mulsd");
+        (*pMyDisasm).Instruction.MnemonicId = I_MULSD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mulsd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1676,7 +1982,10 @@ void __bea_callspec__ mulps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2dword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mulss");
+        (*pMyDisasm).Instruction.MnemonicId = I_MULSS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mulss");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1687,7 +1996,10 @@ void __bea_callspec__ mulps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mulpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_MULPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mulpd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1695,7 +2007,10 @@ void __bea_callspec__ mulps_VW(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mulps");
+        (*pMyDisasm).Instruction.MnemonicId = I_MULPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mulps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1714,7 +2029,10 @@ void __bea_callspec__ orps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+LOGICAL_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "orpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_ORPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "orpd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1722,7 +2040,10 @@ void __bea_callspec__ orps_VW(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+LOGICAL_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "orps");
+        (*pMyDisasm).Instruction.MnemonicId = I_ORPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "orps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1741,7 +2062,10 @@ void __bea_callspec__ packusdw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "packusdw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PACKUSDW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "packusdw");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1765,14 +2089,20 @@ void __bea_callspec__ paddq_(PDISASM pMyDisasm)
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "paddq");
+        (*pMyDisasm).Instruction.MnemonicId = I_PADDQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "paddq");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
     }
     else {
         GV.MemDecoration = Arg2qword;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "paddq");
+        (*pMyDisasm).Instruction.MnemonicId = I_PADDQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "paddq");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -1791,14 +2121,20 @@ void __bea_callspec__ pavgb_(PDISASM pMyDisasm)
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pavgb");
+        (*pMyDisasm).Instruction.MnemonicId = I_PAVGB;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pavgb");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
     }
     else {
         GV.MemDecoration = Arg2qword;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pavgb");
+        (*pMyDisasm).Instruction.MnemonicId = I_PAVGB;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pavgb");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -1817,14 +2153,20 @@ void __bea_callspec__ pavgw_(PDISASM pMyDisasm)
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pavgw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PAVGW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pavgw");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
     }
     else {
         GV.MemDecoration = Arg2qword;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pavgw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PAVGW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pavgw");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -1843,7 +2185,10 @@ void __bea_callspec__ palignr_(PDISASM pMyDisasm)
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "palignr");
+        (*pMyDisasm).Instruction.MnemonicId = I_PALIGNR;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "palignr");
+        #endif
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -1861,7 +2206,10 @@ void __bea_callspec__ palignr_(PDISASM pMyDisasm)
     }
     else {
         GV.MemDecoration = Arg2qword;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "palignr");
+        (*pMyDisasm).Instruction.MnemonicId = I_PALIGNR;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "palignr");
+        #endif
         GV.ImmediatSize = 8;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
@@ -1891,14 +2239,20 @@ void __bea_callspec__ pblendvb_(PDISASM pMyDisasm)
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pblendvb");
+        (*pMyDisasm).Instruction.MnemonicId = I_PBLENDVB;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pblendvb");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
     }
     else {
         GV.MemDecoration = Arg2qword;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pblendvb");
+        (*pMyDisasm).Instruction.MnemonicId = I_PBLENDVB;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pblendvb");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -1917,7 +2271,10 @@ void __bea_callspec__ pblendw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+SAD_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pblendw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PBLENDW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pblendw");
+        #endif
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -1952,7 +2309,10 @@ void __bea_callspec__ pcmpeqq_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+PACKED_EQUALITY;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pcmpeqq");
+        (*pMyDisasm).Instruction.MnemonicId = I_PCMPEQQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pcmpeqq");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1976,7 +2336,10 @@ void __bea_callspec__ pcmpestri_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE42_INSTRUCTION+COMPARISON_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pcmpestri");
+        (*pMyDisasm).Instruction.MnemonicId = I_PCMPESTRI;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pcmpestri");
+        #endif
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -2011,7 +2374,10 @@ void __bea_callspec__ pcmpestrm_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE42_INSTRUCTION+COMPARISON_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pcmpestrm");
+        (*pMyDisasm).Instruction.MnemonicId = I_PCMPESTRM;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pcmpestrm");
+        #endif
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -2046,7 +2412,10 @@ void __bea_callspec__ pcmpistri_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE42_INSTRUCTION+COMPARISON_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pcmpistri");
+        (*pMyDisasm).Instruction.MnemonicId = I_PCMPISTRI;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pcmpistri");
+        #endif
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -2081,7 +2450,10 @@ void __bea_callspec__ pcmpistrm_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE42_INSTRUCTION+COMPARISON_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pcmpestrm");
+        (*pMyDisasm).Instruction.MnemonicId = I_PCMPESTRM;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pcmpestrm");
+        #endif
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -2116,7 +2488,10 @@ void __bea_callspec__ pcmpgtq_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE42_INSTRUCTION+COMPARISON_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pcmpgtq");
+        (*pMyDisasm).Instruction.MnemonicId = I_PCMPGTQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pcmpgtq");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2139,7 +2514,10 @@ void __bea_callspec__ pextrb_(PDISASM pMyDisasm)
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+INSERTION_EXTRACTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pextrb");
+        (*pMyDisasm).Instruction.MnemonicId = I_PEXTRB;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pextrb");
+        #endif
         GV.MOD_= ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6) & 0x3;
         if (GV.MOD_== 0x3) {
             GV.MemDecoration = Arg1dword;
@@ -2183,12 +2561,18 @@ void __bea_callspec__ pextrd_(PDISASM pMyDisasm)
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+INSERTION_EXTRACTION;
         if (GV.REX.W_ == 0x1) {
-            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pextrq");
+            (*pMyDisasm).Instruction.MnemonicId = I_PEXTRQ;
+            #ifndef BEA_LIGHT_DISASSEMBLY
+               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pextrq");
+            #endif
             GV.MemDecoration = Arg1qword;
             GV.OperandSize = 64;
         }
         else {
-            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pextrd");
+            (*pMyDisasm).Instruction.MnemonicId = I_PEXTRD;
+            #ifndef BEA_LIGHT_DISASSEMBLY
+               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pextrd");
+            #endif
             GV.MemDecoration = Arg1dword;
         }
         GV.ImmediatSize = 8;
@@ -2224,7 +2608,10 @@ void __bea_callspec__ pextrw_(PDISASM pMyDisasm)
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SIMD64bits;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pextrw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PEXTRW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pextrw");
+        #endif
         GV.MemDecoration = Arg2dqword;
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
@@ -2245,7 +2632,10 @@ void __bea_callspec__ pextrw_(PDISASM pMyDisasm)
     }
     else {
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SIMD64bits;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pextrw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PEXTRW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pextrw");
+        #endif
         GV.MemDecoration = Arg2dqword;
         GV.ImmediatSize = 8;
         GV.MMX_ = 1;
@@ -2276,7 +2666,10 @@ void __bea_callspec__ pextrw2_(PDISASM pMyDisasm)
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+INSERTION_EXTRACTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pextrw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PEXTRW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pextrw");
+        #endif
         GV.MOD_= ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6) & 0x3;
         if (GV.MOD_== 0x3) {
             GV.MemDecoration = Arg1dword;
@@ -2319,7 +2712,10 @@ void __bea_callspec__ phaddd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phaddd");
+        (*pMyDisasm).Instruction.MnemonicId = I_PHADDD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phaddd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2327,7 +2723,10 @@ void __bea_callspec__ phaddd_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phaddd");
+        (*pMyDisasm).Instruction.MnemonicId = I_PHADDD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phaddd");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -2346,7 +2745,10 @@ void __bea_callspec__ phaddsw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phaddsw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PHADDSW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phaddsw");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2354,7 +2756,10 @@ void __bea_callspec__ phaddsw_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phaddsw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PHADDSW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phaddsw");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -2373,7 +2778,10 @@ void __bea_callspec__ phaddw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phaddw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PHADDW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phaddw");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2381,7 +2789,10 @@ void __bea_callspec__ phaddw_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phaddw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PHADDW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phaddw");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -2400,7 +2811,10 @@ void __bea_callspec__ phminposuw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+HORIZONTAL_SEARCH;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phminposuw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PHMINPOSUW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phminposuw");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2422,7 +2836,10 @@ void __bea_callspec__ phsubw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phsubw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PHSUBW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phsubw");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2430,7 +2847,10 @@ void __bea_callspec__ phsubw_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phsubw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PHSUBW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phsubw");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -2449,7 +2869,10 @@ void __bea_callspec__ phsubd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phsubd");
+        (*pMyDisasm).Instruction.MnemonicId = I_PHSUBD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phsubd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2457,7 +2880,10 @@ void __bea_callspec__ phsubd_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phsubd");
+        (*pMyDisasm).Instruction.MnemonicId = I_PHSUBD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phsubd");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -2476,7 +2902,10 @@ void __bea_callspec__ phsubsw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phsubsw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PHSUBSW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phsubsw");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2484,7 +2913,10 @@ void __bea_callspec__ phsubsw_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phsubsw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PHSUBSW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phsubsw");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -2503,7 +2935,10 @@ void __bea_callspec__ pinsrb_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2byte;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+INSERTION_EXTRACTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pinsrb");
+        (*pMyDisasm).Instruction.MnemonicId = I_PINSRB;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pinsrb");
+        #endif
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -2539,11 +2974,17 @@ void __bea_callspec__ pinsrd_(PDISASM pMyDisasm)
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+INSERTION_EXTRACTION;
         if (GV.REX.W_ == 0x1) {
-            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pinsrq");
+            (*pMyDisasm).Instruction.MnemonicId = I_PINSRQ;
+            #ifndef BEA_LIGHT_DISASSEMBLY
+               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pinsrq");
+            #endif
             GV.MemDecoration = Arg1qword;
         }
         else {
-            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pinsrd");
+            (*pMyDisasm).Instruction.MnemonicId = I_PINSRD;
+            #ifndef BEA_LIGHT_DISASSEMBLY
+               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pinsrd");
+            #endif
             GV.MemDecoration = Arg1dword;
         }
         GV.ImmediatSize = 8;
@@ -2580,7 +3021,10 @@ void __bea_callspec__ pinsrw_(PDISASM pMyDisasm)
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SIMD64bits;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pinsrw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PINSRW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pinsrw");
+        #endif
         GV.MemDecoration = Arg2word;
         GV.ImmediatSize = 8;
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
@@ -2601,7 +3045,10 @@ void __bea_callspec__ pinsrw_(PDISASM pMyDisasm)
     }
     else {
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SIMD64bits;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pinsrw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PINSRW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pinsrw");
+        #endif
         GV.MemDecoration = Arg2word;
         GV.ImmediatSize = 8;
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
@@ -2634,7 +3081,10 @@ void __bea_callspec__ pmaxsb_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+PACKED_MINMAX;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxsb");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMAXSB;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxsb");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2655,7 +3105,10 @@ void __bea_callspec__ pmaxsd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+PACKED_MINMAX;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxsd");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMAXSD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxsd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2676,7 +3129,10 @@ void __bea_callspec__ pmaxuw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+PACKED_MINMAX;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxuw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMAXUW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxuw");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2697,7 +3153,10 @@ void __bea_callspec__ pmaxud_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+PACKED_MINMAX;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxud");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMAXUD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxud");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2718,7 +3177,10 @@ void __bea_callspec__ pminsb_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+PACKED_MINMAX;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminsb");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMINSB;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminsb");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2739,7 +3201,10 @@ void __bea_callspec__ pminsd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+PACKED_MINMAX;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminsd");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMINSD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminsd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2760,7 +3225,10 @@ void __bea_callspec__ pminuw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+PACKED_MINMAX;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminuw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMINUW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminuw");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2781,7 +3249,10 @@ void __bea_callspec__ pminud_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+PACKED_MINMAX;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminud");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMINUD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminud");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2803,7 +3274,10 @@ void __bea_callspec__ pminub_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SIMD64bits;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminub");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMINUB;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminub");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2811,7 +3285,10 @@ void __bea_callspec__ pminub_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SIMD64bits;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminub");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMINUB;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminub");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -2830,7 +3307,10 @@ void __bea_callspec__ pmaxub_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SIMD64bits;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxub");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMAXUB;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxub");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2838,7 +3318,10 @@ void __bea_callspec__ pmaxub_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SIMD64bits;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxub");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMAXUB;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxub");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -2857,7 +3340,10 @@ void __bea_callspec__ pminsw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SIMD64bits;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminsw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMINSW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminsw");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2865,7 +3351,10 @@ void __bea_callspec__ pminsw_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SIMD64bits;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminsw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMINSW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminsw");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -2884,7 +3373,10 @@ void __bea_callspec__ pmaxsw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SIMD64bits;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxsw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMAXSW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxsw");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2892,7 +3384,10 @@ void __bea_callspec__ pmaxsw_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SIMD64bits;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxsw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMAXSW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxsw");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -2911,7 +3406,10 @@ void __bea_callspec__ pmaddubsw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaddubsw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMADDUBSW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaddubsw");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2919,7 +3417,10 @@ void __bea_callspec__ pmaddubsw_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaddubsw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMADDUBSW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaddubsw");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -2938,7 +3439,10 @@ void __bea_callspec__ pmovmskb_(PDISASM pMyDisasm)
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SIMD64bits;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovmskb");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMOVMSKB;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovmskb");
+        #endif
         GV.MemDecoration = Arg2dqword;
         GV.SSE_ = 1;
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
@@ -2948,7 +3452,10 @@ void __bea_callspec__ pmovmskb_(PDISASM pMyDisasm)
     }
     else {
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SIMD64bits;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovmskb");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMOVMSKB;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovmskb");
+        #endif
         GV.MemDecoration = Arg2qword;
         GV.MMX_ = 1;
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
@@ -2971,7 +3478,10 @@ void __bea_callspec__ pmovsxbd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovsxbd");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMOVSXBD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovsxbd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2993,7 +3503,10 @@ void __bea_callspec__ pmovsxbq_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovsxbq");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMOVSXBQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovsxbq");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3015,7 +3528,10 @@ void __bea_callspec__ pmovsxbw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovsxbw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMOVSXBW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovsxbw");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3037,7 +3553,10 @@ void __bea_callspec__ pmovsxdq_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovsxdq");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMOVSXDQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovsxdq");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3059,7 +3578,10 @@ void __bea_callspec__ pmovsxwd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovsxwd");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMOVSXWD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovsxwd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3081,7 +3603,10 @@ void __bea_callspec__ pmovsxwq_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovsxwq");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMOVSXWQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovsxwq");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3103,7 +3628,10 @@ void __bea_callspec__ pmovzxbd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovzxbd");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMOVZXBD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovzxbd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3125,7 +3653,10 @@ void __bea_callspec__ pmovzxbq_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovzxbq");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMOVZXBQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovzxbq");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3147,7 +3678,10 @@ void __bea_callspec__ pmovzxbw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovzxbw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMOVZXBW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovzxbw");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3169,7 +3703,10 @@ void __bea_callspec__ pmovzxdq_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovzxdq");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMOVZXDQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovzxdq");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3191,7 +3728,10 @@ void __bea_callspec__ pmovzxwd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovzxwd");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMOVZXWD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovzxwd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3213,7 +3753,10 @@ void __bea_callspec__ pmovzxwq_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+CONVERSION_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovzxwq");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMOVZXWQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmovzxwq");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3235,7 +3778,10 @@ void __bea_callspec__ pmuldq_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmuldq");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMULDQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmuldq");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3257,7 +3803,10 @@ void __bea_callspec__ pmulld_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmulld");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMULLD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmulld");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3279,7 +3828,10 @@ void __bea_callspec__ pmulhrsw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmulhrsw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMULHRSW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmulhrsw");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3287,7 +3839,10 @@ void __bea_callspec__ pmulhrsw_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmulhrsw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMULHRSW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmulhrsw");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -3306,14 +3861,20 @@ void __bea_callspec__ pmulhuw_(PDISASM pMyDisasm)
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmulhuw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMULHUW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmulhuw");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
     }
     else {
         GV.MemDecoration = Arg2qword;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmulhuw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMULHUW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmulhuw");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -3332,14 +3893,20 @@ void __bea_callspec__ pmuludq_(PDISASM pMyDisasm)
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmuludq");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMULUDQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmuludq");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
     }
     else {
         GV.MemDecoration = Arg2qword;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmuludq");
+        (*pMyDisasm).Instruction.MnemonicId = I_PMULUDQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmuludq");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -3353,7 +3920,10 @@ void __bea_callspec__ pmuludq_(PDISASM pMyDisasm)
 void __bea_callspec__ popcnt_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = SSE42_INSTRUCTION+DATA_TRANSFER;
-    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "popcnt");
+    (*pMyDisasm).Instruction.MnemonicId = I_POPCNT;
+    #ifndef BEA_LIGHT_DISASSEMBLY
+       (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "popcnt");
+    #endif
     GvEv(pMyDisasm);
     FillFlags(pMyDisasm, EFLAGS_POPCNT);
 }
@@ -3370,14 +3940,20 @@ void __bea_callspec__ psadbw_(PDISASM pMyDisasm)
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psadbw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PSADBW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psadbw");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
     }
     else {
         GV.MemDecoration = Arg2qword;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psadbw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PSADBW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psadbw");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -3396,7 +3972,10 @@ void __bea_callspec__ pshufb_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+SHUFFLE_UNPACK;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pshufb");
+        (*pMyDisasm).Instruction.MnemonicId = I_PSHUFB;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pshufb");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3404,7 +3983,10 @@ void __bea_callspec__ pshufb_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+SHUFFLE_UNPACK;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pshufb");
+        (*pMyDisasm).Instruction.MnemonicId = I_PSHUFB;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pshufb");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -3422,7 +4004,10 @@ void __bea_callspec__ pshufw_(PDISASM pMyDisasm)
     if (GV.PrefRepe == 1) {
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pshufhw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PSHUFHW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pshufhw");
+        #endif
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -3442,7 +4027,10 @@ void __bea_callspec__ pshufw_(PDISASM pMyDisasm)
     else if (GV.PrefRepne == 1) {
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pshuflw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PSHUFLW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pshuflw");
+        #endif
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -3464,7 +4052,10 @@ void __bea_callspec__ pshufw_(PDISASM pMyDisasm)
         GV.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pshufd");
+        (*pMyDisasm).Instruction.MnemonicId = I_PSHUFD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pshufd");
+        #endif
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -3482,7 +4073,10 @@ void __bea_callspec__ pshufw_(PDISASM pMyDisasm)
     }
     else {
         GV.MemDecoration = Arg2qword;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pshufw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PSHUFW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pshufw");
+        #endif
         GV.ImmediatSize = 8;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
@@ -3511,7 +4105,10 @@ void __bea_callspec__ psignb_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+PACKED_SIGN;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psignb");
+        (*pMyDisasm).Instruction.MnemonicId = I_PSIGNB;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psignb");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3519,7 +4116,10 @@ void __bea_callspec__ psignb_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+PACKED_SIGN;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psignb");
+        (*pMyDisasm).Instruction.MnemonicId = I_PSIGNB;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psignb");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -3538,7 +4138,10 @@ void __bea_callspec__ psignd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+PACKED_SIGN;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psignd");
+        (*pMyDisasm).Instruction.MnemonicId = I_PSIGND;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psignd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3546,7 +4149,10 @@ void __bea_callspec__ psignd_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+PACKED_SIGN;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psignd");
+        (*pMyDisasm).Instruction.MnemonicId = I_PSIGND;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psignd");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -3565,7 +4171,10 @@ void __bea_callspec__ psignw_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+PACKED_SIGN;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psignw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PSIGNW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psignw");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3573,7 +4182,10 @@ void __bea_callspec__ psignw_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSSE3_INSTRUCTION+PACKED_SIGN;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psignw");
+        (*pMyDisasm).Instruction.MnemonicId = I_PSIGNW;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psignw");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -3592,7 +4204,10 @@ void __bea_callspec__ psubq_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+SIMD128bits;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psubq");
+        (*pMyDisasm).Instruction.MnemonicId = I_PSUBQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psubq");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3600,7 +4215,10 @@ void __bea_callspec__ psubq_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+SIMD128bits;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psubq");
+        (*pMyDisasm).Instruction.MnemonicId = I_PSUBQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psubq");
+        #endif
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -3619,7 +4237,10 @@ void __bea_callspec__ ptest_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+PACKED_TEST;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "ptest");
+        (*pMyDisasm).Instruction.MnemonicId = I_PTEST;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "ptest");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3641,7 +4262,10 @@ void __bea_callspec__ punpcklqdq_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+SIMD128bits;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "punpcklqdq");
+        (*pMyDisasm).Instruction.MnemonicId = I_PUNPCKLQDQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "punpcklqdq");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3663,7 +4287,10 @@ void __bea_callspec__ punpckhqdq_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+SIMD128bits;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "punpckhqdq");
+        (*pMyDisasm).Instruction.MnemonicId = I_PUNPCKHQDQ;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "punpckhqdq");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3685,7 +4312,10 @@ void __bea_callspec__ rcpps_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2dword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "rcpss");
+        (*pMyDisasm).Instruction.MnemonicId = I_RCPSS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "rcpss");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3693,7 +4323,10 @@ void __bea_callspec__ rcpps_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "rcpps");
+        (*pMyDisasm).Instruction.MnemonicId = I_RCPPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "rcpps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3712,7 +4345,10 @@ void __bea_callspec__ roundpd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+ROUND_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "roundpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_ROUNDPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "roundpd");
+        #endif
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -3745,7 +4381,10 @@ void __bea_callspec__ roundps_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+ROUND_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "roundps");
+        (*pMyDisasm).Instruction.MnemonicId = I_ROUNDPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "roundps");
+        #endif
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -3778,7 +4417,10 @@ void __bea_callspec__ roundsd_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+ROUND_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "roundsd");
+        (*pMyDisasm).Instruction.MnemonicId = I_ROUNDSD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "roundsd");
+        #endif
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -3811,7 +4453,10 @@ void __bea_callspec__ roundss_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dword;
         (*pMyDisasm).Instruction.Category = SSE41_INSTRUCTION+ROUND_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "roundss");
+        (*pMyDisasm).Instruction.MnemonicId = I_ROUNDSS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "roundss");
+        #endif
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -3843,7 +4488,10 @@ void __bea_callspec__ rsqrtps_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2dword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "rsqrtss");
+        (*pMyDisasm).Instruction.MnemonicId = I_RSQRTSS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "rsqrtss");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3851,7 +4499,10 @@ void __bea_callspec__ rsqrtps_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "rsqrtps");
+        (*pMyDisasm).Instruction.MnemonicId = I_RSQRTPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "rsqrtps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3872,7 +4523,10 @@ void __bea_callspec__ shufps_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+SHUFFLE_UNPACK;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "shufpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_SHUFPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "shufpd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3880,7 +4534,10 @@ void __bea_callspec__ shufps_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SHUFFLE_UNPACK;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "shufps");
+        (*pMyDisasm).Instruction.MnemonicId = I_SHUFPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "shufps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3909,7 +4566,10 @@ void __bea_callspec__ sqrtps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sqrtsd");
+        (*pMyDisasm).Instruction.MnemonicId = I_SQRTSD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sqrtsd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3919,7 +4579,10 @@ void __bea_callspec__ sqrtps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2dword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sqrtss");
+        (*pMyDisasm).Instruction.MnemonicId = I_SQRTSS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sqrtss");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3930,7 +4593,10 @@ void __bea_callspec__ sqrtps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sqrtpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_SQRTPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sqrtpd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3938,7 +4604,10 @@ void __bea_callspec__ sqrtps_VW(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sqrtps");
+        (*pMyDisasm).Instruction.MnemonicId = I_SQRTPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sqrtps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3956,7 +4625,10 @@ void __bea_callspec__ subps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepnePrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2qword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "subsd");
+        (*pMyDisasm).Instruction.MnemonicId = I_SUBSD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "subsd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3966,7 +4638,10 @@ void __bea_callspec__ subps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.RepPrefix = MandatoryPrefix;
         GV.MemDecoration = Arg2dword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "subss");
+        (*pMyDisasm).Instruction.MnemonicId = I_SUBSS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "subss");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3977,7 +4652,10 @@ void __bea_callspec__ subps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "subpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_SUBPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "subpd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3985,7 +4663,10 @@ void __bea_callspec__ subps_VW(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "subps");
+        (*pMyDisasm).Instruction.MnemonicId = I_SUBPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "subps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4004,7 +4685,10 @@ void __bea_callspec__ ucomiss_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+COMPARISON_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "ucomisd");
+        (*pMyDisasm).Instruction.MnemonicId = I_UCOMISD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "ucomisd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4012,7 +4696,10 @@ void __bea_callspec__ ucomiss_VW(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+COMPARISON_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "ucomiss");
+        (*pMyDisasm).Instruction.MnemonicId = I_UCOMISS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "ucomiss");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4031,7 +4718,10 @@ void __bea_callspec__ unpckhps_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+SHUFFLE_UNPACK;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "unpckhpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_UNPCKHPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "unpckhpd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4039,7 +4729,10 @@ void __bea_callspec__ unpckhps_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+SHUFFLE_UNPACK;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "unpckhps");
+        (*pMyDisasm).Instruction.MnemonicId = I_UNPCKHPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "unpckhps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4057,7 +4750,10 @@ void __bea_callspec__ unpcklps_(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+SHUFFLE_UNPACK;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "unpcklpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_UNPCKLPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "unpcklpd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4065,7 +4761,10 @@ void __bea_callspec__ unpcklps_(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+SHUFFLE_UNPACK;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "unpcklps");
+        (*pMyDisasm).Instruction.MnemonicId = I_UNPCKLPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "unpcklps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4084,7 +4783,10 @@ void __bea_callspec__ xorps_VW(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+LOGICAL_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xorpd");
+        (*pMyDisasm).Instruction.MnemonicId = I_XORPD;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xorpd");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4092,7 +4794,10 @@ void __bea_callspec__ xorps_VW(PDISASM pMyDisasm)
     else {
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+LOGICAL_INSTRUCTION;
-        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xorps");
+        (*pMyDisasm).Instruction.MnemonicId = I_XORPS;
+        #ifndef BEA_LIGHT_DISASSEMBLY
+           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xorps");
+        #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;

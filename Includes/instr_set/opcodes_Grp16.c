@@ -27,7 +27,10 @@ void __bea_callspec__ G16_(PDISASM pMyDisasm)
         if (GV.MOD_!= 0x3) {
             GV.MemDecoration = Arg2byte;
             (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+CACHEABILITY_CONTROL;
-            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "prefetchNTA");
+            (*pMyDisasm).Instruction.MnemonicId = I_PREFETCHNTA;
+            #ifndef BEA_LIGHT_DISASSEMBLY
+               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "prefetchNTA");
+            #endif
         }
         else {
             FailDecode(pMyDisasm);
@@ -38,7 +41,10 @@ void __bea_callspec__ G16_(PDISASM pMyDisasm)
         if (GV.MOD_!= 0x3) {
             GV.MemDecoration = Arg2byte;
             (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+CACHEABILITY_CONTROL;
-            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "prefetchT0");
+            (*pMyDisasm).Instruction.MnemonicId = I_PREFETCHT0;
+            #ifndef BEA_LIGHT_DISASSEMBLY
+               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "prefetchT0");
+            #endif
         }
         else {
             FailDecode(pMyDisasm);
@@ -50,7 +56,10 @@ void __bea_callspec__ G16_(PDISASM pMyDisasm)
         if (GV.MOD_!= 0x3) {
             GV.MemDecoration = Arg2byte;
             (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+CACHEABILITY_CONTROL;
-            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "prefetchT1");
+            (*pMyDisasm).Instruction.MnemonicId = I_PREFETCHT1;
+            #ifndef BEA_LIGHT_DISASSEMBLY
+               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "prefetchT1");
+            #endif
         }
         else {
             FailDecode(pMyDisasm);
@@ -62,7 +71,10 @@ void __bea_callspec__ G16_(PDISASM pMyDisasm)
         if (GV.MOD_!= 0x3) {
             GV.MemDecoration = Arg2byte;
             (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+CACHEABILITY_CONTROL;
-            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "prefetchT2");
+            (*pMyDisasm).Instruction.MnemonicId = I_PREFETCHT2;
+            #ifndef BEA_LIGHT_DISASSEMBLY
+               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "prefetchT2");
+            #endif
         }
         else {
             FailDecode(pMyDisasm);

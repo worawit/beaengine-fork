@@ -34,7 +34,10 @@ void __bea_callspec__ G12_(PDISASM pMyDisasm)
             (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
             GV.SSE_ = 0;
             if (GV.MOD_== 0x3) {
-                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psrlw");
+                (*pMyDisasm).Instruction.MnemonicId = I_PSRLW;
+                #ifndef BEA_LIGHT_DISASSEMBLY
+                   (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psrlw");
+                #endif
             }
             else {
                 FailDecode(pMyDisasm);
@@ -59,7 +62,10 @@ void __bea_callspec__ G12_(PDISASM pMyDisasm)
             (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
             GV.MMX_ = 0;
             if (GV.MOD_== 0x3) {
-                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psrlw");
+                (*pMyDisasm).Instruction.MnemonicId = I_PSRLW;
+                #ifndef BEA_LIGHT_DISASSEMBLY
+                   (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psrlw");
+                #endif
             }
             else {
                 FailDecode(pMyDisasm);
@@ -86,7 +92,10 @@ void __bea_callspec__ G12_(PDISASM pMyDisasm)
             (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
             GV.SSE_ = 0;
             if (GV.MOD_== 0x3) {
-                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psraw");
+                (*pMyDisasm).Instruction.MnemonicId = I_PSRAW;
+                #ifndef BEA_LIGHT_DISASSEMBLY
+                   (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psraw");
+                #endif
             }
             else {
                 FailDecode(pMyDisasm);
@@ -111,7 +120,10 @@ void __bea_callspec__ G12_(PDISASM pMyDisasm)
             (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
             GV.MMX_ = 0;
             if (GV.MOD_== 0x3) {
-                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psraw");
+                (*pMyDisasm).Instruction.MnemonicId = I_PSRAW;
+                #ifndef BEA_LIGHT_DISASSEMBLY
+                   (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psraw");
+                #endif
             }
             else {
                 FailDecode(pMyDisasm);
@@ -139,7 +151,10 @@ void __bea_callspec__ G12_(PDISASM pMyDisasm)
             (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
             GV.SSE_ = 0;
             if (GV.MOD_== 0x3) {
-                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psllw");
+                (*pMyDisasm).Instruction.MnemonicId = I_PSLLW;
+                #ifndef BEA_LIGHT_DISASSEMBLY
+                   (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psllw");
+                #endif
             }
             else {
                 FailDecode(pMyDisasm);
@@ -164,7 +179,10 @@ void __bea_callspec__ G12_(PDISASM pMyDisasm)
             (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
             GV.MMX_ = 0;
             if (GV.MOD_== 0x3) {
-                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psllw");
+                (*pMyDisasm).Instruction.MnemonicId = I_PSLLW;
+                #ifndef BEA_LIGHT_DISASSEMBLY
+                   (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psllw");
+                #endif
             }
             else {
                 FailDecode(pMyDisasm);
