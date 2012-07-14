@@ -57,6 +57,7 @@ void __bea_callspec__ aesenc(PDISASM pMyDisasm)
         #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 0;
     }
     else {
@@ -81,6 +82,7 @@ void __bea_callspec__ aesenclast(PDISASM pMyDisasm)
         #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 0;
     }
     else {
@@ -105,6 +107,7 @@ void __bea_callspec__ aesdec(PDISASM pMyDisasm)
         #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 0;
     }
     else {
@@ -129,6 +132,7 @@ void __bea_callspec__ aesdeclast(PDISASM pMyDisasm)
         #endif
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 0;
     }
     else {
