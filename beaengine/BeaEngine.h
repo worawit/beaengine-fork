@@ -980,12 +980,17 @@ enum MNEMONIC_ENUM { MNEMONIC_MAP_DEF };
 #undef MNEMONIC_DEF
 
 #ifdef __cplusplus
-extern "C"
+extern "C" {
 #endif
 
 BEA_API int __bea_callspec__ Disasm (LPDISASM pDisAsm);
 BEA_API const__ char* __bea_callspec__ BeaEngineVersion (void);
 BEA_API const__ char* __bea_callspec__ BeaEngineRevision (void);
+
+#ifdef __cplusplus
+}
+#endif
+
 #if  defined(__cplusplus) && defined(__BORLANDC__)
 };
 using namespace BeaEngine;
