@@ -2454,6 +2454,7 @@ void __bea_callspec__ sbb_eAX_Iv(PDISASM pMyDisasm)
 void __bea_callspec__ seto_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
+    (*pMyDisasm).Instruction.BranchType = CC_O;
     (*pMyDisasm).Instruction.MnemonicId = I_SETO;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "seto");
@@ -2472,6 +2473,7 @@ void __bea_callspec__ seto_(PDISASM pMyDisasm)
 void __bea_callspec__ setno_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
+    (*pMyDisasm).Instruction.BranchType = CC_NO;
     (*pMyDisasm).Instruction.MnemonicId = I_SETNO;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "setno");
@@ -2490,6 +2492,7 @@ void __bea_callspec__ setno_(PDISASM pMyDisasm)
 void __bea_callspec__ setb_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
+    (*pMyDisasm).Instruction.BranchType = CC_B;
     (*pMyDisasm).Instruction.MnemonicId = I_SETB;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "setb");
@@ -2508,6 +2511,7 @@ void __bea_callspec__ setb_(PDISASM pMyDisasm)
 void __bea_callspec__ setae_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
+    (*pMyDisasm).Instruction.BranchType = CC_AE;
     (*pMyDisasm).Instruction.MnemonicId = I_SETAE;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "setae");
@@ -2526,6 +2530,7 @@ void __bea_callspec__ setae_(PDISASM pMyDisasm)
 void __bea_callspec__ sete_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
+    (*pMyDisasm).Instruction.BranchType = CC_E;
     (*pMyDisasm).Instruction.MnemonicId = I_SETE;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sete");
@@ -2544,6 +2549,7 @@ void __bea_callspec__ sete_(PDISASM pMyDisasm)
 void __bea_callspec__ setne_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
+    (*pMyDisasm).Instruction.BranchType = CC_NE;
     (*pMyDisasm).Instruction.MnemonicId = I_SETNE;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "setne");
@@ -2562,6 +2568,7 @@ void __bea_callspec__ setne_(PDISASM pMyDisasm)
 void __bea_callspec__ setbe_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
+    (*pMyDisasm).Instruction.BranchType = CC_BE;
     (*pMyDisasm).Instruction.MnemonicId = I_SETBE;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "setbe");
@@ -2580,6 +2587,7 @@ void __bea_callspec__ setbe_(PDISASM pMyDisasm)
 void __bea_callspec__ seta_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
+    (*pMyDisasm).Instruction.BranchType = CC_A;
     (*pMyDisasm).Instruction.MnemonicId = I_SETA;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "seta");
@@ -2598,6 +2606,7 @@ void __bea_callspec__ seta_(PDISASM pMyDisasm)
 void __bea_callspec__ sets_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
+    (*pMyDisasm).Instruction.BranchType = CC_S;
     (*pMyDisasm).Instruction.MnemonicId = I_SETS;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sets");
@@ -2616,6 +2625,7 @@ void __bea_callspec__ sets_(PDISASM pMyDisasm)
 void __bea_callspec__ setns_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
+    (*pMyDisasm).Instruction.BranchType = CC_NS;
     (*pMyDisasm).Instruction.MnemonicId = I_SETNS;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "setns");
@@ -2634,6 +2644,7 @@ void __bea_callspec__ setns_(PDISASM pMyDisasm)
 void __bea_callspec__ setp_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
+    (*pMyDisasm).Instruction.BranchType = CC_P;
     (*pMyDisasm).Instruction.MnemonicId = I_SETP;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "setp");
@@ -2652,6 +2663,7 @@ void __bea_callspec__ setp_(PDISASM pMyDisasm)
 void __bea_callspec__ setnp_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
+    (*pMyDisasm).Instruction.BranchType = CC_NP;
     (*pMyDisasm).Instruction.MnemonicId = I_SETNP;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "setnp");
@@ -2670,6 +2682,7 @@ void __bea_callspec__ setnp_(PDISASM pMyDisasm)
 void __bea_callspec__ setge_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
+    (*pMyDisasm).Instruction.BranchType = CC_GE;
     (*pMyDisasm).Instruction.MnemonicId = I_SETGE;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "setge");
@@ -2688,6 +2701,7 @@ void __bea_callspec__ setge_(PDISASM pMyDisasm)
 void __bea_callspec__ setl_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
+    (*pMyDisasm).Instruction.BranchType = CC_L;
     (*pMyDisasm).Instruction.MnemonicId = I_SETL;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "setl");
@@ -2706,6 +2720,7 @@ void __bea_callspec__ setl_(PDISASM pMyDisasm)
 void __bea_callspec__ setle_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
+    (*pMyDisasm).Instruction.BranchType = CC_LE;
     (*pMyDisasm).Instruction.MnemonicId = I_SETLE;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "setle");
@@ -2724,6 +2739,7 @@ void __bea_callspec__ setle_(PDISASM pMyDisasm)
 void __bea_callspec__ setg_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+BIT_UInt8;
+    (*pMyDisasm).Instruction.BranchType = CC_G;
     (*pMyDisasm).Instruction.MnemonicId = I_SETG;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "setg");

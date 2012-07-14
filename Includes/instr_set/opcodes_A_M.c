@@ -1329,6 +1329,7 @@ void __bea_callspec__ cmc_(PDISASM pMyDisasm)
 void __bea_callspec__ cmovo_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
+    (*pMyDisasm).Instruction.BranchType = CC_O;
     (*pMyDisasm).Instruction.MnemonicId = I_CMOVO;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovo");
@@ -1343,6 +1344,7 @@ void __bea_callspec__ cmovo_(PDISASM pMyDisasm)
 void __bea_callspec__ cmovno_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
+    (*pMyDisasm).Instruction.BranchType = CC_NO;
     (*pMyDisasm).Instruction.MnemonicId = I_CMOVNO;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovno");
@@ -1357,6 +1359,7 @@ void __bea_callspec__ cmovno_(PDISASM pMyDisasm)
 void __bea_callspec__ cmovb_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
+    (*pMyDisasm).Instruction.BranchType = CC_B;
     (*pMyDisasm).Instruction.MnemonicId = I_CMOVB;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovb");
@@ -1371,6 +1374,7 @@ void __bea_callspec__ cmovb_(PDISASM pMyDisasm)
 void __bea_callspec__ cmovae_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
+    (*pMyDisasm).Instruction.BranchType = CC_AE;
     (*pMyDisasm).Instruction.MnemonicId = I_CMOVAE;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovae");
@@ -1385,6 +1389,7 @@ void __bea_callspec__ cmovae_(PDISASM pMyDisasm)
 void __bea_callspec__ cmove_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
+    (*pMyDisasm).Instruction.BranchType = CC_E;
     (*pMyDisasm).Instruction.MnemonicId = I_CMOVE;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmove");
@@ -1399,6 +1404,7 @@ void __bea_callspec__ cmove_(PDISASM pMyDisasm)
 void __bea_callspec__ cmovne_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
+    (*pMyDisasm).Instruction.BranchType = CC_NE;
     (*pMyDisasm).Instruction.MnemonicId = I_CMOVNE;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovne");
@@ -1413,6 +1419,7 @@ void __bea_callspec__ cmovne_(PDISASM pMyDisasm)
 void __bea_callspec__ cmovbe_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
+    (*pMyDisasm).Instruction.BranchType = CC_BE;
     (*pMyDisasm).Instruction.MnemonicId = I_CMOVBE;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovbe");
@@ -1427,6 +1434,7 @@ void __bea_callspec__ cmovbe_(PDISASM pMyDisasm)
 void __bea_callspec__ cmova_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
+    (*pMyDisasm).Instruction.BranchType = CC_A;
     (*pMyDisasm).Instruction.MnemonicId = I_CMOVA;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmova");
@@ -1441,6 +1449,7 @@ void __bea_callspec__ cmova_(PDISASM pMyDisasm)
 void __bea_callspec__ cmovs_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
+    (*pMyDisasm).Instruction.BranchType = CC_S;
     (*pMyDisasm).Instruction.MnemonicId = I_CMOVS;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovs");
@@ -1455,6 +1464,7 @@ void __bea_callspec__ cmovs_(PDISASM pMyDisasm)
 void __bea_callspec__ cmovns_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
+    (*pMyDisasm).Instruction.BranchType = CC_NS;
     (*pMyDisasm).Instruction.MnemonicId = I_CMOVNS;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovns");
@@ -1469,6 +1479,7 @@ void __bea_callspec__ cmovns_(PDISASM pMyDisasm)
 void __bea_callspec__ cmovp_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
+    (*pMyDisasm).Instruction.BranchType = CC_P;
     (*pMyDisasm).Instruction.MnemonicId = I_CMOVP;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovp");
@@ -1483,6 +1494,7 @@ void __bea_callspec__ cmovp_(PDISASM pMyDisasm)
 void __bea_callspec__ cmovnp_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
+    (*pMyDisasm).Instruction.BranchType = CC_NP;
     (*pMyDisasm).Instruction.MnemonicId = I_CMOVNP;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovnp");
@@ -1497,6 +1509,7 @@ void __bea_callspec__ cmovnp_(PDISASM pMyDisasm)
 void __bea_callspec__ cmovl_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
+    (*pMyDisasm).Instruction.BranchType = CC_L;
     (*pMyDisasm).Instruction.MnemonicId = I_CMOVL;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovl");
@@ -1511,6 +1524,7 @@ void __bea_callspec__ cmovl_(PDISASM pMyDisasm)
 void __bea_callspec__ cmovge_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
+    (*pMyDisasm).Instruction.BranchType = CC_GE;
     (*pMyDisasm).Instruction.MnemonicId = I_CMOVGE;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovge");
@@ -1525,6 +1539,7 @@ void __bea_callspec__ cmovge_(PDISASM pMyDisasm)
 void __bea_callspec__ cmovle_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
+    (*pMyDisasm).Instruction.BranchType = CC_LE;
     (*pMyDisasm).Instruction.MnemonicId = I_CMOVLE;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovle");
@@ -1539,6 +1554,7 @@ void __bea_callspec__ cmovle_(PDISASM pMyDisasm)
 void __bea_callspec__ cmovg_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
+    (*pMyDisasm).Instruction.BranchType = CC_G;
     (*pMyDisasm).Instruction.MnemonicId = I_CMOVG;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovg");
@@ -5241,7 +5257,7 @@ void __bea_callspec__ loop_(PDISASM pMyDisasm)
     Int32 MyNumber;
     UInt64 MyAddress;
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+CONTROL_TRANSFER;
-    (*pMyDisasm).Instruction.BranchType = JE;
+    (*pMyDisasm).Instruction.BranchType = LoopType;
     (*pMyDisasm).Instruction.MnemonicId = I_LOOP;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "loop");
@@ -5293,7 +5309,7 @@ void __bea_callspec__ loopne_(PDISASM pMyDisasm)
     Int32 MyNumber;
     UInt64 MyAddress;
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+CONTROL_TRANSFER;
-    (*pMyDisasm).Instruction.BranchType = JNE;
+    (*pMyDisasm).Instruction.BranchType = LoopType|CC_NE;
     (*pMyDisasm).Instruction.MnemonicId = I_LOOPNE;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "loopne");
@@ -5345,7 +5361,7 @@ void __bea_callspec__ loope_(PDISASM pMyDisasm)
     Int32 MyNumber;
     UInt64 MyAddress;
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+CONTROL_TRANSFER;
-    (*pMyDisasm).Instruction.BranchType = JE;
+    (*pMyDisasm).Instruction.BranchType = LoopType|CC_E;
     (*pMyDisasm).Instruction.MnemonicId = I_LOOPE;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "loope");
