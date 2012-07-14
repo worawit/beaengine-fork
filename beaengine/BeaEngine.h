@@ -1002,13 +1002,12 @@ enum SPECIAL_INFO
 enum MNEMONIC_ENUM { MNEMONIC_MAP_DEF };
 #undef MNEMONIC_DEF
 #define MNEMONIC_DEF(id, name) name
-//const char *MNEMONICS[] = { MNEMONIC_MAP_DEF };
-#undef MNEMONIC_DEF
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+BEA_API const__ char *MNEMONICS[];
 BEA_API int __bea_callspec__ Disasm (LPDISASM pDisAsm);
 BEA_API const__ char* __bea_callspec__ BeaEngineVersion (void);
 BEA_API const__ char* __bea_callspec__ BeaEngineRevision (void);
