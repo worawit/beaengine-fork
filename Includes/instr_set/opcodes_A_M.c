@@ -1335,7 +1335,7 @@ void __bea_callspec__ cmovo_(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovo");
     #endif
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm, EFLAGS_CMOVcc);
+    FillFlags(pMyDisasm, EFLAGS_ccO);
 }
 
 /* =======================================
@@ -1350,7 +1350,7 @@ void __bea_callspec__ cmovno_(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovno");
     #endif
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm, EFLAGS_CMOVcc);
+    FillFlags(pMyDisasm, EFLAGS_ccNO);
 }
 
 /* =======================================
@@ -1365,7 +1365,7 @@ void __bea_callspec__ cmovb_(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovb");
     #endif
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm, EFLAGS_CMOVcc);
+    FillFlags(pMyDisasm, EFLAGS_ccB);
 }
 
 /* =======================================
@@ -1380,7 +1380,7 @@ void __bea_callspec__ cmovae_(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovae");
     #endif
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm, EFLAGS_CMOVcc);
+    FillFlags(pMyDisasm, EFLAGS_ccAE);
 }
 
 /* =======================================
@@ -1395,7 +1395,7 @@ void __bea_callspec__ cmove_(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmove");
     #endif
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm, EFLAGS_CMOVcc);
+    FillFlags(pMyDisasm, EFLAGS_ccE);
 }
 
 /* =======================================
@@ -1410,7 +1410,7 @@ void __bea_callspec__ cmovne_(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovne");
     #endif
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm, EFLAGS_CMOVcc);
+    FillFlags(pMyDisasm, EFLAGS_ccNE);
 }
 
 /* =======================================
@@ -1425,7 +1425,7 @@ void __bea_callspec__ cmovbe_(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovbe");
     #endif
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm, EFLAGS_CMOVcc);
+    FillFlags(pMyDisasm, EFLAGS_ccBE);
 }
 
 /* =======================================
@@ -1440,7 +1440,7 @@ void __bea_callspec__ cmova_(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmova");
     #endif
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm, EFLAGS_CMOVcc);
+    FillFlags(pMyDisasm, EFLAGS_ccA);
 }
 
 /* =======================================
@@ -1455,7 +1455,7 @@ void __bea_callspec__ cmovs_(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovs");
     #endif
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm, EFLAGS_CMOVcc);
+    FillFlags(pMyDisasm, EFLAGS_ccS);
 }
 
 /* =======================================
@@ -1470,7 +1470,7 @@ void __bea_callspec__ cmovns_(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovns");
     #endif
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm, EFLAGS_CMOVcc);
+    FillFlags(pMyDisasm, EFLAGS_ccNS);
 }
 
 /* =======================================
@@ -1485,7 +1485,7 @@ void __bea_callspec__ cmovp_(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovp");
     #endif
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm, EFLAGS_CMOVcc);
+    FillFlags(pMyDisasm, EFLAGS_ccP);
 }
 
 /* =======================================
@@ -1500,7 +1500,7 @@ void __bea_callspec__ cmovnp_(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovnp");
     #endif
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm, EFLAGS_CMOVcc);
+    FillFlags(pMyDisasm, EFLAGS_ccNP);
 }
 
 /* =======================================
@@ -1515,7 +1515,7 @@ void __bea_callspec__ cmovl_(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovl");
     #endif
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm, EFLAGS_CMOVcc);
+    FillFlags(pMyDisasm, EFLAGS_ccL);
 }
 
 /* =======================================
@@ -1530,7 +1530,7 @@ void __bea_callspec__ cmovge_(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovge");
     #endif
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm, EFLAGS_CMOVcc);
+    FillFlags(pMyDisasm, EFLAGS_ccGE);
 }
 
 /* =======================================
@@ -1545,7 +1545,7 @@ void __bea_callspec__ cmovle_(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovle");
     #endif
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm, EFLAGS_CMOVcc);
+    FillFlags(pMyDisasm, EFLAGS_ccLE);
 }
 
 /* =======================================
@@ -1560,7 +1560,7 @@ void __bea_callspec__ cmovg_(PDISASM pMyDisasm)
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmovg");
     #endif
     GvEv(pMyDisasm);
-    FillFlags(pMyDisasm, EFLAGS_CMOVcc);
+    FillFlags(pMyDisasm, EFLAGS_ccG);
 }
 
 /* =======================================
@@ -3211,7 +3211,7 @@ void __bea_callspec__ jo_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.AddrValue = MyAddress;
     GV.EIP_+=2;
-    FillFlags(pMyDisasm, EFLAGS_Jcc);
+    FillFlags(pMyDisasm, EFLAGS_ccO);
 }
 
 /* =======================================
@@ -3254,7 +3254,7 @@ void __bea_callspec__ jno_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.AddrValue = MyAddress;
     GV.EIP_+=2;
-    FillFlags(pMyDisasm, EFLAGS_Jcc);
+    FillFlags(pMyDisasm, EFLAGS_ccNO);
 }
 
 /* =======================================
@@ -3297,7 +3297,7 @@ void __bea_callspec__ jb_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.AddrValue = MyAddress;
     GV.EIP_+=2;
-    FillFlags(pMyDisasm, EFLAGS_Jcc);
+    FillFlags(pMyDisasm, EFLAGS_ccB);
 }
 
 /* =======================================
@@ -3340,7 +3340,7 @@ void __bea_callspec__ jae_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.AddrValue = MyAddress;
     GV.EIP_+=2;
-    FillFlags(pMyDisasm, EFLAGS_Jcc);
+    FillFlags(pMyDisasm, EFLAGS_ccAE);
 }
 /* =======================================
  *      74h
@@ -3382,7 +3382,7 @@ void __bea_callspec__ je_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.AddrValue = MyAddress;
     GV.EIP_+=2;
-    FillFlags(pMyDisasm, EFLAGS_Jcc);
+    FillFlags(pMyDisasm, EFLAGS_ccE);
 }
 
 /* =======================================
@@ -3425,7 +3425,7 @@ void __bea_callspec__ jne_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.AddrValue = MyAddress;
     GV.EIP_+=2;
-    FillFlags(pMyDisasm, EFLAGS_Jcc);
+    FillFlags(pMyDisasm, EFLAGS_ccNE);
 }
 
 /* =======================================
@@ -3468,7 +3468,7 @@ void __bea_callspec__ jbe_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.AddrValue = MyAddress;
     GV.EIP_+=2;
-    FillFlags(pMyDisasm, EFLAGS_Jcc);
+    FillFlags(pMyDisasm, EFLAGS_ccBE);
 }
 
 /* =======================================
@@ -3511,7 +3511,7 @@ void __bea_callspec__ ja_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.AddrValue = MyAddress;
     GV.EIP_+=2;
-    FillFlags(pMyDisasm, EFLAGS_Jcc);
+    FillFlags(pMyDisasm, EFLAGS_ccA);
 }
 
 /* =======================================
@@ -3554,7 +3554,7 @@ void __bea_callspec__ js_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.AddrValue = MyAddress;
     GV.EIP_+=2;
-    FillFlags(pMyDisasm, EFLAGS_Jcc);
+    FillFlags(pMyDisasm, EFLAGS_ccS);
 }
 
 /* =======================================
@@ -3597,7 +3597,7 @@ void __bea_callspec__ jns_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.AddrValue = MyAddress;
     GV.EIP_+=2;
-    FillFlags(pMyDisasm, EFLAGS_Jcc);
+    FillFlags(pMyDisasm, EFLAGS_ccNS);
 }
 
 /* =======================================
@@ -3640,7 +3640,7 @@ void __bea_callspec__ jp_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.AddrValue = MyAddress;
     GV.EIP_+=2;
-    FillFlags(pMyDisasm, EFLAGS_Jcc);
+    FillFlags(pMyDisasm, EFLAGS_ccP);
 }
 
 /* =======================================
@@ -3683,7 +3683,7 @@ void __bea_callspec__ jnp_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.AddrValue = MyAddress;
     GV.EIP_+=2;
-    FillFlags(pMyDisasm, EFLAGS_Jcc);
+    FillFlags(pMyDisasm, EFLAGS_ccNP);
 }
 
 /* =======================================
@@ -3726,7 +3726,7 @@ void __bea_callspec__ jl_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.AddrValue = MyAddress;
     GV.EIP_+=2;
-    FillFlags(pMyDisasm, EFLAGS_Jcc);
+    FillFlags(pMyDisasm, EFLAGS_ccL);
 }
 
 /* =======================================
@@ -3769,7 +3769,7 @@ void __bea_callspec__ jge_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.AddrValue = MyAddress;
     GV.EIP_+=2;
-    FillFlags(pMyDisasm, EFLAGS_Jcc);
+    FillFlags(pMyDisasm, EFLAGS_ccGE);
 }
 
 /* =======================================
@@ -3812,7 +3812,7 @@ void __bea_callspec__ jle_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.AddrValue = MyAddress;
     GV.EIP_+=2;
-    FillFlags(pMyDisasm, EFLAGS_Jcc);
+    FillFlags(pMyDisasm, EFLAGS_ccLE);
 }
 
 /* =======================================
@@ -3855,7 +3855,7 @@ void __bea_callspec__ jg_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.AddrValue = MyAddress;
     GV.EIP_+=2;
-    FillFlags(pMyDisasm, EFLAGS_Jcc);
+    FillFlags(pMyDisasm, EFLAGS_ccG);
 }
 
 
@@ -3899,7 +3899,7 @@ void __bea_callspec__ jo_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=5;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccO);
     }
     else {
         if (!Security(3, pMyDisasm)) return;
@@ -3914,7 +3914,7 @@ void __bea_callspec__ jo_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=3;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccO);
     }
 }
 
@@ -3959,7 +3959,7 @@ void __bea_callspec__ jno_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=5;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccNO);
     }
     else {
         if (!Security(3, pMyDisasm)) return;
@@ -3974,7 +3974,7 @@ void __bea_callspec__ jno_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=3;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccNO);
     }
 }
 
@@ -4018,7 +4018,7 @@ void __bea_callspec__ jb_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=5;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccB);
     }
     else {
         if (!Security(3, pMyDisasm)) return;
@@ -4032,7 +4032,7 @@ void __bea_callspec__ jb_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=3;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccB);
     }
 }
 
@@ -4076,7 +4076,7 @@ void __bea_callspec__ jae_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=5;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccAE);
     }
     else {
         if (!Security(3, pMyDisasm)) return;
@@ -4090,7 +4090,7 @@ void __bea_callspec__ jae_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=3;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccAE);
     }
 }
 
@@ -4134,7 +4134,7 @@ void __bea_callspec__ je_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=5;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccE);
     }
     else {
         if (!Security(3, pMyDisasm)) return;
@@ -4148,7 +4148,7 @@ void __bea_callspec__ je_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=3;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccE);
     }
 }
 
@@ -4192,7 +4192,7 @@ void __bea_callspec__ jne_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=5;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccNE);
     }
     else {
         if (!Security(3, pMyDisasm)) return;
@@ -4206,7 +4206,7 @@ void __bea_callspec__ jne_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=3;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccNE);
     }
 }
 /* =======================================
@@ -4249,7 +4249,7 @@ void __bea_callspec__ jbe_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=5;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccBE);
     }
     else {
         if (!Security(3, pMyDisasm)) return;
@@ -4263,7 +4263,7 @@ void __bea_callspec__ jbe_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=3;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccBE);
     }
 }
 
@@ -4308,7 +4308,7 @@ void __bea_callspec__ ja_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=5;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccA);
     }
     else {
         if (!Security(3, pMyDisasm)) return;
@@ -4322,7 +4322,7 @@ void __bea_callspec__ ja_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=3;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccA);
     }
 }
 
@@ -4366,7 +4366,7 @@ void __bea_callspec__ js_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=5;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccS);
     }
     else {
         if (!Security(3, pMyDisasm)) return;
@@ -4380,7 +4380,7 @@ void __bea_callspec__ js_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=3;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccS);
     }
 }
 
@@ -4424,7 +4424,7 @@ void __bea_callspec__ jns_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=5;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccNS);
     }
     else {
         if (!Security(3, pMyDisasm)) return;
@@ -4438,7 +4438,7 @@ void __bea_callspec__ jns_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=3;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccNS);
     }
 }
 
@@ -4482,7 +4482,7 @@ void __bea_callspec__ jp_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=5;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccP);
     }
     else {
         if (!Security(3, pMyDisasm)) return;
@@ -4496,7 +4496,7 @@ void __bea_callspec__ jp_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=3;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccP);
     }
 }
 
@@ -4540,7 +4540,7 @@ void __bea_callspec__ jnp_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=5;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccNP);
     }
     else {
         if (!Security(3, pMyDisasm)) return;
@@ -4554,7 +4554,7 @@ void __bea_callspec__ jnp_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=3;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccNP);
     }
 }
 
@@ -4598,7 +4598,7 @@ void __bea_callspec__ jl_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=5;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccL);
     }
     else {
         if (!Security(3, pMyDisasm)) return;
@@ -4612,7 +4612,7 @@ void __bea_callspec__ jl_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=3;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccL);
     }
 }
 
@@ -4656,7 +4656,7 @@ void __bea_callspec__ jge_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=5;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccGE);
     }
     else {
         if (!Security(3, pMyDisasm)) return;
@@ -4670,7 +4670,7 @@ void __bea_callspec__ jge_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=3;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccGE);
     }
 }
 
@@ -4714,7 +4714,7 @@ void __bea_callspec__ jle_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=5;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccLE);
     }
     else {
         if (!Security(3, pMyDisasm)) return;
@@ -4728,7 +4728,7 @@ void __bea_callspec__ jle_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=3;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccLE);
     }
 }
 
@@ -4772,7 +4772,7 @@ void __bea_callspec__ jg_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=5;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccG);
     }
     else {
         if (!Security(3, pMyDisasm)) return;
@@ -4786,7 +4786,7 @@ void __bea_callspec__ jg_near(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=3;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_ccG);
     }
 }
 
@@ -4844,7 +4844,7 @@ void __bea_callspec__ jecxz_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=2;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_JCXZ);
     }
     else {
         if (!Security(3, pMyDisasm)) return;
@@ -4858,7 +4858,7 @@ void __bea_callspec__ jecxz_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=2;
-        FillFlags(pMyDisasm, EFLAGS_Jcc);
+        FillFlags(pMyDisasm, EFLAGS_JCXZ);
     }
 }
 
@@ -4945,7 +4945,7 @@ void __bea_callspec__ jmp_short(PDISASM pMyDisasm)
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.AddrValue = MyAddress;
     GV.EIP_+=2;
-    FillFlags(pMyDisasm, EFLAGS_Jcc);
+    FillFlags(pMyDisasm, EFLAGS_JMP);
 }
 
 
@@ -5334,7 +5334,7 @@ void __bea_callspec__ loopne_(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=2;
-        FillFlags(pMyDisasm, EFLAGS_LOOPcc);
+        FillFlags(pMyDisasm, EFLAGS_ccNE);
     }
     else {
         MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+1));
@@ -5349,7 +5349,7 @@ void __bea_callspec__ loopne_(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=2;
-        FillFlags(pMyDisasm, EFLAGS_LOOPcc);
+        FillFlags(pMyDisasm, EFLAGS_ccNE);
     }
 }
 
@@ -5386,7 +5386,7 @@ void __bea_callspec__ loope_(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=2;
-        FillFlags(pMyDisasm, EFLAGS_LOOPcc);
+        FillFlags(pMyDisasm, EFLAGS_ccE);
     }
     else {
         MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+1));
@@ -5401,7 +5401,7 @@ void __bea_callspec__ loope_(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
         GV.EIP_+=2;
-        FillFlags(pMyDisasm, EFLAGS_LOOPcc);
+        FillFlags(pMyDisasm, EFLAGS_ccE);
     }
 }
 

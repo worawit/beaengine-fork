@@ -832,6 +832,7 @@ void __bea_callspec__ DA_(PDISASM pMyDisasm)
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fcmovb");
                 #endif
+                FillFlags(pMyDisasm, EFLAGS_ccB);
             }
             else {
                 (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+DATA_TRANSFER;
@@ -840,6 +841,7 @@ void __bea_callspec__ DA_(PDISASM pMyDisasm)
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fcmove");
                 #endif
+                FillFlags(pMyDisasm, EFLAGS_ccE);
             }
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) strcpy ((*pMyDisasm).Argument1.ArgMnemonic, (*pRegistersFPU)[0]);
@@ -860,6 +862,7 @@ void __bea_callspec__ DA_(PDISASM pMyDisasm)
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fcmovbe");
                 #endif
+                FillFlags(pMyDisasm, EFLAGS_ccBE);
             }
             else {
                 (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+DATA_TRANSFER;
@@ -868,6 +871,7 @@ void __bea_callspec__ DA_(PDISASM pMyDisasm)
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fcmovu");
                 #endif
+                FillFlags(pMyDisasm, EFLAGS_ccP);
             }
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) strcpy ((*pMyDisasm).Argument1.ArgMnemonic, (*pRegistersFPU)[0]);
@@ -998,6 +1002,7 @@ void __bea_callspec__ DB_(PDISASM pMyDisasm)
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fcmovnb");
                 #endif
+                FillFlags(pMyDisasm, EFLAGS_ccAE);
             }
             else {
                 (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+ARITHMETIC_INSTRUCTION;
@@ -1006,6 +1011,7 @@ void __bea_callspec__ DB_(PDISASM pMyDisasm)
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fcmovne");
                 #endif
+                FillFlags(pMyDisasm, EFLAGS_ccNE);
             }
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) strcpy ((*pMyDisasm).Argument1.ArgMnemonic, (*pRegistersFPU)[0]);
@@ -1026,6 +1032,7 @@ void __bea_callspec__ DB_(PDISASM pMyDisasm)
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fcmovnbe");
                 #endif
+                FillFlags(pMyDisasm, EFLAGS_ccA);
             }
             else {
                 (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+ARITHMETIC_INSTRUCTION;
@@ -1034,6 +1041,7 @@ void __bea_callspec__ DB_(PDISASM pMyDisasm)
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fcmovnu");
                 #endif
+                FillFlags(pMyDisasm, EFLAGS_ccNP);
             }
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) strcpy ((*pMyDisasm).Argument1.ArgMnemonic, (*pRegistersFPU)[0]);

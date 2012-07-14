@@ -57,15 +57,33 @@
     EFLAGS_DEF( EFLAGS_BSWAP,   {0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_BTEST,   {UN_, UN_, UN_, UN_, UN_, MO_, 0  , 0  , 0  , 0  , 0, 0} ), \
 
+/* ccXX - for conditional instructions
+ *        (use cc as lowercase to make sure it never get conficted)
+ */
 #define EFLAGS_MAP_DEF_C_D \
     EFLAGS_DEF( EFLAGS_CALL,    {0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_CBW,     {0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
+    EFLAGS_DEF( EFLAGS_ccE,     {0  , 0  , TE_, 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
+    EFLAGS_DEF( EFLAGS_ccNE,    {0  , 0  , TE_, 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
+    EFLAGS_DEF( EFLAGS_ccA,     {0  , 0  , TE_, 0  , 0  , TE_, 0  , 0  , 0  , 0  , 0, 0} ), \
+    EFLAGS_DEF( EFLAGS_ccAE,    {0  , 0  , 0  , 0  , 0  , TE_, 0  , 0  , 0  , 0  , 0, 0} ), \
+    EFLAGS_DEF( EFLAGS_ccB,     {0  , 0  , 0  , 0  , 0  , TE_, 0  , 0  , 0  , 0  , 0, 0} ), \
+    EFLAGS_DEF( EFLAGS_ccBE,    {0  , 0  , TE_, 0  , 0  , TE_, 0  , 0  , 0  , 0  , 0, 0} ), \
+    EFLAGS_DEF( EFLAGS_ccO,     {TE_, 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
+    EFLAGS_DEF( EFLAGS_ccNO,    {TE_, 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
+    EFLAGS_DEF( EFLAGS_ccS,     {0  , TE_, 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
+    EFLAGS_DEF( EFLAGS_ccNS,    {0  , TE_, 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
+    EFLAGS_DEF( EFLAGS_ccP,     {0  , 0  , 0  , 0  , TE_, 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
+    EFLAGS_DEF( EFLAGS_ccNP,    {0  , 0  , 0  , 0  , TE_, 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
+    EFLAGS_DEF( EFLAGS_ccG,     {TE_, TE_, TE_, 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
+    EFLAGS_DEF( EFLAGS_ccGE,    {TE_, TE_, 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
+    EFLAGS_DEF( EFLAGS_ccL,     {TE_, TE_, 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
+    EFLAGS_DEF( EFLAGS_ccLE,    {TE_, TE_, TE_, 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_CLC,     {0  , 0  , 0  , 0  , 0  , RE_, 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_CLD,     {0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , RE_, 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_CLI,     {0  , 0  , 0  , 0  , 0  , 0  , 0  , RE_, 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_CLTS,    {0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_CMC,     {0  , 0  , 0  , 0  , 0  , MO_, 0  , 0  , 0  , 0  , 0, 0} ), \
-    EFLAGS_DEF( EFLAGS_CMOVcc,  {TE_, TE_, TE_, 0  , TE_, TE_, 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_CMP,     {MO_, MO_, MO_, MO_, MO_, MO_, 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_CMPS,    {MO_, MO_, MO_, MO_, MO_, MO_, 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_CMPXCHG, {MO_, MO_, MO_, MO_, MO_, MO_, 0  , 0  , 0  , 0  , 0, 0} ), \
@@ -99,13 +117,12 @@
     EFLAGS_DEF( EFLAGS_UCOMSID, {RE_, RE_, MO_, RE_, MO_, MO_, 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_UCOMISS, {RE_, RE_, MO_, RE_, MO_, MO_, 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_IRET,    {PR_, PR_, PR_, PR_, PR_, PR_, PR_, PR_, PR_, TE_, 0, 0} ), \
-    EFLAGS_DEF( EFLAGS_Jcc,     {TE_, TE_, TE_, 0  , TE_, TE_, 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_JCXZ,    {0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_JMP,     {0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
     
 /* LFAR (Load Far Pointer) - LDS LES LSS LFS LGS
  * LxDT (Load Descriptor Table) - LGDT LIDT LLDT LMSW
- * LOOPC (Loop Condition) - LOOPE LOOPNE
+ * LOOPc (Loop Condition) - use ccXX
  * MOVCRDR - MOV control, debug, test
  */
 #define EFLAGS_MAP_DEF_L_N \
@@ -118,7 +135,6 @@
     EFLAGS_DEF( EFLAGS_LOCK,    {0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_LODS,    {0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , TE_, 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_LOOP,    {0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
-    EFLAGS_DEF( EFLAGS_LOOPcc,  {0  , 0  , TE_, 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_LSL,     {0  , 0  , MO_, 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_LTR,     {0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_MONITOR, {0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
@@ -163,6 +179,7 @@
  * SHIFT (Shift n bit) - SAL SAR SHL SHR
  * SxDT (Store Descriptor Table) - SGDT SIDT SLDT SMSW
  * SHIFTDP (Shift Double Precision) - SHLD SHRD
+ * SETcc - use ccXX
  * VERR (Verify Segment) - VERR VERW
  */
 #define EFLAGS_MAP_DEF_S_Z \
@@ -171,7 +188,6 @@
     EFLAGS_DEF( EFLAGS_SHIFT,   {0  , MO_, MO_, 0  , MO_, MO_, 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_SBB,     {MO_, MO_, MO_, MO_, MO_, MO_, 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_SCAS,    {MO_, MO_, MO_, MO_, MO_, MO_, 0  , 0  , 0  , 0  , 0, 0} ), \
-    EFLAGS_DEF( EFLAGS_SETcc,   {TE_, TE_, TE_, 0  , TE_, TE_, 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_SxDT,    {0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_SHIFTDP, {UN_, MO_, MO_, UN_, MO_, MO_, 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_STC,     {0  , 0  , 0  , 0  , 0  , SE_, 0  , 0  , 0  , 0  , 0, 0} ), \

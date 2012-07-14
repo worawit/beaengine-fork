@@ -2464,7 +2464,7 @@ void __bea_callspec__ seto_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm, EFLAGS_SETcc);
+    FillFlags(pMyDisasm, EFLAGS_ccO);
 }
 
 /* =======================================
@@ -2483,7 +2483,7 @@ void __bea_callspec__ setno_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm, EFLAGS_SETcc);
+    FillFlags(pMyDisasm, EFLAGS_ccNO);
 }
 
 /* =======================================
@@ -2502,7 +2502,7 @@ void __bea_callspec__ setb_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm, EFLAGS_SETcc);
+    FillFlags(pMyDisasm, EFLAGS_ccB);
 }
 
 /* =======================================
@@ -2521,7 +2521,7 @@ void __bea_callspec__ setae_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm, EFLAGS_SETcc);
+    FillFlags(pMyDisasm, EFLAGS_ccAE);
 }
 
 /* =======================================
@@ -2540,7 +2540,7 @@ void __bea_callspec__ sete_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm, EFLAGS_SETcc);
+    FillFlags(pMyDisasm, EFLAGS_ccE);
 }
 
 /* =======================================
@@ -2559,7 +2559,7 @@ void __bea_callspec__ setne_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm, EFLAGS_SETcc);
+    FillFlags(pMyDisasm, EFLAGS_ccNE);
 }
 
 /* =======================================
@@ -2578,7 +2578,7 @@ void __bea_callspec__ setbe_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm, EFLAGS_SETcc);
+    FillFlags(pMyDisasm, EFLAGS_ccBE);
 }
 
 /* =======================================
@@ -2597,7 +2597,7 @@ void __bea_callspec__ seta_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm, EFLAGS_SETcc);
+    FillFlags(pMyDisasm, EFLAGS_ccA);
 }
 
 /* =======================================
@@ -2616,7 +2616,7 @@ void __bea_callspec__ sets_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm, EFLAGS_SETcc);
+    FillFlags(pMyDisasm, EFLAGS_ccS);
 }
 
 /* =======================================
@@ -2635,7 +2635,7 @@ void __bea_callspec__ setns_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm, EFLAGS_SETcc);
+    FillFlags(pMyDisasm, EFLAGS_ccNS);
 }
 
 /* =======================================
@@ -2654,7 +2654,7 @@ void __bea_callspec__ setp_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm, EFLAGS_SETcc);
+    FillFlags(pMyDisasm, EFLAGS_ccP);
 }
 
 /* =======================================
@@ -2673,7 +2673,7 @@ void __bea_callspec__ setnp_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm, EFLAGS_SETcc);
+    FillFlags(pMyDisasm, EFLAGS_ccNP);
 }
 
 /* =======================================
@@ -2692,7 +2692,7 @@ void __bea_callspec__ setge_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm, EFLAGS_SETcc);
+    FillFlags(pMyDisasm, EFLAGS_ccGE);
 }
 
 /* =======================================
@@ -2711,7 +2711,7 @@ void __bea_callspec__ setl_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm, EFLAGS_SETcc);
+    FillFlags(pMyDisasm, EFLAGS_ccL);
 }
 
 /* =======================================
@@ -2730,7 +2730,7 @@ void __bea_callspec__ setle_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm, EFLAGS_SETcc);
+    FillFlags(pMyDisasm, EFLAGS_ccLE);
 }
 
 /* =======================================
@@ -2749,7 +2749,7 @@ void __bea_callspec__ setg_(PDISASM pMyDisasm)
     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
     GV.OperandSize = 32;
     GV.EIP_+= GV.DECALAGE_EIP+2;
-    FillFlags(pMyDisasm, EFLAGS_SETcc);
+    FillFlags(pMyDisasm, EFLAGS_ccG);
 }
 
 
