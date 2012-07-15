@@ -175,6 +175,10 @@ MnemonicId.
     // note: no JC in my modification
     if (disasm.Instruction.MnemonicId == I_JB)
         // do something
+    
+    // or use ConditionalType that work on LoopType too
+    if (disasm.Instruction.CondtionalType == CC_B)
+        // do something
 
 ### Register flags for condition instructions
 
