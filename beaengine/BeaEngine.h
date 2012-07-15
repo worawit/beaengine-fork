@@ -4,9 +4,9 @@
 namespace BeaEngine {
 #endif
 
-#include <beaengine/macros.h>
-#include <beaengine/export.h>
-#include <beaengine/basic_types.h>
+#include "macros.h"
+#include "export.h"
+#include "basic_types.h"
 
 #if !defined(BEA_ENGINE_STATIC)
 	#if defined(BUILD_BEA_ENGINE_DLL)

@@ -1,8 +1,6 @@
 
-INC = .
-
 CC = gcc
-CFLAGS = -I$(INC) -O3 -fPIC -shared
+CFLAGS = -O3 -fPIC -shared
 CFLAGS_SO = -fvisibility=hidden -DBUILD_BEA_ENGINE_DLL
 
 SRC = BeaEngine.c
