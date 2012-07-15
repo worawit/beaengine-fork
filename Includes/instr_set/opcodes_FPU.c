@@ -827,7 +827,7 @@ void __bea_callspec__ DA_(PDISASM pMyDisasm)
         if ((MyMODRM & 0xf0) == 0xc0) {
             if ((MyMODRM & 0x8) == 0) {
                 (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+DATA_TRANSFER;
-                (*pMyDisasm).Instruction.BranchType = CC_B;
+                (*pMyDisasm).Instruction.ConditionalType = CC_B;
                 (*pMyDisasm).Instruction.MnemonicId = I_FCMOVB;
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fcmovb");
@@ -836,7 +836,7 @@ void __bea_callspec__ DA_(PDISASM pMyDisasm)
             }
             else {
                 (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+DATA_TRANSFER;
-                (*pMyDisasm).Instruction.BranchType = CC_E;
+                (*pMyDisasm).Instruction.ConditionalType = CC_E;
                 (*pMyDisasm).Instruction.MnemonicId = I_FCMOVE;
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fcmove");
@@ -857,7 +857,7 @@ void __bea_callspec__ DA_(PDISASM pMyDisasm)
         else if ((MyMODRM & 0xf0) == 0xd0) {
             if ((MyMODRM & 0x8) == 0) {
                 (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+DATA_TRANSFER;
-                (*pMyDisasm).Instruction.BranchType = CC_BE;
+                (*pMyDisasm).Instruction.ConditionalType = CC_BE;
                 (*pMyDisasm).Instruction.MnemonicId = I_FCMOVBE;
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fcmovbe");
@@ -866,7 +866,7 @@ void __bea_callspec__ DA_(PDISASM pMyDisasm)
             }
             else {
                 (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+DATA_TRANSFER;
-                (*pMyDisasm).Instruction.BranchType = CC_P;
+                (*pMyDisasm).Instruction.ConditionalType = CC_P;
                 (*pMyDisasm).Instruction.MnemonicId = I_FCMOVU;
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fcmovu");
@@ -997,7 +997,7 @@ void __bea_callspec__ DB_(PDISASM pMyDisasm)
         if ((MyMODRM & 0xf0) == 0xc0) {
             if ((MyMODRM & 0x8) == 0) {
                 (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-                (*pMyDisasm).Instruction.BranchType = CC_AE;
+                (*pMyDisasm).Instruction.ConditionalType = CC_AE;
                 (*pMyDisasm).Instruction.MnemonicId = I_FCMOVNB;
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fcmovnb");
@@ -1006,7 +1006,7 @@ void __bea_callspec__ DB_(PDISASM pMyDisasm)
             }
             else {
                 (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-                (*pMyDisasm).Instruction.BranchType = CC_NE;
+                (*pMyDisasm).Instruction.ConditionalType = CC_NE;
                 (*pMyDisasm).Instruction.MnemonicId = I_FCMOVNE;
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fcmovne");
@@ -1027,7 +1027,7 @@ void __bea_callspec__ DB_(PDISASM pMyDisasm)
         else if ((MyMODRM & 0xf0) == 0xd0) {
             if ((MyMODRM & 0x8) == 0) {
                 (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-                (*pMyDisasm).Instruction.BranchType = CC_A;
+                (*pMyDisasm).Instruction.ConditionalType = CC_A;
                 (*pMyDisasm).Instruction.MnemonicId = I_FCMOVNBE;
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fcmovnbe");
@@ -1036,7 +1036,7 @@ void __bea_callspec__ DB_(PDISASM pMyDisasm)
             }
             else {
                 (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+ARITHMETIC_INSTRUCTION;
-                (*pMyDisasm).Instruction.BranchType = CC_NP;
+                (*pMyDisasm).Instruction.ConditionalType = CC_NP;
                 (*pMyDisasm).Instruction.MnemonicId = I_FCMOVNU;
                 #ifndef BEA_LIGHT_DISASSEMBLY
                    (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fcmovnu");

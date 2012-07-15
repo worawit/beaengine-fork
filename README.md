@@ -118,17 +118,12 @@ has only
 With this change, I re-designed the BranchType value to make it more useful 
 (for me). See the next modification for detail.
 
-### INSTRTYPE.BranchType
+### INSTRTYPE.ConditionalType
 
-Instructions that used this variable are Jcc, CMOVcc, SETcc, LOOPcc, FCMOVcc.
-This variable is separated into branch type (HIWORD) and conditional value (LOWORD).
-branch type (HIWORD) is a bit flag while conditional is value. Below is what
-they are defined
+Added to checking the conditional type of Jcc, CMOVcc, SETcc, LOOPcc, FCMOVcc 
+instructions. Here is definition.
 
-    #define CONDITION_SIGNED_FLAG 0x1000
-    #define CONDITION_MASK 0xFFFF
-    #define CONDITION_OP_MASK 0x7FFF
-    enum CONDITION_TYPE
+    enum CONDITIONAL_TYPE
     {
         CC_E = 1,
         CC_NE,
@@ -143,56 +138,34 @@ they are defined
         CC_P,
         CC_NP,
         CC_ECXZ,
-        CC_G = CONDITION_SIGNED_FLAG|CC_A,
+        CC_SIGNED_IDX, /* marker for checking signed comparison */
+        CC_G = CC_SIGNED_IDX,
         CC_GE,
         CC_L,
         CC_LE
     };
 
-    #define BRANCH_MASK 0xFFFF0000
+The conditional type is same as conditional instruction from previous change item.
+The special value is CC_SIGNED_IDX. You can use to check for signed comparison.
+
+    if (disasm.Instruction.ConditionalType >= CC_SIGNED_IDX)
+        // the variable that is compared before is signed
+
+### INSTRTYPE.BranchType
+
+Now branch type is very simple as defined below.
+
     enum BRANCH_TYPE
     {
-        JmpType = 0x10000,
-        CallType = 0x20000,
-        RetType = 0x40000,
-        LoopType = 0x80000,
-        
-        JE  = JmpType|CC_E,
-        // ...
+        JmpType = 1,
+        CallType,
+        RetType,
+        LoopType
+    };
 
-I hope you notice that jump and conditional jump is the same branch type.
-You can check condition value to know if a jump is conditional. Here is a 
-sample code for checking this variable.
-
-    if (disasm.Instruction.BranchType & JmpType) {
-        if (disasm.Instruction.BranchType & CONDITION_MASK) {
-            // conditional jump
-            if (disasm.Instruction.BranchType & CONDITION_SIGNED_FLAG) {
-                // the variable that is compared before is signed
-            }
-        }
-        else
-            // unconditional jump
-    }
-    else if (disasm.Instruction.BranchType & CallType)
-        // call
-	// ...
-	
-	// or you can use switch
-	switch (disasm.Instruction.BranchType & BRANCH_MASK) {
-	    case JmpType:
-	        break;
-	    case CallType:
-	        break;
-	}
-
-There might be a pitfall for checking branching instruction. You have to 
-do logical and with CONDITION_MASK before comparing to 0. Because CMOVcc, 
-SETcc are not branch but they are conditional instruction. The value in 
-LOWORD is not 0.
-
-Last I still keep "JE, JNE, JB, ...". But normally you do not need them 
-because you can compare MnemonicId instead of BranchType.
+There are no more Jxx type. For an original code that compared it with 
+conditional jump (JC, JB, ...), you have to change the comparision to 
+MnemonicId.
 
     // code for original version
     if (disasm.Instruction.BranchType == JC)

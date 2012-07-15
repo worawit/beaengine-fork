@@ -86,10 +86,11 @@ typedef struct  {
    char Mnemonic[16];
    Int32 MnemonicId;
    Int32 BranchType;
+   Int32 ConditionalType;
    EFLStruct Flags;
-   UInt32 ImplicitModifiedRegs;
    UInt64 AddrValue;
    Int64 Immediat;
+   UInt32 ImplicitModifiedRegs;
 } INSTRTYPE;
 #pragma pack()
 
@@ -100,8 +101,8 @@ typedef struct  {
    Int32 ArgSize;
    Int32 ArgPosition;
    UInt32 AccessMode;
-   UInt32 SegmentReg;
    MEMORYTYPE Memory;
+   UInt32 SegmentReg;
 } ARGTYPE;
 #pragma pack()
 
@@ -161,7 +162,7 @@ typedef struct _Disasm {
    ARGTYPE Argument2;
    ARGTYPE Argument3;
    PREFIXINFO Prefix;
-   char alignments[6];
+   char alignments[2];
    InternalDatas Reserved_;
 } DISASM, *PDISASM, *LPDISASM;
 #pragma pack()
@@ -258,10 +259,7 @@ enum EFLAGS_STATES
   PR_ = 0x20
 };
 
-#define CONDITION_SIGNED_FLAG 0x1000
-#define CONDITION_MASK 0xFFFF
-#define CONDITION_OP_MASK 0x7FFF
-enum CONDITION_TYPE
+enum CONDITIONAL_TYPE
 {
     CC_E = 1,
     CC_NE,
@@ -276,39 +274,19 @@ enum CONDITION_TYPE
     CC_P,
     CC_NP,
     CC_ECXZ,
-    CC_G = CONDITION_SIGNED_FLAG|CC_A,
+    CC_SIGNED_IDX, /* marker for checking signed comparison */
+    CC_G = CC_SIGNED_IDX,
     CC_GE,
     CC_L,
     CC_LE
 };
 
-#define BRANCH_MASK 0xFFFF0000
 enum BRANCH_TYPE
 {
-  JmpType = 0x10000,
-  CallType = 0x20000,
-  RetType = 0x40000,
-  LoopType = 0x80000,
-  /* Note: JC, JNC, JNA, JNL, JNG, JNB is not used anymore
-   *  remove them to make compiler error with new values
-   */
-  JE  = JmpType|CC_E,
-  JNE = JmpType|CC_NE,
-  JA  = JmpType|CC_A,
-  JAE = JmpType|CC_AE,
-  JB  = JmpType|CC_B,
-  JBE = JmpType|CC_BE,
-  JO  = JmpType|CC_O,
-  JNO = JmpType|CC_NO,
-  JS  = JmpType|CC_S,
-  JNS = JmpType|CC_NS,
-  JP  = JmpType|CC_P,
-  JNP = JmpType|CC_NP,
-  JECXZ = JmpType|CC_ECXZ,
-  JG  = JmpType|CC_G,
-  JGE = JmpType|CC_GE,
-  JL  = JmpType|CC_L,
-  JLE = JmpType|CC_LE
+    JmpType = 1,
+    CallType,
+    RetType,
+    LoopType
 };
 
 enum ARGUMENTS_TYPE
