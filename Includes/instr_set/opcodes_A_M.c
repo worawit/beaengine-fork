@@ -24,7 +24,7 @@ void __bea_callspec__ FailDecode(PDISASM pMyDisasm)
     GV.ERROR_OPCODE = 1;
 }
 /* ====================================================================
- *
+ *     37h
  * ==================================================================== */
 void __bea_callspec__ aaa_(PDISASM pMyDisasm)
 {
@@ -45,7 +45,7 @@ void __bea_callspec__ aaa_(PDISASM pMyDisasm)
 }
 
 /* ====================================================================
- *
+ *     0d5h
  * ==================================================================== */
 void __bea_callspec__ aad_(PDISASM pMyDisasm)
 {
@@ -76,7 +76,7 @@ void __bea_callspec__ aad_(PDISASM pMyDisasm)
 }
 
 /* ====================================================================
- *
+ *     0d4h
  * ==================================================================== */
 void __bea_callspec__ aam_(PDISASM pMyDisasm)
 {
@@ -107,7 +107,7 @@ void __bea_callspec__ aam_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     3fh
  * ======================================= */
 void __bea_callspec__ aas_(PDISASM pMyDisasm)
 {
@@ -452,7 +452,7 @@ void __bea_callspec__ and_eAX_Iv(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     63h
  * ======================================= */
 void __bea_callspec__ arpl_(PDISASM pMyDisasm)
 {
@@ -1159,7 +1159,7 @@ void __bea_callspec__ call_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     9ah
  * ======================================= */
 void __bea_callspec__ callf_(PDISASM pMyDisasm)
 {
@@ -1291,7 +1291,7 @@ void __bea_callspec__ cdq_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f06h
  * ======================================= */
 void __bea_callspec__ clts_(PDISASM pMyDisasm)
 {
@@ -1324,7 +1324,7 @@ void __bea_callspec__ cmc_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f40h
  * ======================================= */
 void __bea_callspec__ cmovo_(PDISASM pMyDisasm)
 {
@@ -1339,7 +1339,7 @@ void __bea_callspec__ cmovo_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f41h
  * ======================================= */
 void __bea_callspec__ cmovno_(PDISASM pMyDisasm)
 {
@@ -1354,7 +1354,7 @@ void __bea_callspec__ cmovno_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f42h
  * ======================================= */
 void __bea_callspec__ cmovb_(PDISASM pMyDisasm)
 {
@@ -1369,7 +1369,7 @@ void __bea_callspec__ cmovb_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f43h
  * ======================================= */
 void __bea_callspec__ cmovae_(PDISASM pMyDisasm)
 {
@@ -1384,7 +1384,7 @@ void __bea_callspec__ cmovae_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f44h
  * ======================================= */
 void __bea_callspec__ cmove_(PDISASM pMyDisasm)
 {
@@ -1399,7 +1399,7 @@ void __bea_callspec__ cmove_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f45h
  * ======================================= */
 void __bea_callspec__ cmovne_(PDISASM pMyDisasm)
 {
@@ -1414,7 +1414,7 @@ void __bea_callspec__ cmovne_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f46h
  * ======================================= */
 void __bea_callspec__ cmovbe_(PDISASM pMyDisasm)
 {
@@ -1429,7 +1429,7 @@ void __bea_callspec__ cmovbe_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f47h
  * ======================================= */
 void __bea_callspec__ cmova_(PDISASM pMyDisasm)
 {
@@ -1444,7 +1444,7 @@ void __bea_callspec__ cmova_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f48h
  * ======================================= */
 void __bea_callspec__ cmovs_(PDISASM pMyDisasm)
 {
@@ -1459,7 +1459,7 @@ void __bea_callspec__ cmovs_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f49h
  * ======================================= */
 void __bea_callspec__ cmovns_(PDISASM pMyDisasm)
 {
@@ -1474,7 +1474,7 @@ void __bea_callspec__ cmovns_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f4ah
  * ======================================= */
 void __bea_callspec__ cmovp_(PDISASM pMyDisasm)
 {
@@ -1489,7 +1489,7 @@ void __bea_callspec__ cmovp_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f4bh
  * ======================================= */
 void __bea_callspec__ cmovnp_(PDISASM pMyDisasm)
 {
@@ -1504,7 +1504,7 @@ void __bea_callspec__ cmovnp_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f4ch
  * ======================================= */
 void __bea_callspec__ cmovl_(PDISASM pMyDisasm)
 {
@@ -1519,7 +1519,7 @@ void __bea_callspec__ cmovl_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f4dh
  * ======================================= */
 void __bea_callspec__ cmovge_(PDISASM pMyDisasm)
 {
@@ -1534,7 +1534,7 @@ void __bea_callspec__ cmovge_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f4eh
  * ======================================= */
 void __bea_callspec__ cmovle_(PDISASM pMyDisasm)
 {
@@ -1549,7 +1549,7 @@ void __bea_callspec__ cmovle_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f4fh
  * ======================================= */
 void __bea_callspec__ cmovg_(PDISASM pMyDisasm)
 {
@@ -1564,7 +1564,7 @@ void __bea_callspec__ cmovg_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0fb0h
  * ======================================= */
 void __bea_callspec__ cmpx_EbGb(PDISASM pMyDisasm)
 {
@@ -1582,7 +1582,7 @@ void __bea_callspec__ cmpx_EbGb(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *    0fb1h
  * ======================================= */
 void __bea_callspec__ cmpx_EvGv(PDISASM pMyDisasm)
 {
@@ -1858,7 +1858,7 @@ void __bea_callspec__ cld_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     fah
  * ======================================= */
 void __bea_callspec__ cli_(PDISASM pMyDisasm)
 {
@@ -1889,7 +1889,7 @@ void __bea_callspec__ cpuid_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     27h
  * ======================================= */
 void __bea_callspec__ daa_(PDISASM pMyDisasm)
 {
@@ -1913,7 +1913,7 @@ void __bea_callspec__ daa_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     2fh
  * ======================================= */
 void __bea_callspec__ das_(PDISASM pMyDisasm)
 {
@@ -2361,7 +2361,7 @@ void __bea_callspec__ enter_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f0eh
  * ======================================= */
 void __bea_callspec__ femms_(PDISASM pMyDisasm)
 {
@@ -2374,7 +2374,7 @@ void __bea_callspec__ femms_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     f4h
  * ======================================= */
 void __bea_callspec__ hlt_(PDISASM pMyDisasm)
 {
@@ -2387,7 +2387,7 @@ void __bea_callspec__ hlt_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f08h
  * ======================================= */
 void __bea_callspec__ invd_(PDISASM pMyDisasm)
 {
@@ -2791,7 +2791,7 @@ void __bea_callspec__ inc_edi(PDISASM pMyDisasm)
     }
 }
 /* =======================================
- *  0xcf
+ *      cfh
  * ======================================= */
 void __bea_callspec__ iret_(PDISASM pMyDisasm)
 {
@@ -2819,7 +2819,7 @@ void __bea_callspec__ iret_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     ech
  * ======================================= */
 void __bea_callspec__ in_ALDX(PDISASM pMyDisasm)
 {
@@ -2842,7 +2842,7 @@ void __bea_callspec__ in_ALDX(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     e4h
  * ======================================= */
 void __bea_callspec__ in_ALIb(PDISASM pMyDisasm)
 {
@@ -2855,7 +2855,7 @@ void __bea_callspec__ in_ALIb(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *      0xe5
+ *      e5h
  * ======================================= */
 void __bea_callspec__ in_eAX_Ib(PDISASM pMyDisasm)
 {
@@ -2881,7 +2881,7 @@ void __bea_callspec__ in_eAX_Ib(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     6ch
  * ======================================= */
 void __bea_callspec__ insb_(PDISASM pMyDisasm)
 {
@@ -2906,7 +2906,7 @@ void __bea_callspec__ insb_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     6dh
  * ======================================= */
 void __bea_callspec__ ins_(PDISASM pMyDisasm)
 {
@@ -2946,7 +2946,7 @@ void __bea_callspec__ ins_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     ceh
  * ======================================= */
 void __bea_callspec__ into_(PDISASM pMyDisasm)
 {
@@ -4983,7 +4983,7 @@ void __bea_callspec__ jmp_short(PDISASM pMyDisasm)
 
 
 /* =======================================
- *
+ *      0eah
  * ======================================= */
 void __bea_callspec__ jmp_far(PDISASM pMyDisasm)
 {
@@ -5057,7 +5057,7 @@ void __bea_callspec__ jmp_far(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      09fh
  * ======================================= */
 void __bea_callspec__ lahf_(PDISASM pMyDisasm)
 {
@@ -5074,7 +5074,7 @@ void __bea_callspec__ lahf_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0fb6h
  * ======================================= */
 void __bea_callspec__ lar_GvEw(PDISASM pMyDisasm)
 {
@@ -5088,7 +5088,7 @@ void __bea_callspec__ lar_GvEw(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0c5h
  * ======================================= */
 void __bea_callspec__ lds_GvM(PDISASM pMyDisasm)
 {
@@ -5137,7 +5137,7 @@ void __bea_callspec__ leave_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      08dh
  * ======================================= */
 void __bea_callspec__ lea_GvM(PDISASM pMyDisasm)
 {
@@ -5171,7 +5171,7 @@ void __bea_callspec__ lea_GvM(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0c4h
  * ======================================= */
 void __bea_callspec__ les_GvM(PDISASM pMyDisasm)
 {
@@ -5335,7 +5335,7 @@ void __bea_callspec__ loop_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *      0xe0
+ *      0e0h
  * ======================================= */
 void __bea_callspec__ loopne_(PDISASM pMyDisasm)
 {
@@ -5388,7 +5388,7 @@ void __bea_callspec__ loopne_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *      0xe1
+ *      0e1h
  * ======================================= */
 void __bea_callspec__ loope_(PDISASM pMyDisasm)
 {
@@ -5441,7 +5441,7 @@ void __bea_callspec__ loope_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f03h
  * ======================================= */
 void __bea_callspec__ lsl_GvEw(PDISASM pMyDisasm)
 {
@@ -5455,7 +5455,7 @@ void __bea_callspec__ lsl_GvEw(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0fb2h
  * ======================================= */
 void __bea_callspec__ lss_Mp(PDISASM pMyDisasm)
 {
@@ -5468,7 +5468,7 @@ void __bea_callspec__ lss_Mp(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0fb4h
  * ======================================= */
 void __bea_callspec__ lfs_Mp(PDISASM pMyDisasm)
 {
@@ -5481,7 +5481,7 @@ void __bea_callspec__ lfs_Mp(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0fb5h
  * ======================================= */
 void __bea_callspec__ lgs_Mp(PDISASM pMyDisasm)
 {
@@ -5494,7 +5494,7 @@ void __bea_callspec__ lgs_Mp(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f20h
  * ======================================= */
 void __bea_callspec__ mov_RdCd(PDISASM pMyDisasm)
 {
@@ -5518,7 +5518,7 @@ void __bea_callspec__ mov_RdCd(PDISASM pMyDisasm)
 
 
 /* =======================================
- *
+ *     0f21h
  * ======================================= */
 void __bea_callspec__ mov_RdDd(PDISASM pMyDisasm)
 {
@@ -5541,7 +5541,7 @@ void __bea_callspec__ mov_RdDd(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f22h
  * ======================================= */
 void __bea_callspec__ mov_CdRd(PDISASM pMyDisasm)
 {
@@ -5564,7 +5564,7 @@ void __bea_callspec__ mov_CdRd(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *     0f23h
  * ======================================= */
 void __bea_callspec__ mov_DdRd(PDISASM pMyDisasm)
 {
