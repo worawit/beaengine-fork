@@ -9,6 +9,9 @@ does not like my changes, at least you are can take bug patches.
 
 Note: This project is not compatitble with original BeaEngine.
 
+WARNING: This fork project is still under developement, public structures 
+are not finalized.
+
 
 COMPILE
 --------------
