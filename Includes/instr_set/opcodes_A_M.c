@@ -1942,7 +1942,7 @@ void __bea_callspec__ das_(PDISASM pMyDisasm)
 void __bea_callspec__ dec_eax(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
-        if (!Security(0, pMyDisasm)) return;
+        if (!Security(2, pMyDisasm)) return;
         GV.REX.W_ = 1;
         GV.REX.R_ = 0;
         GV.REX.X_ = 0;
@@ -1992,7 +1992,7 @@ void __bea_callspec__ dec_eax(PDISASM pMyDisasm)
 void __bea_callspec__ dec_ecx(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
-        if (!Security(0, pMyDisasm)) return;
+        if (!Security(2, pMyDisasm)) return;
         GV.REX.W_ = 1;
         GV.REX.R_ = 0;
         GV.REX.X_ = 0;
@@ -2042,7 +2042,7 @@ void __bea_callspec__ dec_ecx(PDISASM pMyDisasm)
 void __bea_callspec__ dec_edx(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
-        if (!Security(0, pMyDisasm)) return;
+        if (!Security(2, pMyDisasm)) return;
         GV.REX.W_ = 1;
         GV.REX.R_ = 0;
         GV.REX.X_ = 1;
@@ -2092,7 +2092,7 @@ void __bea_callspec__ dec_edx(PDISASM pMyDisasm)
 void __bea_callspec__ dec_ebx(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
-        if (!Security(0, pMyDisasm)) return;
+        if (!Security(2, pMyDisasm)) return;
         GV.REX.W_ = 1;
         GV.REX.R_ = 0;
         GV.REX.X_ = 1;
@@ -2142,7 +2142,7 @@ void __bea_callspec__ dec_ebx(PDISASM pMyDisasm)
 void __bea_callspec__ dec_esp(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
-        if (!Security(0, pMyDisasm)) return;
+        if (!Security(2, pMyDisasm)) return;
         GV.REX.W_ = 1;
         GV.REX.R_ = 1;
         GV.REX.X_ = 0;
@@ -2192,7 +2192,7 @@ void __bea_callspec__ dec_esp(PDISASM pMyDisasm)
 void __bea_callspec__ dec_ebp(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
-        if (!Security(0, pMyDisasm)) return;
+        if (!Security(2, pMyDisasm)) return;
         GV.REX.W_ = 1;
         GV.REX.R_ = 1;
         GV.REX.X_ = 0;
@@ -2242,7 +2242,7 @@ void __bea_callspec__ dec_ebp(PDISASM pMyDisasm)
 void __bea_callspec__ dec_esi(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
-        if (!Security(0, pMyDisasm)) return;
+        if (!Security(2, pMyDisasm)) return;
         GV.REX.W_ = 1;
         GV.REX.R_ = 1;
         GV.REX.X_ = 1;
@@ -2292,7 +2292,7 @@ void __bea_callspec__ dec_esi(PDISASM pMyDisasm)
 void __bea_callspec__ dec_edi(PDISASM pMyDisasm)
 {
     if (GV.Architecture == 64) {
-        if (!Security(0, pMyDisasm)) return;
+        if (!Security(2, pMyDisasm)) return;
         GV.REX.W_ = 1;
         GV.REX.R_ = 1;
         GV.REX.X_ = 1;
