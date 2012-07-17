@@ -30,6 +30,7 @@ void __bea_callspec__ addps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "addsd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -43,6 +44,7 @@ void __bea_callspec__ addps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "addss");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -57,6 +59,7 @@ void __bea_callspec__ addps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "addpd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -68,6 +71,7 @@ void __bea_callspec__ addps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "addps");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -88,6 +92,7 @@ void __bea_callspec__ addsubpd_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "addsubps");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -103,6 +108,7 @@ void __bea_callspec__ addsubpd_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "addsubpd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -128,6 +134,7 @@ void __bea_callspec__ andnps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "andnpd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -139,6 +146,7 @@ void __bea_callspec__ andnps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "andnps");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -161,6 +169,7 @@ void __bea_callspec__ andps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "andpd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -172,6 +181,7 @@ void __bea_callspec__ andps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "andps");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -194,6 +204,7 @@ void __bea_callspec__ blendpd_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "blendpd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -232,6 +243,7 @@ void __bea_callspec__ blendps_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "blendps");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -268,6 +280,9 @@ void __bea_callspec__ blendvpd_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "blendvpd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        (*pMyDisasm).Argument3.ArgType = IMPLICIT_ARG+REGISTER_TYPE+SSE_REG+REG0;
+        (*pMyDisasm).Argument3.ArgSize = 128;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -294,6 +309,9 @@ void __bea_callspec__ blendvps_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "blendvps");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        (*pMyDisasm).Argument3.ArgType = IMPLICIT_ARG+REGISTER_TYPE+SSE_REG+REG0;
+        (*pMyDisasm).Argument3.ArgSize = 128;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -362,7 +380,7 @@ void __bea_callspec__ cmpps_VW(PDISASM pMyDisasm)
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
     }
-    (*pMyDisasm).Argument1.AccessMode = READ;
+    (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
     GV.EIP_++;
     if (!Security(0, pMyDisasm)) return;
     GV.third_arg = 1;
@@ -414,6 +432,7 @@ void __bea_callspec__ crc32_GvEb(PDISASM pMyDisasm)
         else {
             Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
         }
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.EIP_ += GV.DECALAGE_EIP+2;
     }
     else {
@@ -454,6 +473,7 @@ void __bea_callspec__ crc32_GvEv(PDISASM pMyDisasm)
         else {
             Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
         }
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.EIP_ += GV.DECALAGE_EIP+2;
     }
     else {
@@ -477,6 +497,7 @@ void __bea_callspec__ comiss_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "comisd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -488,6 +509,7 @@ void __bea_callspec__ comiss_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "comiss");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -928,6 +950,7 @@ void __bea_callspec__ dppd_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "dppd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -965,6 +988,7 @@ void __bea_callspec__ dpps_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "dpps");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -1002,6 +1026,7 @@ void __bea_callspec__ divps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "divsd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1015,6 +1040,7 @@ void __bea_callspec__ divps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "divss");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1029,6 +1055,7 @@ void __bea_callspec__ divps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "divpd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1040,6 +1067,7 @@ void __bea_callspec__ divps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "divps");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1103,6 +1131,7 @@ void __bea_callspec__ haddpd_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "haddpd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1114,6 +1143,7 @@ void __bea_callspec__ haddpd_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "haddps");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1137,6 +1167,7 @@ void __bea_callspec__ hsubpd_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "hsubpd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1148,6 +1179,7 @@ void __bea_callspec__ hsubpd_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "hsubps");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1194,8 +1226,6 @@ void __bea_callspec__ insertps_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-
-
     }
     else {
         FailDecode(pMyDisasm);
@@ -1250,6 +1280,11 @@ void __bea_callspec__ maskmovq_(PDISASM pMyDisasm)
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
+        (*pMyDisasm).Argument1.AccessMode = READ;
+        (*pMyDisasm).Argument3.ArgType = IMPLICIT_ARG+MEMORY_TYPE;
+        (*pMyDisasm).Argument3.Memory.BaseRegister = REG7;
+        (*pMyDisasm).Argument3.ArgSize = 8; /* don't know */
+        (*pMyDisasm).Argument3.AccessMode = WRITE;
     }
     else {
         GV.MemDecoration = Arg2qword;
@@ -1261,6 +1296,11 @@ void __bea_callspec__ maskmovq_(PDISASM pMyDisasm)
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
+        (*pMyDisasm).Argument1.AccessMode = READ;
+        (*pMyDisasm).Argument3.ArgType = IMPLICIT_ARG+MEMORY_TYPE;
+        (*pMyDisasm).Argument3.Memory.BaseRegister = REG7;
+        (*pMyDisasm).Argument3.ArgSize = 8; /* don't know */
+        (*pMyDisasm).Argument3.AccessMode = WRITE;
     }
 }
 
@@ -1279,6 +1319,7 @@ void __bea_callspec__ maxps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "maxsd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1292,6 +1333,7 @@ void __bea_callspec__ maxps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "maxss");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1306,6 +1348,7 @@ void __bea_callspec__ maxps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "maxpd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1317,6 +1360,7 @@ void __bea_callspec__ maxps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "maxps");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1338,6 +1382,7 @@ void __bea_callspec__ minps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "minsd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1351,6 +1396,7 @@ void __bea_callspec__ minps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "minss");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1365,6 +1411,7 @@ void __bea_callspec__ minps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "minpd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1376,6 +1423,7 @@ void __bea_callspec__ minps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "minps");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1936,6 +1984,7 @@ void __bea_callspec__ mpsadbw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mpsadbw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -1973,6 +2022,7 @@ void __bea_callspec__ mulps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mulsd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -1986,6 +2036,7 @@ void __bea_callspec__ mulps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mulss");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2000,6 +2051,7 @@ void __bea_callspec__ mulps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mulpd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2011,6 +2063,7 @@ void __bea_callspec__ mulps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mulps");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2033,6 +2086,7 @@ void __bea_callspec__ orps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "orpd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2044,6 +2098,7 @@ void __bea_callspec__ orps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "orps");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2066,10 +2121,10 @@ void __bea_callspec__ packusdw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "packusdw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
-
     }
     else {
         FailDecode(pMyDisasm);
@@ -2093,6 +2148,7 @@ void __bea_callspec__ paddq_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "paddq");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2103,6 +2159,7 @@ void __bea_callspec__ paddq_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "paddq");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -2125,6 +2182,7 @@ void __bea_callspec__ pavgb_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pavgb");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2135,6 +2193,7 @@ void __bea_callspec__ pavgb_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pavgb");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -2157,6 +2216,7 @@ void __bea_callspec__ pavgw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pavgw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2167,6 +2227,7 @@ void __bea_callspec__ pavgw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pavgw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -2189,6 +2250,7 @@ void __bea_callspec__ palignr_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "palignr");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -2210,6 +2272,7 @@ void __bea_callspec__ palignr_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "palignr");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.ImmediatSize = 8;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
@@ -2246,16 +2309,12 @@ void __bea_callspec__ pblendvb_(PDISASM pMyDisasm)
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        (*pMyDisasm).Argument3.ArgType = IMPLICIT_ARG+SSE_REG+REG0;
+        (*pMyDisasm).Argument3.ArgSize = 128;
     }
     else {
-        GV.MemDecoration = Arg2qword;
-        (*pMyDisasm).Instruction.MnemonicId = I_PBLENDVB;
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pblendvb");
-        #endif
-        GV.MMX_ = 1;
-        GxEx(pMyDisasm);
-        GV.MMX_ = 0;
+        FailDecode(pMyDisasm);
     }
 }
 
@@ -2275,6 +2334,7 @@ void __bea_callspec__ pblendw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pblendw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -2288,8 +2348,6 @@ void __bea_callspec__ pblendw_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-
-
     }
     else {
         FailDecode(pMyDisasm);
@@ -2313,10 +2371,10 @@ void __bea_callspec__ pcmpeqq_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pcmpeqq");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
-
     }
     else {
         FailDecode(pMyDisasm);
@@ -2340,6 +2398,7 @@ void __bea_callspec__ pcmpestri_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pcmpestri");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ;
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -2353,8 +2412,7 @@ void __bea_callspec__ pcmpestri_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-
-
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = REGISTER_TYPE+GENERAL_REG+REG1;
     }
     else {
         FailDecode(pMyDisasm);
@@ -2378,6 +2436,7 @@ void __bea_callspec__ pcmpestrm_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pcmpestrm");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ;
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -2391,8 +2450,7 @@ void __bea_callspec__ pcmpestrm_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-
-
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = REGISTER_TYPE+SSE_REG+REG0;
     }
     else {
         FailDecode(pMyDisasm);
@@ -2416,6 +2474,7 @@ void __bea_callspec__ pcmpistri_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pcmpistri");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ;
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -2429,8 +2488,7 @@ void __bea_callspec__ pcmpistri_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-
-
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = REGISTER_TYPE+GENERAL_REG+REG1;
     }
     else {
         FailDecode(pMyDisasm);
@@ -2454,6 +2512,7 @@ void __bea_callspec__ pcmpistrm_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pcmpestrm");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ;
         GV.ImmediatSize = 8;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
@@ -2467,8 +2526,7 @@ void __bea_callspec__ pcmpistrm_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-
-
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = REGISTER_TYPE+SSE_REG+REG0;
     }
     else {
         FailDecode(pMyDisasm);
@@ -2492,10 +2550,10 @@ void __bea_callspec__ pcmpgtq_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pcmpgtq");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
-
     }
     else {
         FailDecode(pMyDisasm);
@@ -2539,8 +2597,6 @@ void __bea_callspec__ pextrb_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-
-
     }
     else {
         FailDecode(pMyDisasm);
@@ -2589,8 +2645,6 @@ void __bea_callspec__ pextrd_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-
-
     }
     else {
         FailDecode(pMyDisasm);
@@ -2627,8 +2681,6 @@ void __bea_callspec__ pextrw_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-
-
     }
     else {
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SIMD64bits;
@@ -2651,7 +2703,6 @@ void __bea_callspec__ pextrw_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-
     }
 
 }
@@ -2691,8 +2742,6 @@ void __bea_callspec__ pextrw2_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-
-
     }
     else {
         FailDecode(pMyDisasm);
@@ -2716,6 +2765,7 @@ void __bea_callspec__ phaddd_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phaddd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2727,6 +2777,7 @@ void __bea_callspec__ phaddd_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phaddd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -2749,6 +2800,7 @@ void __bea_callspec__ phaddsw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phaddsw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2760,6 +2812,7 @@ void __bea_callspec__ phaddsw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phaddsw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -2782,6 +2835,7 @@ void __bea_callspec__ phaddw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phaddw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2793,6 +2847,7 @@ void __bea_callspec__ phaddw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phaddw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -2840,6 +2895,7 @@ void __bea_callspec__ phsubw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phsubw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2851,6 +2907,7 @@ void __bea_callspec__ phsubw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phsubw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -2873,6 +2930,7 @@ void __bea_callspec__ phsubd_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phsubd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2884,6 +2942,7 @@ void __bea_callspec__ phsubd_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phsubd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -2906,6 +2965,7 @@ void __bea_callspec__ phsubsw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phsubsw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -2917,6 +2977,7 @@ void __bea_callspec__ phsubsw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "phsubsw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -2952,8 +3013,6 @@ void __bea_callspec__ pinsrb_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-
-
     }
     else {
         FailDecode(pMyDisasm);
@@ -3001,8 +3060,6 @@ void __bea_callspec__ pinsrd_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-
-
     }
     else {
         FailDecode(pMyDisasm);
@@ -3040,8 +3097,6 @@ void __bea_callspec__ pinsrw_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-
-
     }
     else {
         (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SIMD64bits;
@@ -3064,7 +3119,6 @@ void __bea_callspec__ pinsrw_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-
     }
 
 }
@@ -3085,6 +3139,7 @@ void __bea_callspec__ pmaxsb_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxsb");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3109,6 +3164,7 @@ void __bea_callspec__ pmaxsd_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxsd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3133,6 +3189,7 @@ void __bea_callspec__ pmaxuw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxuw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3157,6 +3214,7 @@ void __bea_callspec__ pmaxud_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxud");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3181,6 +3239,7 @@ void __bea_callspec__ pminsb_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminsb");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3205,6 +3264,7 @@ void __bea_callspec__ pminsd_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminsd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3229,6 +3289,7 @@ void __bea_callspec__ pminuw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminuw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3253,6 +3314,7 @@ void __bea_callspec__ pminud_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminud");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3278,6 +3340,7 @@ void __bea_callspec__ pminub_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminub");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3289,6 +3352,7 @@ void __bea_callspec__ pminub_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminub");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -3311,6 +3375,7 @@ void __bea_callspec__ pmaxub_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxub");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3322,6 +3387,7 @@ void __bea_callspec__ pmaxub_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxub");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -3344,6 +3410,7 @@ void __bea_callspec__ pminsw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminsw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3355,6 +3422,7 @@ void __bea_callspec__ pminsw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pminsw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -3377,6 +3445,7 @@ void __bea_callspec__ pmaxsw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxsw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3388,6 +3457,7 @@ void __bea_callspec__ pmaxsw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaxsw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -3410,6 +3480,7 @@ void __bea_callspec__ pmaddubsw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaddubsw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3421,6 +3492,7 @@ void __bea_callspec__ pmaddubsw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmaddubsw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -3782,6 +3854,7 @@ void __bea_callspec__ pmuldq_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmuldq");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3807,6 +3880,7 @@ void __bea_callspec__ pmulld_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmulld");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3832,6 +3906,7 @@ void __bea_callspec__ pmulhrsw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmulhrsw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3843,6 +3918,7 @@ void __bea_callspec__ pmulhrsw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmulhrsw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -3865,6 +3941,7 @@ void __bea_callspec__ pmulhuw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmulhuw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3875,6 +3952,7 @@ void __bea_callspec__ pmulhuw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmulhuw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -3897,6 +3975,7 @@ void __bea_callspec__ pmuludq_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmuludq");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3907,6 +3986,7 @@ void __bea_callspec__ pmuludq_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pmuludq");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -3944,6 +4024,7 @@ void __bea_callspec__ psadbw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psadbw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -3954,6 +4035,7 @@ void __bea_callspec__ psadbw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psadbw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -4109,6 +4191,7 @@ void __bea_callspec__ psignb_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psignb");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4120,6 +4203,7 @@ void __bea_callspec__ psignb_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psignb");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -4142,6 +4226,7 @@ void __bea_callspec__ psignd_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psignd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4153,6 +4238,7 @@ void __bea_callspec__ psignd_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psignd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -4175,6 +4261,7 @@ void __bea_callspec__ psignw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psignw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4186,6 +4273,7 @@ void __bea_callspec__ psignw_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psignw");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -4208,6 +4296,7 @@ void __bea_callspec__ psubq_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psubq");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4219,6 +4308,7 @@ void __bea_callspec__ psubq_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psubq");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.MMX_ = 1;
         GxEx(pMyDisasm);
         GV.MMX_ = 0;
@@ -4241,6 +4331,7 @@ void __bea_callspec__ ptest_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "ptest");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4266,6 +4357,7 @@ void __bea_callspec__ punpcklqdq_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "punpcklqdq");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4291,6 +4383,7 @@ void __bea_callspec__ punpckhqdq_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "punpckhqdq");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4362,7 +4455,6 @@ void __bea_callspec__ roundpd_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-
     }
     else {
         FailDecode(pMyDisasm);
@@ -4398,7 +4490,6 @@ void __bea_callspec__ roundps_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-
     }
     else {
         FailDecode(pMyDisasm);
@@ -4434,7 +4525,6 @@ void __bea_callspec__ roundsd_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-
     }
     else {
         FailDecode(pMyDisasm);
@@ -4470,7 +4560,6 @@ void __bea_callspec__ roundss_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-
     }
     else {
         FailDecode(pMyDisasm);
@@ -4527,6 +4616,7 @@ void __bea_callspec__ shufps_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "shufpd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4538,6 +4628,7 @@ void __bea_callspec__ shufps_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "shufps");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4629,6 +4720,7 @@ void __bea_callspec__ subps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "subsd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4642,6 +4734,7 @@ void __bea_callspec__ subps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "subss");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4656,6 +4749,7 @@ void __bea_callspec__ subps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "subpd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4667,6 +4761,7 @@ void __bea_callspec__ subps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "subps");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4689,6 +4784,7 @@ void __bea_callspec__ ucomiss_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "ucomisd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4700,6 +4796,7 @@ void __bea_callspec__ ucomiss_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "ucomiss");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4722,6 +4819,7 @@ void __bea_callspec__ unpckhps_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "unpckhpd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4733,6 +4831,7 @@ void __bea_callspec__ unpckhps_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "unpckhps");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4754,6 +4853,7 @@ void __bea_callspec__ unpcklps_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "unpcklpd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4765,6 +4865,7 @@ void __bea_callspec__ unpcklps_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "unpcklps");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4787,6 +4888,7 @@ void __bea_callspec__ xorps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xorpd");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
@@ -4798,6 +4900,7 @@ void __bea_callspec__ xorps_VW(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xorps");
         #endif
+        (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
