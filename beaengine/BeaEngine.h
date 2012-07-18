@@ -985,7 +985,7 @@ enum MNEMONIC_ENUM { MNEMONIC_MAP_DEF };
 extern "C" {
 #endif
 
-BEA_API const__ char *MNEMONICS[];
+BEA_API const__ char MNEMONICS[][16];
 BEA_API int __bea_callspec__ Disasm (LPDISASM pDisAsm);
 BEA_API const__ char* __bea_callspec__ BeaEngineVersion (void);
 BEA_API const__ char* __bea_callspec__ BeaEngineRevision (void);

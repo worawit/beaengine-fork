@@ -592,5 +592,5 @@ char BXDI_[] = "bx+di";
 char BPSI_[] = "bp+si";
 char BPDI_[] = "bp+di";
 
-const__ char *MNEMONICS[] = { MNEMONIC_MAP_DEF };
+const__ char MNEMONICS[][16] = { MNEMONIC_MAP_DEF };
 
