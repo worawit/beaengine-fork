@@ -63,7 +63,7 @@ void __bea_callspec__ nop_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      90h
  * ======================================= */
 void __bea_callspec__ nop_Ev(PDISASM pMyDisasm)
 {
@@ -87,7 +87,7 @@ void __bea_callspec__ nop_Ev(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0f19h
  * ======================================= */
 void __bea_callspec__ hint_nop(PDISASM pMyDisasm)
 {
@@ -279,7 +279,7 @@ void __bea_callspec__ outsw_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      e6h
  * ======================================= */
 void __bea_callspec__ out_IbAL(PDISASM pMyDisasm)
 {
@@ -309,7 +309,7 @@ void __bea_callspec__ out_IbAL(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      e7h
  * ======================================= */
 void __bea_callspec__ out_Ib_eAX(PDISASM pMyDisasm)
 {
@@ -368,7 +368,7 @@ void __bea_callspec__ out_DXAL(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      efh
  * ======================================= */
 void __bea_callspec__ out_DXeAX(PDISASM pMyDisasm)
 {
@@ -845,7 +845,7 @@ void __bea_callspec__ pop_edi(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      07h
  * ======================================= */
 void __bea_callspec__ pop_es(PDISASM pMyDisasm)
 {
@@ -872,7 +872,7 @@ void __bea_callspec__ pop_es(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      17h
  * ======================================= */
 void __bea_callspec__ pop_ss(PDISASM pMyDisasm)
 {
@@ -899,7 +899,7 @@ void __bea_callspec__ pop_ss(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      1fh
  * ======================================= */
 void __bea_callspec__ pop_ds(PDISASM pMyDisasm)
 {
@@ -926,7 +926,7 @@ void __bea_callspec__ pop_ds(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0fa1h
  * ======================================= */
 void __bea_callspec__ pop_fs(PDISASM pMyDisasm)
 {
@@ -953,7 +953,7 @@ void __bea_callspec__ pop_fs(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0fa9h
  * ======================================= */
 void __bea_callspec__ pop_gs(PDISASM pMyDisasm)
 {
@@ -1070,7 +1070,7 @@ void __bea_callspec__ popad_(PDISASM pMyDisasm)
 
 
 /* =======================================
- *
+ *      06h
  * ======================================= */
 void __bea_callspec__ push_es(PDISASM pMyDisasm)
 {
@@ -1098,7 +1098,7 @@ void __bea_callspec__ push_es(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      16h
  * ======================================= */
 void __bea_callspec__ push_ss(PDISASM pMyDisasm)
 {
@@ -1126,7 +1126,7 @@ void __bea_callspec__ push_ss(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      1eh
  * ======================================= */
 void __bea_callspec__ push_ds(PDISASM pMyDisasm)
 {
@@ -1154,7 +1154,7 @@ void __bea_callspec__ push_ds(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0fa0h
  * ======================================= */
 void __bea_callspec__ push_fs(PDISASM pMyDisasm)
 {
@@ -1182,7 +1182,7 @@ void __bea_callspec__ push_fs(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0fa8
  * ======================================= */
 void __bea_callspec__ push_gs(PDISASM pMyDisasm)
 {
@@ -1210,7 +1210,7 @@ void __bea_callspec__ push_gs(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0e
  * ======================================= */
 void __bea_callspec__ push_cs(PDISASM pMyDisasm)
 {
@@ -1893,7 +1893,7 @@ void __bea_callspec__ ret_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      cbh
  * ======================================= */
 void __bea_callspec__ retf_(PDISASM pMyDisasm)
 {
@@ -1919,7 +1919,7 @@ void __bea_callspec__ retf_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      cah
  * ======================================= */
 void __bea_callspec__ retf_Iw(PDISASM pMyDisasm)
 {
@@ -1951,7 +1951,7 @@ void __bea_callspec__ retf_Iw(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0f31h
  * ======================================= */
 void __bea_callspec__ rdtsc_(PDISASM pMyDisasm)
 {
@@ -1966,7 +1966,7 @@ void __bea_callspec__ rdtsc_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0f32h
  * ======================================= */
 void __bea_callspec__ rdmsr_(PDISASM pMyDisasm)
 {
@@ -1983,7 +1983,7 @@ void __bea_callspec__ rdmsr_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0f33h
  * ======================================= */
 void __bea_callspec__ rdpmc_(PDISASM pMyDisasm)
 {
@@ -2000,7 +2000,7 @@ void __bea_callspec__ rdpmc_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0faah
  * ======================================= */
 void __bea_callspec__ rsm_(PDISASM pMyDisasm)
 {
@@ -2014,7 +2014,7 @@ void __bea_callspec__ rsm_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0f34h
  * ======================================= */
 void __bea_callspec__ sysenter_(PDISASM pMyDisasm)
 {
@@ -2027,7 +2027,7 @@ void __bea_callspec__ sysenter_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0f35h
  * ======================================= */
 void __bea_callspec__ sysexit_(PDISASM pMyDisasm)
 {
@@ -2040,7 +2040,7 @@ void __bea_callspec__ sysexit_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      9eh
  * ======================================= */
 void __bea_callspec__ sahf_(PDISASM pMyDisasm)
 {
@@ -2057,7 +2057,7 @@ void __bea_callspec__ sahf_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      d6h
  * ======================================= */
 void __bea_callspec__ salc_(PDISASM pMyDisasm)
 {
@@ -2157,7 +2157,7 @@ void __bea_callspec__ scas_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      f9h
  * ======================================= */
 void __bea_callspec__ stc_(PDISASM pMyDisasm)
 {
@@ -2173,7 +2173,7 @@ void __bea_callspec__ stc_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      fbh
  * ======================================= */
 void __bea_callspec__ sti_(PDISASM pMyDisasm)
 {
@@ -2274,7 +2274,7 @@ void __bea_callspec__ stosw_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0f05h
  * ======================================= */
 void __bea_callspec__ syscall_(PDISASM pMyDisasm)
 {
@@ -2294,7 +2294,7 @@ void __bea_callspec__ syscall_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0f07h
  * ======================================= */
 void __bea_callspec__ sysret_(PDISASM pMyDisasm)
 {
@@ -2453,7 +2453,7 @@ void __bea_callspec__ setno_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *      0f90h
+ *      0f92h
  * ======================================= */
 void __bea_callspec__ setb_(PDISASM pMyDisasm)
 {
@@ -2472,7 +2472,7 @@ void __bea_callspec__ setb_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *      0f90h
+ *      0f93h
  * ======================================= */
 void __bea_callspec__ setae_(PDISASM pMyDisasm)
 {
@@ -2491,7 +2491,7 @@ void __bea_callspec__ setae_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *      0f90h
+ *      0f94h
  * ======================================= */
 void __bea_callspec__ sete_(PDISASM pMyDisasm)
 {
@@ -2510,7 +2510,7 @@ void __bea_callspec__ sete_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *      0f90h
+ *      0f95h
  * ======================================= */
 void __bea_callspec__ setne_(PDISASM pMyDisasm)
 {
@@ -2529,7 +2529,7 @@ void __bea_callspec__ setne_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *      0f90h
+ *      0f96h
  * ======================================= */
 void __bea_callspec__ setbe_(PDISASM pMyDisasm)
 {
@@ -2548,7 +2548,7 @@ void __bea_callspec__ setbe_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *      0f90h
+ *      0f97h
  * ======================================= */
 void __bea_callspec__ seta_(PDISASM pMyDisasm)
 {
@@ -2567,7 +2567,7 @@ void __bea_callspec__ seta_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *      0f90h
+ *      0f98h
  * ======================================= */
 void __bea_callspec__ sets_(PDISASM pMyDisasm)
 {
@@ -2586,7 +2586,7 @@ void __bea_callspec__ sets_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *      0f90h
+ *      0f99h
  * ======================================= */
 void __bea_callspec__ setns_(PDISASM pMyDisasm)
 {
@@ -2605,7 +2605,7 @@ void __bea_callspec__ setns_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *      0f90h
+ *      0f9ah
  * ======================================= */
 void __bea_callspec__ setp_(PDISASM pMyDisasm)
 {
@@ -2624,7 +2624,7 @@ void __bea_callspec__ setp_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *      0f90h
+ *      0f9bh
  * ======================================= */
 void __bea_callspec__ setnp_(PDISASM pMyDisasm)
 {
@@ -2643,7 +2643,7 @@ void __bea_callspec__ setnp_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *      0f90h
+ *      0f9dh
  * ======================================= */
 void __bea_callspec__ setge_(PDISASM pMyDisasm)
 {
@@ -2662,7 +2662,7 @@ void __bea_callspec__ setge_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *      0f90h
+ *      0f9ch
  * ======================================= */
 void __bea_callspec__ setl_(PDISASM pMyDisasm)
 {
@@ -2681,7 +2681,7 @@ void __bea_callspec__ setl_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *      0f90h
+ *      0f9eh
  * ======================================= */
 void __bea_callspec__ setle_(PDISASM pMyDisasm)
 {
@@ -2700,7 +2700,7 @@ void __bea_callspec__ setle_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *      0f90h
+ *      0f9fh
  * ======================================= */
 void __bea_callspec__ setg_(PDISASM pMyDisasm)
 {
@@ -2748,7 +2748,7 @@ void __bea_callspec__ shld_EvGvIb(PDISASM pMyDisasm)
 
 
 /* =======================================
- *
+ *     0fa5h
  * ======================================= */
 void __bea_callspec__ shld_EvGvCL(PDISASM pMyDisasm)
 {
@@ -2798,7 +2798,7 @@ void __bea_callspec__ shrd_EvGvIb(PDISASM pMyDisasm)
 
 
 /* =======================================
- *
+ *      0fadh
  * ======================================= */
 void __bea_callspec__ shrd_EvGvCL(PDISASM pMyDisasm)
 {
@@ -2821,7 +2821,7 @@ void __bea_callspec__ shrd_EvGvCL(PDISASM pMyDisasm)
 
 
 /* =======================================
- *
+ *      fdh
  * ======================================= */
 void __bea_callspec__ std_(PDISASM pMyDisasm)
 {
@@ -3026,7 +3026,7 @@ void __bea_callspec__ test_eAX_Iv(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0f0bh
  * ======================================= */
 void __bea_callspec__ ud2_(PDISASM pMyDisasm)
 {
@@ -3039,7 +3039,7 @@ void __bea_callspec__ ud2_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0f78h
  * ======================================= */
 void __bea_callspec__ vmread_(PDISASM pMyDisasm)
 {
@@ -3058,7 +3058,7 @@ void __bea_callspec__ vmread_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0f79h
  * ======================================= */
 void __bea_callspec__ vmwrite_(PDISASM pMyDisasm)
 {
@@ -3077,7 +3077,7 @@ void __bea_callspec__ vmwrite_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *
+ *      0f09h
  * ======================================= */
 void __bea_callspec__ wbinvd_(PDISASM pMyDisasm)
 {
@@ -3090,20 +3090,7 @@ void __bea_callspec__ wbinvd_(PDISASM pMyDisasm)
 }
 
 /* =======================================
- *      9Bh
- * ======================================= */
-void __bea_callspec__ wait_(PDISASM pMyDisasm)
-{
-    (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+FPUCONTROL;
-    (*pMyDisasm).Instruction.MnemonicId = I_WAIT;
-    #ifndef BEA_LIGHT_DISASSEMBLY
-       (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "wait");
-    #endif
-    GV.EIP_++;
-}
-
-/* =======================================
- *
+ *      0f30h
  * ======================================= */
 void __bea_callspec__ wrmsr_(PDISASM pMyDisasm)
 {

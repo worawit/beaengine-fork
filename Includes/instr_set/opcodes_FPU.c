@@ -2052,3 +2052,16 @@ void __bea_callspec__ DF_(PDISASM pMyDisasm)
     }
     GV.EIP_ += GV.DECALAGE_EIP+2;
 }
+
+/* =======================================
+ *      9Bh
+ * ======================================= */
+void __bea_callspec__ wait_(PDISASM pMyDisasm)
+{
+    (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+FPUCONTROL;
+    (*pMyDisasm).Instruction.MnemonicId = I_WAIT;
+    #ifndef BEA_LIGHT_DISASSEMBLY
+       (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "wait");
+    #endif
+    GV.EIP_++;
+}
