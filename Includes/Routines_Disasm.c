@@ -22,7 +22,13 @@
 int __bea_callspec__ Disasm (PDISASM pMyDisasm) {
 
     if (InitVariables(pMyDisasm)) {
-        (void) AnalyzeOpcode(pMyDisasm);
+        AnalyzeOpcode(pMyDisasm);
+        if (GV.ERROR_OPCODE) {
+            return -1;
+        }
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix) {
+            return -1;
+        }
         if (!GV.OutOfBlock) {
             FixArgSizeForMemoryOperand(pMyDisasm);
             FixREXPrefixes(pMyDisasm);
@@ -36,12 +42,7 @@ int __bea_callspec__ Disasm (PDISASM pMyDisasm) {
                     BuildCompleteInstruction(pMyDisasm);
                 }
             #endif
-            if (GV.ERROR_OPCODE) {
-                return -1;
-            }
-            else {
-                return (int) (GV.EIP_-(*pMyDisasm).EIP);
-            }
+            return (int) (GV.EIP_-(*pMyDisasm).EIP);
         }
         else {
             return 0;
@@ -63,21 +64,28 @@ void __bea_callspec__ CompleteInstructionFields (PDISASM pMyDisasm) {
  *
  * ==================================================================== */
 int __bea_callspec__ InitVariables (PDISASM pMyDisasm) {
-
+    /* TODO: check Archi must be 16,32,64 */
     (void) memset (&GV, 0, sizeof (InternalDatas));
     GV.EIP_ = (*pMyDisasm).EIP;
     GV.EIP_REAL = GV.EIP_;
     GV.EIP_VA = (*pMyDisasm).VirtualAddr;
-    if ((*pMyDisasm).SecurityBlock != 0) GV.EndOfBlock = GV.EIP_+(*pMyDisasm).SecurityBlock;
-    GV.OperandSize = 32;
-    GV.OriginalOperandSize = 32;
-    GV.AddressSize = 32;
+    if ((*pMyDisasm).SecurityBlock == 0 || (*pMyDisasm).SecurityBlock > MAX_INSTR_LENGTH)
+        GV.EndOfBlock = GV.EIP_+MAX_INSTR_LENGTH;
+    else
+        GV.EndOfBlock = GV.EIP_+(*pMyDisasm).SecurityBlock;
+    
     GV.Architecture = (*pMyDisasm).Archi;
-    (*pMyDisasm).Prefix.Number = 0;
-    if (GV.Architecture == 64) {
+    if (GV.Architecture == 32) {
+        GV.OperandSize = 32;
+        GV.OriginalOperandSize = 32;
+        GV.AddressSize = 32;
+    }
+    else if (GV.Architecture == 64) {
+        GV.OperandSize = 32;
+        GV.OriginalOperandSize = 32;
         GV.AddressSize = 64;
     }
-    if (GV.Architecture == 16) {
+    else if (GV.Architecture == 16) {
         GV.OperandSize = 16;
         GV.OriginalOperandSize = 16;
         GV.AddressSize = 16;
@@ -166,20 +174,17 @@ void __bea_callspec__ FixArgSizeForMemoryOperand (PDISASM pMyDisasm) {
  * ==================================================================== */
 void __bea_callspec__ FixREXPrefixes (PDISASM pMyDisasm) {
 
-    /* let compiler do optimization */
-    (*pMyDisasm).Prefix.REX = GV.REX;
-
 }
 
 /* ====================================================================
  *
  * ==================================================================== */
-int __bea_callspec__ AnalyzeOpcode (PDISASM pMyDisasm) {
-
-  (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)(GV.EIP_));
+void __bea_callspec__ AnalyzeOpcode (PDISASM pMyDisasm) {
+    /* no need to check security here because length always at least 1 */
+    (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)(GV.EIP_));
     (void) opcode_map1[*((UInt8*) (UIntPtr)GV.EIP_)](pMyDisasm);
-    return 1;
 }
+
 /* ====================================================================
  *
  * ==================================================================== */
@@ -502,7 +507,7 @@ void __bea_callspec__ eAX_Iv(PDISASM pMyDisasm)
            (void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.16llX",(Int64)(Int32) MyNumber);
         #endif
         (*pMyDisasm).Instruction.Immediat = (Int32) MyNumber;
-         if (GV.REX.B_ == 1) {
+         if ((*pMyDisasm).Prefix.REX.B_ == 1) {
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) strcpy ((char*) (*pMyDisasm).Argument1.ArgMnemonic, Registers64Bits[0+8]);
             #endif
@@ -524,7 +529,7 @@ void __bea_callspec__ eAX_Iv(PDISASM pMyDisasm)
            (void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.8X",(Int64) MyNumber);
         #endif
         (*pMyDisasm).Instruction.Immediat = MyNumber;
-         if (GV.REX.B_ == 1) {
+         if ((*pMyDisasm).Prefix.REX.B_ == 1) {
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) strcpy ((char*) (*pMyDisasm).Argument1.ArgMnemonic, Registers32Bits[0+8]);
             #endif
@@ -546,7 +551,7 @@ void __bea_callspec__ eAX_Iv(PDISASM pMyDisasm)
            (void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.8X", (Int64) MyNumber);
         #endif
         (*pMyDisasm).Instruction.Immediat = MyNumber;
-         if (GV.REX.B_ == 1) {
+         if ((*pMyDisasm).Prefix.REX.B_ == 1) {
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) strcpy ((char*) (*pMyDisasm).Argument1.ArgMnemonic, Registers16Bits[0+8]);
             #endif
@@ -566,7 +571,7 @@ void __bea_callspec__ eAX_Iv(PDISASM pMyDisasm)
  * ==================================================================== */
 int __bea_callspec__ Security(int len, PDISASM pMyDisasm)
 {
-    if ((GV.EndOfBlock != 0) && (GV.EIP_+(UInt64)len > GV.EndOfBlock)) {
+    if (GV.EIP_+(UInt64)len > GV.EndOfBlock) {
         GV.OutOfBlock = 1;
         return 0;
     }
@@ -624,133 +629,51 @@ size_t __bea_callspec__ CopyFormattedNumber(PDISASM pMyDisasm, char* pBuffer, co
  * ==================================================================== */
 void __bea_callspec__ FillSegmentsRegisters(PDISASM pMyDisasm)
 {
-    if (((*pMyDisasm).Prefix.LockPrefix == InUsePrefix) && !((*pMyDisasm).Argument1.ArgType & MEMORY_TYPE)) {
-        (*pMyDisasm).Prefix.LockPrefix = InvalidPrefix;
-    }
     if ((*pMyDisasm).Instruction.Category == GENERAL_PURPOSE_INSTRUCTION+STRING_INSTRUCTION) {
         (*pMyDisasm).Argument1.SegmentReg = ESReg;
         (*pMyDisasm).Argument2.SegmentReg = DSReg;
-        /* =============== override affects Arg2 */
+        /* String instruction, override affects only Arg2 (DS) */
         if ((*pMyDisasm).Argument2.ArgType & MEMORY_TYPE) {
-            if ((*pMyDisasm).Prefix.FSPrefix == InUsePrefix) {
-                (*pMyDisasm).Argument2.SegmentReg = FSReg;
-            }
-            else if ((*pMyDisasm).Prefix.GSPrefix == InUsePrefix) {
-                (*pMyDisasm).Argument2.SegmentReg = GSReg;
-            }
-            else if ((*pMyDisasm).Prefix.CSPrefix == InUsePrefix) {
-                (*pMyDisasm).Argument2.SegmentReg = CSReg;
-            }
-            else if ((*pMyDisasm).Prefix.ESPrefix == InUsePrefix) {
-                (*pMyDisasm).Argument2.SegmentReg = ESReg;
-            }
-            else if ((*pMyDisasm).Prefix.SSPrefix == InUsePrefix) {
-                (*pMyDisasm).Argument2.SegmentReg = SSReg;
-            }
-            else {
-                (*pMyDisasm).Argument2.SegmentReg = DSReg;
+            if ((*pMyDisasm).Prefix.SegmentState == InUsePrefix) {
+                (*pMyDisasm).Argument2.SegmentReg = (*pMyDisasm).Prefix.Segment;
             }
         }
     }
     else {
+        /* Argument1 is memory */
         if ((*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            /* Instruction that reference stack segment (use rBP/rSP as base register) */
             if (((*pMyDisasm).Argument1.Memory.BaseRegister == REG4) || ((*pMyDisasm).Argument1.Memory.BaseRegister == REG5)) {
                 (*pMyDisasm).Argument1.SegmentReg = SSReg;
-                /* ========== override is invalid here */
+                /* ========== override is invalid here, but override */
                 if ((*pMyDisasm).Argument2.ArgType != MEMORY_TYPE) {
-                    if ((*pMyDisasm).Prefix.FSPrefix == InUsePrefix) {
-                        (*pMyDisasm).Argument1.SegmentReg = FSReg;
-                        (*pMyDisasm).Prefix.FSPrefix = InvalidPrefix;
-                    }
-                    else if ((*pMyDisasm).Prefix.GSPrefix == InUsePrefix) {
-                        (*pMyDisasm).Argument1.SegmentReg = GSReg;
-                        (*pMyDisasm).Prefix.GSPrefix = InvalidPrefix;
-                    }
-                    else if ((*pMyDisasm).Prefix.CSPrefix == InUsePrefix) {
-                        (*pMyDisasm).Argument1.SegmentReg = CSReg;
-                        (*pMyDisasm).Prefix.CSPrefix = InvalidPrefix;
-                    }
-                    else if ((*pMyDisasm).Prefix.DSPrefix == InUsePrefix) {
-                        (*pMyDisasm).Argument1.SegmentReg = DSReg;
-                        (*pMyDisasm).Prefix.DSPrefix = InvalidPrefix;
-                    }
-                    else if ((*pMyDisasm).Prefix.ESPrefix == InUsePrefix) {
-                        (*pMyDisasm).Argument1.SegmentReg = ESReg;
-                        (*pMyDisasm).Prefix.ESPrefix = InvalidPrefix;
-                    }
-                    else if ((*pMyDisasm).Prefix.SSPrefix == InUsePrefix) {
-                        (*pMyDisasm).Argument1.SegmentReg = SSReg;
-                        (*pMyDisasm).Prefix.SSPrefix = InvalidPrefix;
-                    }
+                    /*(*pMyDisasm).Prefix.SegmentState = InvalidPrefix;*/
+                    (*pMyDisasm).Argument1.SegmentReg = (*pMyDisasm).Prefix.Segment;
                 }
             }
             else {
                 (*pMyDisasm).Argument1.SegmentReg = DSReg;
                 /* ============= test if there is override */
-                if ((*pMyDisasm).Prefix.FSPrefix == InUsePrefix) {
-                    (*pMyDisasm).Argument1.SegmentReg = FSReg;
-                }
-                else if ((*pMyDisasm).Prefix.GSPrefix == InUsePrefix) {
-                    (*pMyDisasm).Argument1.SegmentReg = GSReg;
-                }
-                else if ((*pMyDisasm).Prefix.CSPrefix == InUsePrefix) {
-                    (*pMyDisasm).Argument1.SegmentReg = CSReg;
-                }
-                else if ((*pMyDisasm).Prefix.ESPrefix == InUsePrefix) {
-                    (*pMyDisasm).Argument1.SegmentReg = ESReg;
-                }
-                else if ((*pMyDisasm).Prefix.SSPrefix == InUsePrefix) {
-                    (*pMyDisasm).Argument1.SegmentReg = SSReg;
+                if ((*pMyDisasm).Prefix.SegmentState == InUsePrefix) {
+                    (*pMyDisasm).Argument1.SegmentReg = (*pMyDisasm).Prefix.Segment;
                 }
             }
         }
 
+        /* Argument2 is memory */
         if ((*pMyDisasm).Argument2.ArgType & MEMORY_TYPE) {
+            /* Instruction that reference stack segment (use rBP/rSP as base register) */
             if (((*pMyDisasm).Argument2.Memory.BaseRegister == REG4) || ((*pMyDisasm).Argument2.Memory.BaseRegister == REG5)) {
                 (*pMyDisasm).Argument2.SegmentReg = SSReg;
                 /* ========== override is invalid here */
-                if ((*pMyDisasm).Prefix.FSPrefix == InUsePrefix) {
-                    (*pMyDisasm).Argument2.SegmentReg = FSReg;
-                    (*pMyDisasm).Prefix.FSPrefix = InvalidPrefix;
-                }
-                else if ((*pMyDisasm).Prefix.GSPrefix == InUsePrefix) {
-                    (*pMyDisasm).Argument2.SegmentReg = GSReg;
-                    (*pMyDisasm).Prefix.GSPrefix = InvalidPrefix;
-                }
-                else if ((*pMyDisasm).Prefix.CSPrefix == InUsePrefix) {
-                    (*pMyDisasm).Argument2.SegmentReg = CSReg;
-                    (*pMyDisasm).Prefix.CSPrefix = InvalidPrefix;
-                }
-                else if ((*pMyDisasm).Prefix.DSPrefix == InUsePrefix) {
-                    (*pMyDisasm).Argument2.SegmentReg = DSReg;
-                    (*pMyDisasm).Prefix.DSPrefix = InvalidPrefix;
-                }
-                else if ((*pMyDisasm).Prefix.ESPrefix == InUsePrefix) {
-                    (*pMyDisasm).Argument2.SegmentReg = ESReg;
-                    (*pMyDisasm).Prefix.ESPrefix = InvalidPrefix;
-                }
-                else if ((*pMyDisasm).Prefix.SSPrefix == InUsePrefix) {
-                    (*pMyDisasm).Argument2.SegmentReg = SSReg;
-                    (*pMyDisasm).Prefix.SSPrefix = InvalidPrefix;
-                }
+                (*pMyDisasm).Argument2.SegmentReg = (*pMyDisasm).Prefix.Segment;
+                /*(*pMyDisasm).Prefix.SegmentState = InvalidPrefix;*/
             }
             else {
                 (*pMyDisasm).Argument2.SegmentReg = DSReg;
                 /* ============= test if there is override */
-                if ((*pMyDisasm).Prefix.FSPrefix == InUsePrefix) {
-                    (*pMyDisasm).Argument2.SegmentReg = FSReg;
-                }
-                else if ((*pMyDisasm).Prefix.GSPrefix == InUsePrefix) {
-                    (*pMyDisasm).Argument2.SegmentReg = GSReg;
-                }
-                else if ((*pMyDisasm).Prefix.CSPrefix == InUsePrefix) {
-                    (*pMyDisasm).Argument2.SegmentReg = CSReg;
-                }
-                else if ((*pMyDisasm).Prefix.ESPrefix == InUsePrefix) {
-                    (*pMyDisasm).Argument2.SegmentReg = ESReg;
-                }
-                else if ((*pMyDisasm).Prefix.SSPrefix == InUsePrefix) {
-                    (*pMyDisasm).Argument2.SegmentReg = SSReg;
+                if ((*pMyDisasm).Prefix.SegmentState == InUsePrefix) {
+                    (*pMyDisasm).Argument2.SegmentReg = (*pMyDisasm).Prefix.Segment;
                 }
             }
         }
@@ -766,17 +689,23 @@ void __bea_callspec__ BuildCompleteInstruction(PDISASM pMyDisasm)
     size_t i = 0;
     /* =============== Copy Instruction Mnemonic */
 
-    if ((*pMyDisasm).Prefix.RepnePrefix == InUsePrefix) {
+    if ((*pMyDisasm).Prefix.RepeatState == InUsePrefix) {
+        if ((*pMyDisasm).Prefix.Repeat == PrefixRepe) {
+            (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "repe ");
+            i = strlen((char*) &(*pMyDisasm).CompleteInstr);
+        }
+        else if ((*pMyDisasm).Prefix.Repeat == PrefixRepne) {
             (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "repne ");
             i = strlen((char*) &(*pMyDisasm).CompleteInstr);
-    }
-    if ((*pMyDisasm).Prefix.RepPrefix == InUsePrefix) {
+        }
+        else if ((*pMyDisasm).Prefix.Repeat == PrefixRep) {
             (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "rep ");
             i = strlen((char*) &(*pMyDisasm).CompleteInstr);
+        }
     }
-    if ((*pMyDisasm).Prefix.LockPrefix == InUsePrefix) {
-            (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "lock ");
-            i = strlen((char*) &(*pMyDisasm).CompleteInstr);
+    else if ((*pMyDisasm).Prefix.LockState == InUsePrefix) {
+        (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "lock ");
+        i = strlen((char*) &(*pMyDisasm).CompleteInstr);
     }
     (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, (char*) &(*pMyDisasm).Instruction.Mnemonic);
     i = strlen((char*) &(*pMyDisasm).CompleteInstr);
@@ -795,7 +724,7 @@ void __bea_callspec__ BuildCompleteInstruction(PDISASM pMyDisasm)
         if (GV.SYNTAX_ == NasmSyntax) {
             (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
             i = strlen((char*) &(*pMyDisasm).CompleteInstr);
-            if ((GV.SEGMENTREGS != 0) || (GV.SEGMENTFS != 0)){
+            if ((GV.SEGMENTREGS != 0) || ((*pMyDisasm).Prefix.SegmentState == InUsePrefix)){
                 (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "[");
                 i++;
                 if (GV.SEGMENTREGS != 0) {
@@ -820,7 +749,7 @@ void __bea_callspec__ BuildCompleteInstruction(PDISASM pMyDisasm)
                 (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, GoAsmPrefixes[GV.MemDecoration-1]);
                 i = strlen((char*) &(*pMyDisasm).CompleteInstr);
             }
-            if ((GV.SEGMENTREGS != 0) || (GV.SEGMENTFS != 0)){
+            if ((GV.SEGMENTREGS != 0) || ((*pMyDisasm).Prefix.SegmentState == InUsePrefix)){
                 if (GV.SEGMENTREGS != 0) {
                     (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, SegmentRegs[(*pMyDisasm).Argument1.SegmentReg]);
                 }
@@ -860,7 +789,7 @@ void __bea_callspec__ BuildCompleteInstruction(PDISASM pMyDisasm)
         if (GV.SYNTAX_ == NasmSyntax) {
             (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, NasmPrefixes[GV.MemDecoration-1]);
             i = strlen((char*) &(*pMyDisasm).CompleteInstr);
-            if ((GV.SEGMENTREGS != 0) || (GV.SEGMENTFS != 0)){
+            if ((GV.SEGMENTREGS != 0) || ((*pMyDisasm).Prefix.SegmentState == InUsePrefix)){
                 (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "[");
                 i++;
                 if (GV.SEGMENTREGS != 0) {
@@ -885,7 +814,7 @@ void __bea_callspec__ BuildCompleteInstruction(PDISASM pMyDisasm)
                 (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, GoAsmPrefixes[GV.MemDecoration-1]);
                 i = strlen((char*) &(*pMyDisasm).CompleteInstr);
             }
-            if ((GV.SEGMENTREGS != 0) || (GV.SEGMENTFS != 0)){
+            if ((GV.SEGMENTREGS != 0) || ((*pMyDisasm).Prefix.SegmentState == InUsePrefix)){
                 if (GV.SEGMENTREGS != 0) {
                     (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, SegmentRegs[(*pMyDisasm).Argument2.SegmentReg]);
                 }
@@ -1023,7 +952,7 @@ void __bea_callspec__ BuildCompleteInstructionATSyntax(PDISASM pMyDisasm)
                 i++;
             }
             else {
-                if ((GV.SEGMENTREGS != 0) || (GV.SEGMENTFS != 0)){
+                if ((GV.SEGMENTREGS != 0) || ((*pMyDisasm).Prefix.SegmentState == InUsePrefix)){
                     (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "%");
                     i++;
                     if (GV.SEGMENTREGS != 0) {
@@ -1066,7 +995,7 @@ void __bea_callspec__ BuildCompleteInstructionATSyntax(PDISASM pMyDisasm)
                 i++;
             }
             else {
-                if ((GV.SEGMENTREGS != 0) || (GV.SEGMENTFS != 0)){
+                if ((GV.SEGMENTREGS != 0) || ((*pMyDisasm).Prefix.SegmentState == InUsePrefix)){
                     (void) strcpy ((char*) &(*pMyDisasm).CompleteInstr+i, "%");
                     i++;
                     if (GV.SEGMENTREGS != 0) {

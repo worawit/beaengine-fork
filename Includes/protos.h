@@ -20,6 +20,9 @@
 /* ====================================== Routines_MODRM */
 void __bea_callspec__ MOD_RM(ARGTYPE*, PDISASM);
 void __bea_callspec__ Reg_Opcode(ARGTYPE*, PDISASM);
+void __bea_callspec__ RegSeg_Opcode(ARGTYPE*, PDISASM);
+void __bea_callspec__ RegCR_Opcode(ARGTYPE*, PDISASM);
+void __bea_callspec__ RegDR_Opcode(ARGTYPE*, PDISASM);
 
 void __bea_callspec__ Addr_EAX(ARGTYPE*, PDISASM);
 void __bea_callspec__ Addr_ECX(ARGTYPE*, PDISASM);
@@ -79,7 +82,7 @@ void __bea_callspec__ GvEw(PDISASM);
 void __bea_callspec__ GbEb(PDISASM);
 void __bea_callspec__ ALIb(PDISASM);
 void __bea_callspec__ eAX_Iv(PDISASM);
-int __bea_callspec__ AnalyzeOpcode (PDISASM);
+void __bea_callspec__ AnalyzeOpcode (PDISASM);
 int __bea_callspec__ Security(int, PDISASM);
 void __bea_callspec__ CalculateRelativeAddress(UInt64 *, Int64, PDISASM);
 size_t __bea_callspec__ CopyFormattedNumber(PDISASM, char*, const char*, Int64);

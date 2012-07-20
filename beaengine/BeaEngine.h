@@ -18,7 +18,8 @@ namespace BeaEngine {
 	#define BEA_API
 #endif
 
-
+/* maximum valid instruction length */
+#define MAX_INSTR_LENGTH 15
 #define INSTRUCT_LENGTH 64
 
 #pragma pack(1)
@@ -27,28 +28,66 @@ typedef struct {
    UInt8 R_;
    UInt8 X_;
    UInt8 B_;
-   UInt8 state;
 } REX_Struct  ;
 #pragma pack()
 
+/* 
+ * In Intel document, maximum number of prefix is 4. But in reality 
+ * maximum number of prefix is limited by maximum instruction length.
+ * So mamimum number of prefix is 14 bytes (VEX is not 1 byte prefix).
+ * 
+ * If prefix in a same group appear more than once, pick the latest.
+ * In intel doc, the LOCK prefix is in same group as REP prefix.
+ * But LOCK prefix is not overridden by REP prefix. So prefix group should
+ * be same as mentioned in AMD doc (5 legacy prefix groups).
+ * 
+ * For REX prefix (this is only Intel CPU. don't have AMD cpu for testing)
+ * if it is followed by other prefixes, it has no effect.
+ * But it is still count as one prefix.
+ * 
+ * If LOCK prefix is used with invalid instruction or WRITE argument is 
+ * not memory, it causes an exception. Should it be fail decode?
+ * 
+ * REP and REPE prefix are same value. REP is used on INSx, MOVSx, OUTSx,
+ * LODSx, STOSx. REPE is used on CMPSx, SCASx.
+ * 
+ * On 64-bit mode, the CS/DS/ES/SS segment overrides are ignored.
+ * For example, "64 2E" (FS then SS), segment prefix is FS.
+ * 
+ * Mandatory prefix can be anywhere. OperandSize prefix is ignored if 
+ * there is a Repeat prefix. For example
+ *   "660f5800"       => addpd  xmm0, xmmword ptr [rax]
+ *   "f20f5800"       => addsd  xmm0, qword ptr [rax]
+ *   "f30f5800"       => addss  xmm0, dword ptr [rax]
+ *   "f2660f5800"     => addsd  xmm0, qword ptr [rax]
+ *   "f2f3660f5800"   => addss  xmm0, dword ptr [rax]
+ *   "f3f2663e0f5800" => addsd  xmm0, qword ptr [rax]
+ * 
+ * !!! What if OperandSize prefix is mandatory, should effective operand size
+ *     be restored as if OperandSize prefix does not exist?
+ * 
+ * * Below is struct for keeping only effective prefix for each group. *
+ */
 #pragma pack(1)
 typedef struct {
-   int Number;
-   int NbUndefined;
-   UInt8 LockPrefix;
-   UInt8 OperandSize;
-   UInt8 AddressSize;
-   UInt8 RepnePrefix;
-   UInt8 RepPrefix;
-   UInt8 FSPrefix;
-   UInt8 SSPrefix;
-   UInt8 GSPrefix;
-   UInt8 ESPrefix;
-   UInt8 CSPrefix;
-   UInt8 DSPrefix;
-   UInt8 BranchTaken;
-   UInt8 BranchNotTaken;
-   REX_Struct REX;
+    int Number;
+    /* REX */
+    REX_Struct REX;
+    UInt8 REXState;
+    /* Lock group */
+    UInt8 LockState;
+    /* Rep group */
+    UInt8 Repeat;
+    UInt8 RepeatState;
+    /* Segment/BranchHints group */
+    UInt8 Segment;
+    UInt8 SegmentState;
+    UInt8 BranchHints;
+    UInt8 BranchHintsState;
+    /* Operand Size group */
+    UInt8 OperandSizeState;
+    /* Address Size group */
+    UInt8 AddressSizeState;
 } PREFIXINFO  ;
 #pragma pack()
 
@@ -113,6 +152,7 @@ typedef struct {
    UIntPtr EIP_;
    UInt64 EIP_VA;
    UIntPtr EIP_REAL;
+   UInt64 EndOfBlock;
    Int32 OriginalOperandSize;
    Int32 OperandSize;
    Int32 MemDecoration;
@@ -124,27 +164,18 @@ typedef struct {
    Int32 BASE_;
    Int32 MMX_;
    Int32 SSE_;
-   Int32 CR_;
-   Int32 DR_;
-   Int32 SEG_;
    Int32 REGOPCODE;
    UInt32 DECALAGE_EIP;
    Int32 FORMATNUMBER;
    Int32 SYNTAX_;
-   UInt64 EndOfBlock;
    Int32 RelativeAddress;
    UInt32 Architecture;
    Int32 ImmediatSize;
-   Int32 NB_PREFIX;
-   Int32 PrefRepe;
-   Int32 PrefRepne;
    UInt32 SEGMENTREGS;
-   UInt32 SEGMENTFS;
    Int32 third_arg;
    Int32 TAB_;
    Int32 ERROR_OPCODE;
    Int32 OutOfBlock;
-   REX_Struct REX;
 } InternalDatas;
 #pragma pack()
 
@@ -174,11 +205,28 @@ typedef struct _Disasm {
 #define CSReg 5
 #define SSReg 6
 
-#define InvalidPrefix 4
-#define SuperfluousPrefix 2
-#define NotUsedPrefix 0
-#define MandatoryPrefix 8
-#define InUsePrefix 1
+enum PREFIX_TYPE
+{
+    NotUsedPrefix = 0,
+    InUsePrefix = 1,
+    SuperfluousPrefix = 2,
+    InvalidPrefix = 4,
+    MandatoryPrefix = 8,
+    
+    PrefixRepe = 1,
+    PrefixRepne,
+    PrefixRep,
+    
+    PrefixES = ESReg,
+    PrefixDS = DSReg,
+    PrefixFS = FSReg,
+    PrefixGS = GSReg,
+    PrefixCS = CSReg,
+    PrefixSS = SSReg,
+    
+    PrefixBranchTaken = 1,
+    PrefixBranchNotTaken,
+};
 
 #define LowPosition 0
 #define HighPosition 1
@@ -981,11 +1029,13 @@ enum MNEMONIC_ENUM { MNEMONIC_MAP_DEF };
 #undef MNEMONIC_DEF
 #define MNEMONIC_DEF(id, name) name
 
+#define NUM_MNEMONIC_ID (I_XSETBV+1)
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-BEA_API const__ char MNEMONICS[][16];
+BEA_API const__ char MNEMONICS[NUM_MNEMONIC_ID][16];
 BEA_API int __bea_callspec__ Disasm (LPDISASM pDisAsm);
 BEA_API const__ char* __bea_callspec__ BeaEngineVersion (void);
 BEA_API const__ char* __bea_callspec__ BeaEngineRevision (void);

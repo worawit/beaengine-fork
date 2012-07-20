@@ -22,9 +22,9 @@
 void __bea_callspec__ aesimc(PDISASM pMyDisasm)
 {
     /* ========== 0x66 */
-    if (GV.OperandSize == 16) {
+    if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix) {
         GV.OperandSize = GV.OriginalOperandSize;
-        (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
+        (*pMyDisasm).Prefix.OperandSizeState = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = AES_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_AESIMC;
@@ -46,9 +46,9 @@ void __bea_callspec__ aesimc(PDISASM pMyDisasm)
 void __bea_callspec__ aesenc(PDISASM pMyDisasm)
 {
     /* ========== 0x66 */
-    if (GV.OperandSize == 16) {
+    if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix) {
         GV.OperandSize = GV.OriginalOperandSize;
-        (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
+        (*pMyDisasm).Prefix.OperandSizeState = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = AES_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_AESENC;
@@ -71,9 +71,9 @@ void __bea_callspec__ aesenc(PDISASM pMyDisasm)
 void __bea_callspec__ aesenclast(PDISASM pMyDisasm)
 {
     /* ========== 0x66 */
-    if (GV.OperandSize == 16) {
+    if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix) {
         GV.OperandSize = GV.OriginalOperandSize;
-        (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
+        (*pMyDisasm).Prefix.OperandSizeState = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = AES_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_AESENCLAST;
@@ -96,9 +96,9 @@ void __bea_callspec__ aesenclast(PDISASM pMyDisasm)
 void __bea_callspec__ aesdec(PDISASM pMyDisasm)
 {
     /* ========== 0x66 */
-    if (GV.OperandSize == 16) {
+    if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix) {
         GV.OperandSize = GV.OriginalOperandSize;
-        (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
+        (*pMyDisasm).Prefix.OperandSizeState = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = AES_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_AESDEC;
@@ -121,9 +121,9 @@ void __bea_callspec__ aesdec(PDISASM pMyDisasm)
 void __bea_callspec__ aesdeclast(PDISASM pMyDisasm)
 {
     /* ========== 0x66 */
-    if (GV.OperandSize == 16) {
+    if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix) {
         GV.OperandSize = GV.OriginalOperandSize;
-        (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
+        (*pMyDisasm).Prefix.OperandSizeState = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = AES_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_AESDECLAST;
@@ -146,9 +146,9 @@ void __bea_callspec__ aesdeclast(PDISASM pMyDisasm)
 void __bea_callspec__ aeskeygen(PDISASM pMyDisasm)
 {
     /* ========== 0x66 */
-    if (GV.OperandSize == 16) {
+    if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix) {
         GV.OperandSize = GV.OriginalOperandSize;
-        (*pMyDisasm).Prefix.OperandSize = MandatoryPrefix;
+        (*pMyDisasm).Prefix.OperandSizeState = MandatoryPrefix;
         GV.MemDecoration = Arg2dqword;
         (*pMyDisasm).Instruction.Category = AES_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_AESKEYGENASSIST;

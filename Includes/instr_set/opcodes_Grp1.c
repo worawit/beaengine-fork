@@ -24,9 +24,6 @@ void __bea_callspec__ G1_EbIb(PDISASM pMyDisasm)
     GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
     EbIb(pMyDisasm);
     if (GV.REGOPCODE == 0) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_ADD;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -34,11 +31,11 @@ void __bea_callspec__ G1_EbIb(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_ADD);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
     else if (GV.REGOPCODE == 1) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_OR;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -46,11 +43,11 @@ void __bea_callspec__ G1_EbIb(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_OR);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
     else if (GV.REGOPCODE == 2) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_ADC;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -58,11 +55,11 @@ void __bea_callspec__ G1_EbIb(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_ADC);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
     else if (GV.REGOPCODE == 3) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_SBB;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -70,11 +67,11 @@ void __bea_callspec__ G1_EbIb(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_SBB);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
     else if (GV.REGOPCODE == 4) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_AND;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -82,11 +79,11 @@ void __bea_callspec__ G1_EbIb(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_AND);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
     else if (GV.REGOPCODE == 5) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_SUB;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -94,12 +91,12 @@ void __bea_callspec__ G1_EbIb(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_SUB);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
 
     else if (GV.REGOPCODE == 6) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_XOR;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -107,6 +104,9 @@ void __bea_callspec__ G1_EbIb(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_XOR);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
 
     else if (GV.REGOPCODE == 7) {
@@ -141,9 +141,6 @@ void __bea_callspec__ G1_EvIv(PDISASM pMyDisasm)
     GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
     EvIv(pMyDisasm);
     if (GV.REGOPCODE == 0) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_ADD;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -151,11 +148,11 @@ void __bea_callspec__ G1_EvIv(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_ADD);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
     else if (GV.REGOPCODE == 1) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_OR;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -163,11 +160,11 @@ void __bea_callspec__ G1_EvIv(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_OR);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
     else if (GV.REGOPCODE == 2) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_ADC;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -175,11 +172,11 @@ void __bea_callspec__ G1_EvIv(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_ADC);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
     else if (GV.REGOPCODE == 3) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_SBB;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -187,11 +184,11 @@ void __bea_callspec__ G1_EvIv(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_SBB);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
     else if (GV.REGOPCODE == 4) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_AND;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -199,11 +196,11 @@ void __bea_callspec__ G1_EvIv(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_AND);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
     else if (GV.REGOPCODE == 5) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_SUB;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -211,12 +208,12 @@ void __bea_callspec__ G1_EvIv(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_SUB);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
 
     else if (GV.REGOPCODE == 6) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_XOR;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -224,6 +221,9 @@ void __bea_callspec__ G1_EvIv(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_XOR);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
 
     else if (GV.REGOPCODE == 7) {
@@ -245,9 +245,6 @@ void __bea_callspec__ G1_EvIb(PDISASM pMyDisasm)
     GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
     EvIb(pMyDisasm);
     if (GV.REGOPCODE == 0) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_ADD;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -255,11 +252,11 @@ void __bea_callspec__ G1_EvIb(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_ADD);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
     else if (GV.REGOPCODE == 1) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_OR;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -267,11 +264,11 @@ void __bea_callspec__ G1_EvIb(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_OR);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
     else if (GV.REGOPCODE == 2) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_ADC;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -279,11 +276,11 @@ void __bea_callspec__ G1_EvIb(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_ADC);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
     else if (GV.REGOPCODE == 3) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_SBB;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -291,11 +288,11 @@ void __bea_callspec__ G1_EvIb(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_SBB);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
     else if (GV.REGOPCODE == 4) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_AND;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -303,11 +300,11 @@ void __bea_callspec__ G1_EvIb(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_AND);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
     else if (GV.REGOPCODE == 5) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_SUB;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -315,12 +312,12 @@ void __bea_callspec__ G1_EvIb(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_SUB);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
 
     else if (GV.REGOPCODE == 6) {
-        if ((*pMyDisasm).Prefix.LockPrefix == InvalidPrefix) {
-            (*pMyDisasm).Prefix.LockPrefix = InUsePrefix;
-        }
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+LOGICAL_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_XOR;
         #ifndef BEA_LIGHT_DISASSEMBLY
@@ -328,6 +325,9 @@ void __bea_callspec__ G1_EvIb(PDISASM pMyDisasm)
         #endif
         FillFlags(pMyDisasm, EFLAGS_XOR);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
+        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix && (*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) {
+            (*pMyDisasm).Prefix.LockState = InUsePrefix;
+        }
     }
 
     else if (GV.REGOPCODE == 7) {
