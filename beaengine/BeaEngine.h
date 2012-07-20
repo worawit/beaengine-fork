@@ -540,6 +540,7 @@ enum SPECIAL_INFO
     MNEMONIC_DEF( I_FCMOVNE, "fcmovne" ), \
     MNEMONIC_DEF( I_FCMOVNU, "fcmovnu" ), \
     MNEMONIC_DEF( I_FCMOVU, "fcmovu" ), \
+    MNEMONIC_DEF( I_FCLEX, "fclex" ), \
     MNEMONIC_DEF( I_FCOM, "fcom" ), \
     MNEMONIC_DEF( I_FCOM2, "fcom2" ), \
     MNEMONIC_DEF( I_FCOMI, "fcomi" ), \
@@ -565,6 +566,7 @@ enum SPECIAL_INFO
     MNEMONIC_DEF( I_FILD, "fild" ), \
     MNEMONIC_DEF( I_FIMUL, "fimul" ), \
     MNEMONIC_DEF( I_FINCSTP, "fincstp" ), \
+    MNEMONIC_DEF( I_FINIT, "finit" ), \
     MNEMONIC_DEF( I_FIST, "fist" ), \
     MNEMONIC_DEF( I_FISTP, "fistp" ), \
     MNEMONIC_DEF( I_FISTTP, "fisttp" ), \
@@ -587,7 +589,11 @@ enum SPECIAL_INFO
     MNEMONIC_DEF( I_FNENI, "fneni" ), \
     MNEMONIC_DEF( I_FNINIT, "fninit" ), \
     MNEMONIC_DEF( I_FNOP, "fnop" ), \
+    MNEMONIC_DEF( I_FNSAVE, "fnsave" ), \
     MNEMONIC_DEF( I_FNSETPM, "fnsetpm" ), \
+    MNEMONIC_DEF( I_FNSTCW, "fnstcw" ), \
+    MNEMONIC_DEF( I_FNSTENV, "fnstenv" ), \
+    MNEMONIC_DEF( I_FNSTSW, "fnstsw" ), \
     MNEMONIC_DEF( I_FPATAN, "fpatan" ), \
     MNEMONIC_DEF( I_FPREM, "fprem" ), \
     MNEMONIC_DEF( I_FPREM1, "fprem1" ), \
