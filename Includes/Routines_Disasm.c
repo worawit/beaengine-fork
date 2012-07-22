@@ -26,9 +26,6 @@ int __bea_callspec__ Disasm (PDISASM pMyDisasm) {
         if (GV.ERROR_OPCODE) {
             return -1;
         }
-        if ((*pMyDisasm).Prefix.LockState == InvalidPrefix) {
-            return -1;
-        }
         if (!GV.OutOfBlock) {
             FixArgSizeForMemoryOperand(pMyDisasm);
             FixREXPrefixes(pMyDisasm);
