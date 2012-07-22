@@ -83,7 +83,7 @@
     EFLAGS_DEF( EFLAGS_CLD,     {0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , RE_, 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_CLI,     {0  , 0  , 0  , 0  , 0  , 0  , 0  , RE_, 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_CLTS,    {0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
-    EFLAGS_DEF( EFLAGS_CMC,     {0  , 0  , 0  , 0  , 0  , MO_, 0  , 0  , 0  , 0  , 0, 0} ), \
+    EFLAGS_DEF( EFLAGS_CMC,     {0  , 0  , 0  , 0  , 0  , MO_|TE_, 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_CMP,     {MO_, MO_, MO_, MO_, MO_, MO_, 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_CMPS,    {MO_, MO_, MO_, MO_, MO_, MO_, 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_CMPXCHG, {MO_, MO_, MO_, MO_, MO_, MO_, 0  , 0  , 0  , 0  , 0, 0} ), \
@@ -164,6 +164,7 @@
     EFLAGS_DEF( EFLAGS_POPCNT,  {RE_, RE_, MO_, RE_, RE_, RE_, 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_POPF,    {PR_, PR_, PR_, PR_, PR_, PR_, PR_, PR_, PR_, PR_, 0, 0} ), \
     EFLAGS_DEF( EFLAGS_PUSH,    {0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \
+    EFLAGS_DEF( EFLAGS_PUSHF,   {SC_, SC_, SC_, SC_, SC_, SC_, SC_, SC_, SC_, SC_, 0, 0} ), \
     EFLAGS_DEF( EFLAGS_ROTC1,   {MO_, 0  , 0  , 0  , 0  , MO_, 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_ROTC,    {UN_, 0  , 0  , 0  , 0  , MO_, 0  , 0  , 0  , 0  , 0, 0} ), \
     EFLAGS_DEF( EFLAGS_RDMSR,   {0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0  , 0, 0} ), \

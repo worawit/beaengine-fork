@@ -21,7 +21,7 @@
  * ==================================================================== */
 void __bea_callspec__ G6_(PDISASM pMyDisasm)
 {
-    Int32 OperandSizeOld = 0;
+    Int32 OperandSizeOld;
 
     (*pMyDisasm).Instruction.Category = SYSTEM_INSTRUCTION;
     OperandSizeOld = GV.OperandSize;
@@ -94,8 +94,6 @@ void __bea_callspec__ G6_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "verr");
         #endif
-        (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+REGISTER_TYPE+SPECIAL_REG+REG0;
-        (*pMyDisasm).Argument2.ArgSize = 16;
         GV.OperandSize = OperandSizeOld;
         GV.EIP_+= GV.DECALAGE_EIP+2;
     }
@@ -106,8 +104,6 @@ void __bea_callspec__ G6_(PDISASM pMyDisasm)
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "verw");
         #endif
-        (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+REGISTER_TYPE+SPECIAL_REG+REG0;
-        (*pMyDisasm).Argument2.ArgSize = 16;
         GV.OperandSize = OperandSizeOld;
         GV.EIP_+= GV.DECALAGE_EIP+2;
     }

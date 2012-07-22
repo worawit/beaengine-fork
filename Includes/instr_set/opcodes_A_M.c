@@ -1285,8 +1285,6 @@ void __bea_callspec__ cmc_(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmc");
     #endif
-    (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+SPECIAL_REG+REG0;
-    (*pMyDisasm).Argument1.ArgSize = 1;
     FillFlags(pMyDisasm, EFLAGS_CMC);
     GV.EIP_++;
 }
@@ -1791,12 +1789,10 @@ void __bea_callspec__ cwde_(PDISASM pMyDisasm)
 void __bea_callspec__ clc_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+FLAG_CONTROL_INSTRUCTION;
-    (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+SPECIAL_REG+REG0;
     (*pMyDisasm).Instruction.MnemonicId = I_CLC;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "clc");
     #endif
-    (*pMyDisasm).Argument1.ArgSize = 1;
     FillFlags(pMyDisasm, EFLAGS_CLC);
     GV.EIP_++;
 }
@@ -1807,12 +1803,10 @@ void __bea_callspec__ clc_(PDISASM pMyDisasm)
 void __bea_callspec__ cld_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+FLAG_CONTROL_INSTRUCTION;
-    (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+SPECIAL_REG+REG0;
     (*pMyDisasm).Instruction.MnemonicId = I_CLD;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cld");
     #endif
-    (*pMyDisasm).Argument1.ArgSize = 1;
     FillFlags(pMyDisasm, EFLAGS_CLD);
     GV.EIP_++;
 }
@@ -1823,12 +1817,10 @@ void __bea_callspec__ cld_(PDISASM pMyDisasm)
 void __bea_callspec__ cli_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+FLAG_CONTROL_INSTRUCTION;
-    (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+SPECIAL_REG+REG0;
     (*pMyDisasm).Instruction.MnemonicId = I_CLI;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cli");
     #endif
-    (*pMyDisasm).Argument1.ArgSize = 1;
     FillFlags(pMyDisasm, EFLAGS_CLI);
     GV.EIP_++;
 }
@@ -1839,12 +1831,14 @@ void __bea_callspec__ cli_(PDISASM pMyDisasm)
 void __bea_callspec__ cpuid_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+MISCELLANEOUS_INSTRUCTION;
-    (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+GENERAL_REG+REG0+REG1+REG2+REG3;
     (*pMyDisasm).Instruction.MnemonicId = I_CPUID;
+    (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+GENERAL_REG+REG0;
+    (*pMyDisasm).Argument1.ArgSize = 32;
+    (*pMyDisasm).Argument1.AccessMode = READ;
+    (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG0+REG1+REG2+REG3;
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cpuid");
     #endif
-    (*pMyDisasm).Argument1.ArgSize = 32;
     GV.EIP_++;
 }
 
@@ -1853,7 +1847,6 @@ void __bea_callspec__ cpuid_(PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ daa_(PDISASM pMyDisasm)
 {
-
     if (GV.Architecture == 64) {
         FailDecode(pMyDisasm);
     }
@@ -1877,7 +1870,6 @@ void __bea_callspec__ daa_(PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ das_(PDISASM pMyDisasm)
 {
-
     if (GV.Architecture == 64) {
         FailDecode(pMyDisasm);
     }
@@ -4766,8 +4758,7 @@ void __bea_callspec__ lahf_(PDISASM pMyDisasm)
     #endif
     (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+GENERAL_REG+REG0;
     (*pMyDisasm).Argument1.ArgSize = 8;
-    (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+REGISTER_TYPE+SPECIAL_REG+REG0;
-    (*pMyDisasm).Argument2.ArgSize = 8;
+    (*pMyDisasm).Argument1.ArgPosition = HighPosition;
     GV.EIP_++;
 }
 
@@ -4913,14 +4904,16 @@ void __bea_callspec__ lodsb_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+MEMORY_TYPE;
     (*pMyDisasm).Argument2.Memory.BaseRegister = REG6;
     (*pMyDisasm).Argument2.ArgSize = 8;
-    (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG6;
     GV.EIP_++;
     FillFlags(pMyDisasm, EFLAGS_LODS);
     
     if ((*pMyDisasm).Prefix.Repeat == PrefixRepe) {
         (*pMyDisasm).Prefix.Repeat = PrefixRep;
         (*pMyDisasm).Prefix.RepeatState = InUsePrefix;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs |= REG1;
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG6+REG1;
+    }
+    else {
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG6;
     }
 }
 
@@ -4940,9 +4933,6 @@ void __bea_callspec__ lodsw_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+MEMORY_TYPE;
         (*pMyDisasm).Argument2.Memory.BaseRegister = REG6;
         (*pMyDisasm).Argument2.ArgSize = 64;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG6;
-        GV.EIP_++;
-        FillFlags(pMyDisasm, EFLAGS_LODS);
     }
     else if (GV.OperandSize == 32) {
         (*pMyDisasm).Instruction.MnemonicId = I_LODSD;
@@ -4954,9 +4944,6 @@ void __bea_callspec__ lodsw_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+MEMORY_TYPE;
         (*pMyDisasm).Argument2.Memory.BaseRegister = REG6;
         (*pMyDisasm).Argument2.ArgSize = 32;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG6;
-        GV.EIP_++;
-        FillFlags(pMyDisasm, EFLAGS_LODS);
     }
     else {
         (*pMyDisasm).Instruction.MnemonicId = I_LODSW;
@@ -4968,15 +4955,17 @@ void __bea_callspec__ lodsw_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+MEMORY_TYPE;
         (*pMyDisasm).Argument2.Memory.BaseRegister = REG6;
         (*pMyDisasm).Argument2.ArgSize = 16;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG6;
-        GV.EIP_++;
-        FillFlags(pMyDisasm, EFLAGS_LODS);
     }
+    GV.EIP_++;
+    FillFlags(pMyDisasm, EFLAGS_LODS);
     
     if ((*pMyDisasm).Prefix.Repeat == PrefixRepe) {
         (*pMyDisasm).Prefix.Repeat = PrefixRep;
         (*pMyDisasm).Prefix.RepeatState = InUsePrefix;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs |= REG1;
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG6+REG1;
+    }
+    else {
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG6;
     }
 }
 
@@ -4993,10 +4982,12 @@ void __bea_callspec__ loop_(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "loop");
     #endif
-    if (!Security(1, pMyDisasm)) return;
+    
+    if (!Security(2, pMyDisasm)) return;
+    MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+1));
+    CalculateRelativeAddress(&MyAddress,(Int64) (*pMyDisasm).Prefix.Number+2+MyNumber, pMyDisasm);
+    (*pMyDisasm).Instruction.Immediat = MyNumber;
     if (GV.OperandSize >= 32) {
-        MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+1));
-        CalculateRelativeAddress(&MyAddress,(Int64) (*pMyDisasm).Prefix.Number+2+MyNumber, pMyDisasm);
         if (MyAddress >= W64LIT (0x100000000)) {
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) CopyFormattedNumber(pMyDisasm, (char*) (*pMyDisasm).Argument1.ArgMnemonic, "%.16llX",(Int64) MyAddress);
@@ -5007,29 +4998,22 @@ void __bea_callspec__ loop_(PDISASM pMyDisasm)
                (void) CopyFormattedNumber(pMyDisasm, (char*) (*pMyDisasm).Argument1.ArgMnemonic, "%.8X",(Int64) MyAddress);
             #endif
         }
-        (*pMyDisasm).Argument1.AccessMode = READ;
-        (*pMyDisasm).Argument1.ArgSize = GV.OperandSize;
-        (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+RELATIVE_;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
-        GV.EIP_+=2;
-        FillFlags(pMyDisasm, EFLAGS_LOOP);
     }
     else {
-        MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+1));
-        CalculateRelativeAddress(&MyAddress,(Int64) (*pMyDisasm).Prefix.Number+2+MyNumber, pMyDisasm);
         MyAddress = MyAddress & 0xffff;
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) CopyFormattedNumber(pMyDisasm, (char*) (*pMyDisasm).Argument1.ArgMnemonic, "%.4X",(Int64) MyAddress);
         #endif
-        (*pMyDisasm).Argument1.AccessMode = READ;
-        (*pMyDisasm).Argument1.ArgSize = GV.OperandSize;
-        (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+RELATIVE_;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
-        GV.EIP_+=2;
-        FillFlags(pMyDisasm, EFLAGS_LOOP);
     }
+    
+    (*pMyDisasm).Argument1.AccessMode = READ;
+    (*pMyDisasm).Argument1.ArgSize = GV.OperandSize;
+    (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+RELATIVE_;
+    (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
+    GV.EIP_+=2;
+    FillFlags(pMyDisasm, EFLAGS_LOOP);
 }
 
 /* =======================================
@@ -5046,10 +5030,12 @@ void __bea_callspec__ loopne_(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "loopne");
     #endif
-    if (!Security(1, pMyDisasm)) return;
+    
+    if (!Security(2, pMyDisasm)) return;
+    MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+1));
+    CalculateRelativeAddress(&MyAddress,(Int64) (*pMyDisasm).Prefix.Number+2+MyNumber, pMyDisasm);
+    (*pMyDisasm).Instruction.Immediat = MyNumber;
     if (GV.OperandSize >= 32) {
-        MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+1));
-        CalculateRelativeAddress(&MyAddress,(Int64) (*pMyDisasm).Prefix.Number+2+MyNumber, pMyDisasm);
         if (MyAddress >= W64LIT (0x100000000)) {
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) CopyFormattedNumber(pMyDisasm, (char*) (*pMyDisasm).Argument1.ArgMnemonic, "%.16llX",(Int64) MyAddress);
@@ -5060,29 +5046,22 @@ void __bea_callspec__ loopne_(PDISASM pMyDisasm)
                (void) CopyFormattedNumber(pMyDisasm, (char*) (*pMyDisasm).Argument1.ArgMnemonic, "%.8X",(Int64) MyAddress);
             #endif
         }
-        (*pMyDisasm).Argument1.AccessMode = READ;
-        (*pMyDisasm).Argument1.ArgSize = GV.OperandSize;
-        (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+RELATIVE_;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
-        GV.EIP_+=2;
-        FillFlags(pMyDisasm, EFLAGS_ccNE);
     }
     else {
-        MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+1));
-        CalculateRelativeAddress(&MyAddress,(Int64) (*pMyDisasm).Prefix.Number+2+MyNumber, pMyDisasm);
         MyAddress = MyAddress & 0xffff;
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) CopyFormattedNumber(pMyDisasm, (char*) (*pMyDisasm).Argument1.ArgMnemonic, "%.4X",(Int64) MyAddress);
         #endif
-        (*pMyDisasm).Argument1.AccessMode = READ;
-        (*pMyDisasm).Argument1.ArgSize = GV.OperandSize;
-        (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+RELATIVE_;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
-        GV.EIP_+=2;
-        FillFlags(pMyDisasm, EFLAGS_ccNE);
     }
+    
+    (*pMyDisasm).Argument1.AccessMode = READ;
+    (*pMyDisasm).Argument1.ArgSize = GV.OperandSize;
+    (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+RELATIVE_;
+    (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
+    GV.EIP_+=2;
+    FillFlags(pMyDisasm, EFLAGS_ccNE);
 }
 
 /* =======================================
@@ -5099,10 +5078,12 @@ void __bea_callspec__ loope_(PDISASM pMyDisasm)
     #ifndef BEA_LIGHT_DISASSEMBLY
        (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "loope");
     #endif
-    if (!Security(1, pMyDisasm)) return;
+    
+    if (!Security(2, pMyDisasm)) return;
+    MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+1));
+    CalculateRelativeAddress(&MyAddress,(Int64) (*pMyDisasm).Prefix.Number+2+MyNumber, pMyDisasm);
+    (*pMyDisasm).Instruction.Immediat = MyNumber;
     if (GV.OperandSize >= 32) {
-        MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+1));
-        CalculateRelativeAddress(&MyAddress,(Int64) (*pMyDisasm).Prefix.Number+2+MyNumber, pMyDisasm);
         if (MyAddress >= W64LIT (0x100000000)) {
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) CopyFormattedNumber(pMyDisasm, (char*) (*pMyDisasm).Argument1.ArgMnemonic, "%.16llX",(Int64) MyAddress);
@@ -5113,29 +5094,22 @@ void __bea_callspec__ loope_(PDISASM pMyDisasm)
                (void) CopyFormattedNumber(pMyDisasm, (char*) (*pMyDisasm).Argument1.ArgMnemonic, "%.8X",(Int64) MyAddress);
             #endif
         }
-        (*pMyDisasm).Argument1.AccessMode = READ;
-        (*pMyDisasm).Argument1.ArgSize = GV.OperandSize;
-        (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+RELATIVE_;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
-        GV.EIP_+=2;
-        FillFlags(pMyDisasm, EFLAGS_ccE);
     }
     else {
-        MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+1));
-        CalculateRelativeAddress(&MyAddress,(Int64) (*pMyDisasm).Prefix.Number+2+MyNumber, pMyDisasm);
         MyAddress = MyAddress & 0xffff;
         #ifndef BEA_LIGHT_DISASSEMBLY
            (void) CopyFormattedNumber(pMyDisasm, (char*) (*pMyDisasm).Argument1.ArgMnemonic, "%.4X",(Int64) MyAddress);
         #endif
-        (*pMyDisasm).Argument1.AccessMode = READ;
-        (*pMyDisasm).Argument1.ArgSize = GV.OperandSize;
-        (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+RELATIVE_;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
         (*pMyDisasm).Instruction.AddrValue = MyAddress;
-        GV.EIP_+=2;
-        FillFlags(pMyDisasm, EFLAGS_ccE);
     }
+    
+    (*pMyDisasm).Argument1.AccessMode = READ;
+    (*pMyDisasm).Argument1.ArgSize = GV.OperandSize;
+    (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+RELATIVE_;
+    (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
+    GV.EIP_+=2;
+    FillFlags(pMyDisasm, EFLAGS_ccE);
 }
 
 /* =======================================
@@ -5872,14 +5846,16 @@ void __bea_callspec__ movs_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+MEMORY_TYPE;
     (*pMyDisasm).Argument2.Memory.BaseRegister = REG6;
     (*pMyDisasm).Argument2.ArgSize = 8;
-    (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG6+REG7;
     GV.EIP_++;
     FillFlags(pMyDisasm, EFLAGS_MOVS);
     
     if ((*pMyDisasm).Prefix.Repeat == PrefixRepe) {
         (*pMyDisasm).Prefix.Repeat = PrefixRep;
         (*pMyDisasm).Prefix.RepeatState = InUsePrefix;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs |= REG1;
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG6+REG7+REG1;
+    }
+    else {
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG6+REG7;
     }
 }
 
@@ -5900,7 +5876,6 @@ void __bea_callspec__ movsw_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+MEMORY_TYPE;
         (*pMyDisasm).Argument2.Memory.BaseRegister = REG6;
         (*pMyDisasm).Argument2.ArgSize = 64;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG6+REG7;
         GV.EIP_++;
         FillFlags(pMyDisasm, EFLAGS_MOVS);
     }
@@ -5915,7 +5890,6 @@ void __bea_callspec__ movsw_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument2.ArgType = MEMORY_TYPE;
         (*pMyDisasm).Argument2.Memory.BaseRegister = REG6;
         (*pMyDisasm).Argument2.ArgSize = 32;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG6+REG7;
         GV.EIP_++;
         FillFlags(pMyDisasm, EFLAGS_MOVS);
     }
@@ -5930,7 +5904,6 @@ void __bea_callspec__ movsw_(PDISASM pMyDisasm)
         (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+MEMORY_TYPE;
         (*pMyDisasm).Argument2.Memory.BaseRegister = REG6;
         (*pMyDisasm).Argument2.ArgSize = 16;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG6+REG7;
         GV.EIP_++;
         FillFlags(pMyDisasm, EFLAGS_MOVS);
     }
@@ -5938,7 +5911,10 @@ void __bea_callspec__ movsw_(PDISASM pMyDisasm)
     if ((*pMyDisasm).Prefix.Repeat == PrefixRepe) {
         (*pMyDisasm).Prefix.Repeat = PrefixRep;
         (*pMyDisasm).Prefix.RepeatState = InUsePrefix;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs |= REG1;
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG6+REG7+REG1;
+    }
+    else {
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG6+REG7;
     }
 }
 

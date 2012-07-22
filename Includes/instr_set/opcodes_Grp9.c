@@ -38,9 +38,8 @@ void __bea_callspec__ G9_(PDISASM pMyDisasm)
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmpxchg16b");
             #endif
-            (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+REGISTER_TYPE+GENERAL_REG+REG0+REG2;
-            (*pMyDisasm).Argument2.ArgSize = 128;
-            (*pMyDisasm).Argument2.AccessMode = READ+WRITE;
+            (*pMyDisasm).Instruction.ImplicitUsedRegs = GENERAL_REG+REG0+REG2+REG1+REG3;
+            (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG0+REG2;
             FillFlags(pMyDisasm, EFLAGS_CMPXCHGG8B);
             GV.EIP_ += GV.DECALAGE_EIP+2;
         }
@@ -50,9 +49,8 @@ void __bea_callspec__ G9_(PDISASM pMyDisasm)
             #ifndef BEA_LIGHT_DISASSEMBLY
                (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "cmpxchg8b");
             #endif
-            (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+REGISTER_TYPE+GENERAL_REG+REG0+REG2;
-            (*pMyDisasm).Argument2.ArgSize = 64;
-            (*pMyDisasm).Argument2.AccessMode = READ+WRITE;
+            (*pMyDisasm).Instruction.ImplicitUsedRegs = GENERAL_REG+REG0+REG2+REG1+REG3;
+            (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG0+REG2;
             FillFlags(pMyDisasm, EFLAGS_CMPXCHGG8B);
             GV.EIP_ += GV.DECALAGE_EIP+2;
         }

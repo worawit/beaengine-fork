@@ -144,20 +144,16 @@ void __bea_callspec__ G5_Ev(PDISASM pMyDisasm)
             GV.OperandSize = 64;
         }
         if (GV.OperandSize == 64) {
-            GV.MemDecoration = Arg2qword;
+            GV.MemDecoration = Arg1qword;
         }
         else if (GV.OperandSize == 32) {
-            GV.MemDecoration = Arg2dword;
+            GV.MemDecoration = Arg1dword;
         }
         else {
-            GV.MemDecoration = Arg2word;
+            GV.MemDecoration = Arg1word;
         }
-        MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
+        MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
         GV.EIP_ += GV.DECALAGE_EIP+2;
-        (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+MEMORY_TYPE;
-        (*pMyDisasm).Argument1.ArgSize = GV.OperandSize;
-        (*pMyDisasm).Argument1.Memory.BaseRegister = REG4;
-        (*pMyDisasm).Argument1.Memory.Displacement = -((Int32)(GV.Architecture >> 3));
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
     }
     else {

@@ -2412,7 +2412,7 @@ void __bea_callspec__ pcmpestri_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = REGISTER_TYPE+GENERAL_REG+REG1;
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
     }
     else {
         FailDecode(pMyDisasm);
@@ -2450,7 +2450,7 @@ void __bea_callspec__ pcmpestrm_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = REGISTER_TYPE+SSE_REG+REG0;
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = SSE_REG+REG0;
     }
     else {
         FailDecode(pMyDisasm);
@@ -2488,7 +2488,7 @@ void __bea_callspec__ pcmpistri_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = REGISTER_TYPE+GENERAL_REG+REG1;
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG1;
     }
     else {
         FailDecode(pMyDisasm);
@@ -2526,7 +2526,7 @@ void __bea_callspec__ pcmpistrm_(PDISASM pMyDisasm)
         #endif
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = REGISTER_TYPE+SSE_REG+REG0;
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = SSE_REG+REG0;
     }
     else {
         FailDecode(pMyDisasm);

@@ -130,6 +130,7 @@ typedef struct  {
    UInt64 AddrValue;
    Int64 Immediat;
    UInt32 ImplicitModifiedRegs;
+   UInt32 ImplicitUsedRegs;
 } INSTRTYPE;
 #pragma pack()
 
@@ -304,7 +305,8 @@ enum EFLAGS_STATES
   RE_ = 4,
   SE_ = 8,
   UN_ = 0x10,
-  PR_ = 0x20
+  PR_ = 0x20,
+  SC_ = 0x40
 };
 
 enum CONDITIONAL_TYPE
