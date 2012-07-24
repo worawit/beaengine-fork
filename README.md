@@ -10,7 +10,7 @@ does not like my changes, at least you are can take bug patches.
 Note: This project is not compatitble with original BeaEngine.
 
 WARNING: This fork project is still under developement, public structures 
-are not finalized.
+are subjected to change.
 
 
 COMPILE
@@ -29,7 +29,8 @@ The include files that used for using this project is /beaengine directory
 
 GOAL
 --------------
-My goal is making BeaEngine light version easier to use (at least for me).
+My goal is making BeaEngine light version easier to use (at least for me)
+and possible to build complete assembly from decoded data.
 I do not care about CompleteInstruction in full version after changed.
 So please do not report bugs regarding to CompleteInstruction, ArgumentMnemonic.
 
@@ -50,7 +51,7 @@ For example
 
 The MnemonicId can be converted to string by using exported variable MNEMONICS.
 
-    BEA_API const__ char *MNEMONICS[];
+    BEA_API const__ char MNEMONICS[NUM_MNEMONIC_ID][16];
 
 For example:
 
@@ -62,14 +63,19 @@ For example:
 The implicited argument now is flag with IMPLICIT_ARG. With this and 
 MnemonicId, we can construct assembly in light version easily.
 
-Please note that the implicited argument, might be composite argument.
-See below example from "pushad"
+All arguments should not be composited like below (from previous 'popad').
 
     (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+REGISTER_TYPE+GENERAL_REG+REG0+REG1+REG2+REG3+REG4+REG5+REG6+REG7;
 
+I move them to INSTRTYPE.ImplicitUsedReg.
+
 Also remind that implicited argument for some instructions are not complete.
-I have no idea to  fix this problem because I do not know many assembly
+I have no idea to fix this problem because I do not know many assembly
 instructions and it is required to add/change data structure.
+
+### INSTRTYPE.ImplicitUsedReg (in progress)
+
+All composited arguments go here. Also some instruction needs it.
 
 ### NO_ARGUMENT is 0
 
@@ -186,3 +192,10 @@ MnemonicId.
 ### Register flags for condition instructions
 
 The tested flag for conditional instructions now are set according conditional.
+
+### New prefix structure
+
+If there are more than one prefixes from same prefix group in one instruction,
+the last prefix takes affect. The original BeaEngine just keep all found
+prefixed. It is awkward to code on that structure to get what prefix is
+effective. See the new structure in beaengine/BeaEngine.h
