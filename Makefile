@@ -6,20 +6,14 @@ CFLAGS_SO = -fvisibility=hidden -DBUILD_BEA_ENGINE_DLL
 SRC = BeaEngine.c
 ALLSRCS = $(SRC) $(wildcard beaengine/*.h) $(wildcard Includes/*.[ch]) $(wildcard Includes/instr_set/*.[ch])
 
-all: shared lite
+all: shared
 
-libBeaEngine.so: $(ALLSRCS)
+libBeaEngineFork.so: $(ALLSRCS)
 	$(CC) $(CFLAGS) $(CFLAGS_SO) -o $@ $(SRC)
 	strip -s $@
 
-libBeaEngineLite.so: $(ALLSRCS)
-	$(CC) $(CFLAGS) $(CFLAGS_SO) -DBEA_LIGHT_DISASSEMBLY -o $@ $(SRC)
-	strip -s $@
-
-shared: libBeaEngine.so
-
-lite: libBeaEngineLite.so
+shared: libBeaEngineFork.so
 
 clean:
-	rm libBeaEngine.so libBeaEngineLite.so
+	rm libBeaEngineFork.so
 

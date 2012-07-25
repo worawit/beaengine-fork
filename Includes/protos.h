@@ -60,10 +60,7 @@ void __bea_callspec__ _rEBP(ARGTYPE*, PDISASM);
 void __bea_callspec__ _rESI(ARGTYPE*, PDISASM);
 void __bea_callspec__ _rEDI(ARGTYPE*, PDISASM);
 
-size_t __bea_callspec__ SIB_0(ARGTYPE*, size_t, PDISASM);
-size_t __bea_callspec__ SIB_1(ARGTYPE*, size_t, PDISASM);
-size_t __bea_callspec__ SIB_2(ARGTYPE*, size_t, PDISASM);
-size_t __bea_callspec__ SIB_3(ARGTYPE*, size_t, PDISASM);
+void __bea_callspec__ _SIB(ARGTYPE*, PDISASM);
 
 /* ====================================== Routines_Disasm */
 void __bea_callspec__ CompleteInstructionFields (PDISASM);
@@ -76,6 +73,7 @@ void __bea_callspec__ EbIb(PDISASM);
 void __bea_callspec__ Eb(PDISASM);
 void __bea_callspec__ Ev(PDISASM);
 void __bea_callspec__ GvEv(PDISASM);
+void __bea_callspec__ GvEd(PDISASM);
 void __bea_callspec__ GvEb(PDISASM);
 void __bea_callspec__ GxEx(PDISASM);
 void __bea_callspec__ GvEw(PDISASM);
@@ -90,9 +88,6 @@ void __bea_callspec__ BuildCompleteInstruction(PDISASM);
 void __bea_callspec__ BuildCompleteInstructionATSyntax(PDISASM);
 int __bea_callspec__ InitVariables (PDISASM);
 void __bea_callspec__ FillFlags(PDISASM, int);
-void __bea_callspec__ FillSegmentsRegisters (PDISASM);
-void __bea_callspec__ FixArgSizeForMemoryOperand (PDISASM);
-void __bea_callspec__ FixREXPrefixes (PDISASM);
 
 /* ====================================== opcodes_prefix */
 void __bea_callspec__ PrefLock(PDISASM);

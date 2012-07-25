@@ -20,26 +20,6 @@
 
 #define GV (*pMyDisasm).Reserved_
 
-/* Define constants to identify the position and type of decoration used in case of memory argument */
-
-#define     Arg1byte        1
-#define     Arg1word        2
-#define     Arg1dword       3
-#define     Arg1qword       4
-#define     Arg1multibytes  5
-#define     Arg1tbyte       6
-#define     Arg1fword       7
-#define     Arg1dqword      8
-
-#define     Arg2byte        101
-#define     Arg2word        102
-#define     Arg2dword       103
-#define     Arg2qword       104
-#define     Arg2multibytes  105
-#define     Arg2tbyte       106
-#define     Arg2fword       107
-#define     Arg2dqword      108
-
 /* BSCAN (Bit Scan) - BSF/BSR
  * BTEST (Bit Test) - BT/BTS/BTR/BTC
  */
@@ -309,21 +289,13 @@ char GoAsmPrefixes[8][4] = {
 /* =====================================================
  * Segment registers
  * ===================================================== */
-char RegistersSEG[16][8] = {
+char RegistersSEG[8][8] = {
     "es",      /* +0 */
     "cs",      /* +1 */
     "ss",      /* +2 */
     "ds",      /* +3 */
     "fs",      /* +4 */
     "gs",      /* +5 */
-    "seg?",
-    "seg?",
-    "seg?",
-    "seg?",
-    "seg?",
-    "seg?",
-    "seg?",
-    "seg?",
     "seg?",
     "seg?",
 };
@@ -501,6 +473,13 @@ char Registers8BitsLegacy[8][4] = {
     "bh",
 };
 
+char Registers8BitsHigh[4][4] = {
+    "ah",
+    "ch",
+    "dh",
+    "bh",
+};
+
 Int32 REGS8BITS[] = {
     REG0,
     REG1,
@@ -587,11 +566,6 @@ Int32 REGS[] = {
     REG14,     /* REG14 */
     REG15,     /* REG15 */
 };
-
-char BXSI_[] = "bx+si";
-char BXDI_[] = "bx+di";
-char BPSI_[] = "bp+si";
-char BPDI_[] = "bp+di";
 
 const__ char MNEMONICS[NUM_MNEMONIC_ID][16] = { MNEMONIC_MAP_DEF };
 

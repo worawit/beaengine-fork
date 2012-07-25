@@ -8,24 +8,17 @@ OUTDIR = build
 SRC = BeaEngine.c
 ALLSRCS = $(SRC) beaengine/*.h Includes/* Includes/instr_set/*
 
-TARGET = shared lite
+TARGET = shared
 
 all: $(TARGET)
 
-$(OUTDIR)/BeaEngine.obj: $(ALLSRCS)
+$(OUTDIR)/BeaEngineFork.obj: $(ALLSRCS)
 	$(CC) $(CFLAGS) -Fo"$@" $(SRC)
 
-$(OUTDIR)/BeaEngine.dll: $(OUTDIR)/BeaEngine.obj
-	$(LD) $(LDFLAGS) -OUT:"$@" $**
-
-$(OUTDIR)/BeaEngineLite.obj: $(ALLSRCS)
-	$(CC) $(CFLAGS) -D "BEA_LIGHT_DISASSEMBLY" -Fo"$@" $(SRC)
-
-$(OUTDIR)/BeaEngineLite.dll: $(OUTDIR)/BeaEngineLite.obj
+$(OUTDIR)/BeaEngineFork.dll: $(OUTDIR)/BeaEngineFork.obj
 	$(LD) $(LDFLAGS) -OUT:"$@" $**
 
 $(OUTDIR):
 	mkdir $(OUTDIR)
 
-shared: $(OUTDIR) $(OUTDIR)/BeaEngine.dll
-lite: $(OUTDIR) $(OUTDIR)/BeaEngineLite.dll
+shared: $(OUTDIR) $(OUTDIR)/BeaEngineFork.dll

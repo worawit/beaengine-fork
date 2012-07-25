@@ -25,9 +25,9 @@ void __bea_callspec__ G13_(PDISASM pMyDisasm)
 
     GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
     if (GV.REGOPCODE == 2) {
-        if (GV.OperandSize == 16) {
+        if ((*pMyDisasm).Instruction.OperandSize == 16) {
             (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SHIFT_ROTATE;
-            GV.MemDecoration = Arg1dqword;
+            (*pMyDisasm).Argument1.ArgSize = 128;
             GV.ImmediatSize = 8;
             GV.SSE_ = 1;
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
@@ -35,9 +35,6 @@ void __bea_callspec__ G13_(PDISASM pMyDisasm)
             GV.SSE_ = 0;
             if (GV.MOD_== 0x3) {
                 (*pMyDisasm).Instruction.MnemonicId = I_PSRLD;
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psrld");
-                #endif
             }
             else {
                 FailDecode(pMyDisasm);
@@ -46,16 +43,13 @@ void __bea_callspec__ G13_(PDISASM pMyDisasm)
             if (!Security(0, pMyDisasm)) return;
 
             MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_-1));
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.2X",(Int64) MyNumber);
-            #endif
             (*pMyDisasm).Instruction.Immediat = MyNumber;
             (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
             (*pMyDisasm).Argument2.ArgSize = 8;
         }
         else {
             (*pMyDisasm).Instruction.Category = MMX_INSTRUCTION+SHIFT_ROTATE;
-            GV.MemDecoration = Arg1qword;
+            (*pMyDisasm).Argument1.ArgSize = 64;
             GV.ImmediatSize = 8;
             GV.MMX_ = 1;
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
@@ -63,9 +57,6 @@ void __bea_callspec__ G13_(PDISASM pMyDisasm)
             GV.MMX_ = 0;
             if (GV.MOD_== 0x3) {
                 (*pMyDisasm).Instruction.MnemonicId = I_PSRLD;
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psrld");
-                #endif
             }
             else {
                 FailDecode(pMyDisasm);
@@ -74,18 +65,15 @@ void __bea_callspec__ G13_(PDISASM pMyDisasm)
             if (!Security(0, pMyDisasm)) return;
 
             MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_-1));
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.2X",(Int64) MyNumber);
-            #endif
             (*pMyDisasm).Instruction.Immediat = MyNumber;
             (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
             (*pMyDisasm).Argument2.ArgSize = 8;
         }
     }
     else if (GV.REGOPCODE == 4) {
-        if (GV.OperandSize == 16) {
+        if ((*pMyDisasm).Instruction.OperandSize == 16) {
             (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SHIFT_ROTATE;
-            GV.MemDecoration = Arg1dqword;
+            (*pMyDisasm).Argument1.ArgSize = 128;
             GV.ImmediatSize = 8;
             GV.SSE_ = 1;
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
@@ -93,9 +81,6 @@ void __bea_callspec__ G13_(PDISASM pMyDisasm)
             GV.SSE_ = 0;
             if (GV.MOD_== 0x3) {
                 (*pMyDisasm).Instruction.MnemonicId = I_PSRAD;
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psrad");
-                #endif
             }
             else {
                 FailDecode(pMyDisasm);
@@ -103,16 +88,13 @@ void __bea_callspec__ G13_(PDISASM pMyDisasm)
             GV.EIP_ += GV.DECALAGE_EIP+3;
             if (!Security(0, pMyDisasm)) return;
             MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_-1));
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.2X",(Int64) MyNumber);
-            #endif
             (*pMyDisasm).Instruction.Immediat = MyNumber;
             (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
             (*pMyDisasm).Argument2.ArgSize = 8;
         }
         else {
             (*pMyDisasm).Instruction.Category = MMX_INSTRUCTION+SHIFT_ROTATE;
-            GV.MemDecoration = Arg1qword;
+            (*pMyDisasm).Argument1.ArgSize = 64;
             GV.ImmediatSize = 8;
             GV.MMX_ = 1;
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
@@ -120,9 +102,6 @@ void __bea_callspec__ G13_(PDISASM pMyDisasm)
             GV.MMX_ = 0;
             if (GV.MOD_== 0x3) {
                 (*pMyDisasm).Instruction.MnemonicId = I_PSRAD;
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "psrad");
-                #endif
             }
             else {
                 FailDecode(pMyDisasm);
@@ -131,9 +110,6 @@ void __bea_callspec__ G13_(PDISASM pMyDisasm)
             if (!Security(0, pMyDisasm)) return;
 
             MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_-1));
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.2X",(Int64) MyNumber);
-            #endif
             (*pMyDisasm).Instruction.Immediat = MyNumber;
             (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
             (*pMyDisasm).Argument2.ArgSize = 8;
@@ -141,9 +117,9 @@ void __bea_callspec__ G13_(PDISASM pMyDisasm)
 
     }
     else if (GV.REGOPCODE == 6) {
-        if (GV.OperandSize == 16) {
+        if ((*pMyDisasm).Instruction.OperandSize == 16) {
             (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SHIFT_ROTATE;
-            GV.MemDecoration = Arg1dqword;
+            (*pMyDisasm).Argument1.ArgSize = 128;
             GV.ImmediatSize = 8;
             GV.SSE_ = 1;
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
@@ -151,9 +127,6 @@ void __bea_callspec__ G13_(PDISASM pMyDisasm)
             GV.SSE_ = 0;
             if (GV.MOD_== 0x3) {
                 (*pMyDisasm).Instruction.MnemonicId = I_PSLLD;
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pslld");
-                #endif
             }
             else {
                 FailDecode(pMyDisasm);
@@ -162,16 +135,13 @@ void __bea_callspec__ G13_(PDISASM pMyDisasm)
             if (!Security(0, pMyDisasm)) return;
 
             MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_-1));
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.2X",(Int64) MyNumber);
-            #endif
             (*pMyDisasm).Instruction.Immediat = MyNumber;
             (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
             (*pMyDisasm).Argument2.ArgSize = 8;
         }
         else {
             (*pMyDisasm).Instruction.Category = MMX_INSTRUCTION+SHIFT_ROTATE;
-            GV.MemDecoration = Arg1qword;
+            (*pMyDisasm).Argument1.ArgSize = 64;
             GV.ImmediatSize = 8;
             GV.MMX_ = 1;
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
@@ -179,9 +149,6 @@ void __bea_callspec__ G13_(PDISASM pMyDisasm)
             GV.MMX_ = 0;
             if (GV.MOD_== 0x3) {
                 (*pMyDisasm).Instruction.MnemonicId = I_PSLLD;
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pslld");
-                #endif
             }
             else {
                 FailDecode(pMyDisasm);
@@ -190,9 +157,6 @@ void __bea_callspec__ G13_(PDISASM pMyDisasm)
             if (!Security(0, pMyDisasm)) return;
 
             MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_-1));
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) CopyFormattedNumber(pMyDisasm, (char*) &(*pMyDisasm).Argument2.ArgMnemonic,"%.2X",(Int64) MyNumber);
-            #endif
             (*pMyDisasm).Instruction.Immediat = MyNumber;
             (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
             (*pMyDisasm).Argument2.ArgSize = 8;

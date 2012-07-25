@@ -25,12 +25,8 @@ void __bea_callspec__ G15_(PDISASM pMyDisasm)
     if (GV.REGOPCODE == 0) {
         MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
         if (GV.MOD_!= 0x3) {
-            GV.MemDecoration = Arg1multibytes;
             (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+STATE_MANAGEMENT;
             (*pMyDisasm).Instruction.MnemonicId = I_FXSAVE;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fxsave");
-            #endif
             (*pMyDisasm).Argument1.ArgSize = 512;
         }
         else {
@@ -40,12 +36,8 @@ void __bea_callspec__ G15_(PDISASM pMyDisasm)
     else if (GV.REGOPCODE == 1) {
         MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
         if (GV.MOD_!= 0x3) {
-            GV.MemDecoration = Arg1multibytes;
             (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+STATE_MANAGEMENT;
             (*pMyDisasm).Instruction.MnemonicId = I_FXRSTOR;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "fxrstor");
-            #endif
             (*pMyDisasm).Argument1.ArgSize = 512;
             (*pMyDisasm).Argument1.AccessMode = READ;
         }
@@ -57,12 +49,9 @@ void __bea_callspec__ G15_(PDISASM pMyDisasm)
     else if (GV.REGOPCODE == 2) {
         MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
         if (GV.MOD_!= 0x3) {
-            GV.MemDecoration = Arg1dword;
+            (*pMyDisasm).Argument1.ArgSize = 32;
             (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+STATE_MANAGEMENT;
             (*pMyDisasm).Instruction.MnemonicId = I_LDMXCSR;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "ldmxcsr");
-            #endif
             (*pMyDisasm).Argument1.AccessMode = READ;
         }
         else {
@@ -73,28 +62,20 @@ void __bea_callspec__ G15_(PDISASM pMyDisasm)
     else if (GV.REGOPCODE == 3) {
         MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
         if (GV.MOD_!= 0x3) {
-            GV.MemDecoration = Arg1dword;
+            (*pMyDisasm).Argument1.ArgSize = 32;
             (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+STATE_MANAGEMENT;
             (*pMyDisasm).Instruction.MnemonicId = I_STMXCSR;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "stmxcsr");
-            #endif
         }
         else {
             FailDecode(pMyDisasm);
         }
-
     }
 
     else if (GV.REGOPCODE == 4) {
         MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
         if (GV.MOD_!= 0x3) {
-            GV.MemDecoration = Arg1multibytes;
             (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+STATE_MANAGEMENT;
             (*pMyDisasm).Instruction.MnemonicId = I_XSAVE;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xsave");
-            #endif
             (*pMyDisasm).Argument1.ArgSize = 512;
             (*pMyDisasm).Instruction.ImplicitUsedRegs = GENERAL_REG+REG0+REG2;
         }
@@ -108,18 +89,11 @@ void __bea_callspec__ G15_(PDISASM pMyDisasm)
         if (GV.MOD_== 0x3) {
             (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CACHEABILITY_CONTROL;
             (*pMyDisasm).Instruction.MnemonicId = I_LFENCE;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "lfence");
-            #endif
         }
         else {
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
-            GV.MemDecoration = Arg1multibytes;
             (*pMyDisasm).Instruction.Category = FPU_INSTRUCTION+STATE_MANAGEMENT;
             (*pMyDisasm).Instruction.MnemonicId = I_XRSTOR;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "xrstor");
-            #endif
             (*pMyDisasm).Argument1.ArgSize = 512;
             (*pMyDisasm).Argument1.AccessMode = READ;
             (*pMyDisasm).Instruction.ImplicitUsedRegs = GENERAL_REG+REG0+REG2;
@@ -131,9 +105,6 @@ void __bea_callspec__ G15_(PDISASM pMyDisasm)
         if (GV.MOD_== 0x3) {
             (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CACHEABILITY_CONTROL;
             (*pMyDisasm).Instruction.MnemonicId = I_MFENCE;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "mfence");
-            #endif
         }
         else {
             FailDecode(pMyDisasm);
@@ -144,20 +115,13 @@ void __bea_callspec__ G15_(PDISASM pMyDisasm)
         if (GV.MOD_== 0x3) {
             (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CACHEABILITY_CONTROL;
             (*pMyDisasm).Instruction.MnemonicId = I_SFENCE;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "sfence");
-            #endif
         }
         else {
-            GV.OperandSize = 8;
+            (*pMyDisasm).Instruction.OperandSize = 8;
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
-            GV.OperandSize = 32;
-            GV.MemDecoration = Arg1byte;
+            (*pMyDisasm).Argument1.ArgSize = 8;
             (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CACHEABILITY_CONTROL;
             (*pMyDisasm).Instruction.MnemonicId = I_CLFLUSH;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "clflush");
-            #endif
             (*pMyDisasm).Argument1.AccessMode = READ;
         }
     }

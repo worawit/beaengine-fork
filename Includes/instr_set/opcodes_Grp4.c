@@ -25,9 +25,6 @@ void __bea_callspec__ G4_Eb(PDISASM pMyDisasm)
     if (GV.REGOPCODE == 0) {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_INC;
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "inc");
-        #endif
         Eb(pMyDisasm);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         FillFlags(pMyDisasm, EFLAGS_INC);
@@ -38,9 +35,6 @@ void __bea_callspec__ G4_Eb(PDISASM pMyDisasm)
     else if (GV.REGOPCODE == 1) {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         (*pMyDisasm).Instruction.MnemonicId = I_DEC;
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "dec");
-        #endif
         Eb(pMyDisasm);
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         FillFlags(pMyDisasm, EFLAGS_DEC);
