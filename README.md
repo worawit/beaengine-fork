@@ -50,8 +50,8 @@ as an example.
 
 NOTE: There are 2 types of instruction that still cannot build assembly.
 I have to change ARGTYPE structure (later)
-1. more than 1 immediate value (enter)
-2. far pointer operand
+- more than 1 immediate value (enter)
+- far pointer operand
 
 ### INSTRTYPE.Mnemonic
 
