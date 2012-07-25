@@ -567,5 +567,5 @@ Int32 REGS[] = {
     REG15,     /* REG15 */
 };
 
-const__ char MNEMONICS[NUM_MNEMONIC_ID][16] = { MNEMONIC_MAP_DEF };
+const__ char MNEMONICS[NUM_MNEMONIC][16] = { MNEMONIC_MAP_DEF };
 

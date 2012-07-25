@@ -122,7 +122,7 @@ typedef struct {
 typedef struct  {
    Int32 Category;
    Int32 Opcode;
-   Int32 MnemonicId;
+   Int32 Mnemonic;
    Int32 BranchType;
    Int32 ConditionalType;
    EFLStruct Flags;
@@ -1030,13 +1030,13 @@ enum MNEMONIC_ENUM { MNEMONIC_MAP_DEF };
 #undef MNEMONIC_DEF
 #define MNEMONIC_DEF(id, name) name
 
-#define NUM_MNEMONIC_ID (I_XSETBV+1)
+#define NUM_MNEMONIC (I_XSETBV+1)
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-BEA_API const__ char MNEMONICS[NUM_MNEMONIC_ID][16];
+BEA_API const__ char MNEMONICS[NUM_MNEMONIC][16];
 BEA_API int __bea_callspec__ Disasm (LPDISASM pDisAsm);
 BEA_API void __bea_callspec__ BuildAssembly(PDISASM pMyDisasm, char *buffer);
 BEA_API const__ char* __bea_callspec__ BeaEngineVersion (void);

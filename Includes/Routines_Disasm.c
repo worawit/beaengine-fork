@@ -703,8 +703,8 @@ void __bea_callspec__ BuildAssembly(PDISASM pMyDisasm, char *buffer)
     }
     
     /* Mnemonic */
-    (void) strcpy (buffer+i, MNEMONICS[(*pMyDisasm).Instruction.MnemonicId]);
-    i += strlen(MNEMONICS[(*pMyDisasm).Instruction.MnemonicId]);
+    (void) strcpy (buffer+i, MNEMONICS[(*pMyDisasm).Instruction.Mnemonic]);
+    i += strlen(MNEMONICS[(*pMyDisasm).Instruction.Mnemonic]);
 
     /* =============== if TAB = 1, add tabulation */
     if (GV.TAB_ == 1 && i < 10) {
