@@ -25,7 +25,7 @@ void __bea_callspec__ G9_(PDISASM pMyDisasm)
     GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
     (*pMyDisasm).Argument1.ArgSize = 64;
     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
-    if (((*pMyDisasm).Argument1.ArgType & MEMORY_TYPE) == 0) {
+    if (GV.MOD_ == 3) {
         FailDecode(pMyDisasm);
         return;
     }
