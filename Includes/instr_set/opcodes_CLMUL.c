@@ -23,9 +23,9 @@ void __bea_callspec__ pclmulqdq_(PDISASM pMyDisasm)
 {
     /* ========== 0x66 */
     if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix) {
-        GV.OperandSize = GV.OriginalOperandSize;
+        (*pMyDisasm).Instruction.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSizeState = MandatoryPrefix;
-        GV.MemDecoration = Arg2dqword;
+        (*pMyDisasm).Argument2.ArgSize = 128;
         (*pMyDisasm).Instruction.Category = CLMUL_INSTRUCTION;
 
         GV.ImmediatSize = 8;
@@ -39,37 +39,18 @@ void __bea_callspec__ pclmulqdq_(PDISASM pMyDisasm)
 
         if ((*pMyDisasm).Instruction.Immediat == 0) {
             (*pMyDisasm).Instruction.MnemonicId = I_PCLMULLQLQDQ;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmullqlqdq");
-            #endif
         }
         else if ((*pMyDisasm).Instruction.Immediat == 0x01 ) {
             (*pMyDisasm).Instruction.MnemonicId = I_PCLMULHQLQDQ;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmulhqlqdq");
-            #endif
         }
         else if ((*pMyDisasm).Instruction.Immediat == 0x10 ) {
             (*pMyDisasm).Instruction.MnemonicId = I_PCLMULLQHQDQ;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmullqhqdq");
-            #endif
         }
         else if ((*pMyDisasm).Instruction.Immediat == 0x011 ) {
             (*pMyDisasm).Instruction.MnemonicId = I_PCLMULHQHQDQ;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmulhqhqdq");
-            #endif
         }
         else {
             (*pMyDisasm).Instruction.MnemonicId = I_PCLMULQDQ;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((*pMyDisasm).Instruction.Mnemonic, "pclmulqdq");
-            #endif
-            GV.third_arg = 1;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) CopyFormattedNumber(pMyDisasm, (char*) (*pMyDisasm).Argument3.ArgMnemonic, "%.2X",(Int64) *((UInt8*)(UIntPtr) (GV.EIP_- 1)));
-            #endif
             (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
             (*pMyDisasm).Argument3.ArgSize = 8;
         }

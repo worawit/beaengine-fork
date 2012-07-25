@@ -122,7 +122,6 @@ typedef struct {
 typedef struct  {
    Int32 Category;
    Int32 Opcode;
-   char Mnemonic[16];
    Int32 MnemonicId;
    Int32 BranchType;
    Int32 ConditionalType;
@@ -131,18 +130,19 @@ typedef struct  {
    Int64 Immediat;
    UInt32 ImplicitModifiedRegs;
    UInt32 ImplicitUsedRegs;
+   Int32 OperandSize;
+   Int32 AddressSize;
 } INSTRTYPE;
 #pragma pack()
 
 #pragma pack(1)
 typedef struct  {
-   char ArgMnemonic[32];
    Int32 ArgType;
    Int32 ArgSize;
    Int32 ArgPosition;
    UInt32 AccessMode;
-   MEMORYTYPE Memory;
    UInt32 SegmentReg;
+   MEMORYTYPE Memory;
 } ARGTYPE;
 #pragma pack()
 
@@ -152,28 +152,18 @@ typedef struct  {
 typedef struct {
    UIntPtr EIP_;
    UInt64 EIP_VA;
-   UIntPtr EIP_REAL;
    UInt64 EndOfBlock;
    Int32 OriginalOperandSize;
-   Int32 OperandSize;
-   Int32 MemDecoration;
-   Int32 AddressSize;
    Int32 MOD_;
    Int32 RM_;
-   Int32 INDEX_;
-   Int32 SCALE_;
-   Int32 BASE_;
    Int32 MMX_;
    Int32 SSE_;
    Int32 REGOPCODE;
    UInt32 DECALAGE_EIP;
    Int32 FORMATNUMBER;
    Int32 SYNTAX_;
-   Int32 RelativeAddress;
-   UInt32 Architecture;
    Int32 ImmediatSize;
    UInt32 SEGMENTREGS;
-   Int32 third_arg;
    Int32 TAB_;
    Int32 ERROR_OPCODE;
    Int32 OutOfBlock;
@@ -186,7 +176,6 @@ typedef struct _Disasm {
    UIntPtr EIP;
    UInt64 VirtualAddr;
    UInt32 SecurityBlock;
-   char CompleteInstr[INSTRUCT_LENGTH];
    UInt32 Archi;
    UInt64 Options;
    INSTRTYPE Instruction;
@@ -194,7 +183,7 @@ typedef struct _Disasm {
    ARGTYPE Argument2;
    ARGTYPE Argument3;
    PREFIXINFO Prefix;
-   char alignments[2];
+   char alignments[6];
    InternalDatas Reserved_;
 } DISASM, *PDISASM, *LPDISASM;
 #pragma pack()
@@ -477,6 +466,7 @@ enum SPECIAL_INFO
     MNEMONIC_DEF( I_CMP, "cmp" ), \
     MNEMONIC_DEF( I_CMPPD, "cmppd" ), \
     MNEMONIC_DEF( I_CMPPS, "cmpps" ), \
+    MNEMONIC_DEF( I_CMPS, "cmps" ), \
     MNEMONIC_DEF( I_CMPSB, "cmpsb" ), \
     MNEMONIC_DEF( I_CMPSD, "cmpsd" ), \
     MNEMONIC_DEF( I_CMPSQ, "cmpsq" ), \
@@ -695,6 +685,7 @@ enum SPECIAL_INFO
     MNEMONIC_DEF( I_LIDT, "lidt" ), \
     MNEMONIC_DEF( I_LLDT, "lldt" ), \
     MNEMONIC_DEF( I_LMSW, "lmsw" ), \
+    MNEMONIC_DEF( I_LODS, "lods" ), \
     MNEMONIC_DEF( I_LODSB, "lodsb" ), \
     MNEMONIC_DEF( I_LODSD, "lodsd" ), \
     MNEMONIC_DEF( I_LODSQ, "lodsq" ), \
@@ -741,6 +732,7 @@ enum SPECIAL_INFO
     MNEMONIC_DEF( I_MOVNTQ, "movntq" ), \
     MNEMONIC_DEF( I_MOVQ, "movq" ), \
     MNEMONIC_DEF( I_MOVQ2DQ, "movq2dq" ), \
+    MNEMONIC_DEF( I_MOVS, "movs" ), \
     MNEMONIC_DEF( I_MOVSB, "movsb" ), \
     MNEMONIC_DEF( I_MOVSD, "movsd" ), \
     MNEMONIC_DEF( I_MOVSHDUP, "movshdup" ), \
@@ -767,6 +759,7 @@ enum SPECIAL_INFO
     MNEMONIC_DEF( I_ORPD, "orpd" ), \
     MNEMONIC_DEF( I_ORPS, "orps" ), \
     MNEMONIC_DEF( I_OUT, "out" ), \
+    MNEMONIC_DEF( I_OUTS, "outs" ), \
     MNEMONIC_DEF( I_OUTSB, "outsb" ), \
     MNEMONIC_DEF( I_OUTSD, "outsd" ), \
     MNEMONIC_DEF( I_OUTSW, "outsw" ), \
@@ -1045,6 +1038,7 @@ extern "C" {
 
 BEA_API const__ char MNEMONICS[NUM_MNEMONIC_ID][16];
 BEA_API int __bea_callspec__ Disasm (LPDISASM pDisAsm);
+BEA_API void __bea_callspec__ BuildAssembly(PDISASM pMyDisasm, char *buffer);
 BEA_API const__ char* __bea_callspec__ BeaEngineVersion (void);
 BEA_API const__ char* __bea_callspec__ BeaEngineRevision (void);
 

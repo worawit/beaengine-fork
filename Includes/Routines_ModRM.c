@@ -22,7 +22,7 @@ void __bea_callspec__ MOD_RM(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
     GV.DECALAGE_EIP = 0;
     if (!Security(1, pMyDisasm)) return;
-    GV.MOD_ = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6) & 0x3;
+    GV.MOD_ = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6);
     GV.RM_  = (*((UInt8*)(UIntPtr) (GV.EIP_+1))) & 0x7;
     if (GV.MOD_ == 0) {
         ModRM_0[GV.RM_](pMyArgument, pMyDisasm);
@@ -32,7 +32,7 @@ void __bea_callspec__ MOD_RM(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
         ModRM_1[GV.RM_](pMyArgument, pMyDisasm);
     }
     else if (GV.MOD_ == 2) {
-        if (GV.AddressSize >= 32) {
+        if ((*pMyDisasm).Instruction.AddressSize >= 32) {
             GV.DECALAGE_EIP += 4;
         }
         else {
@@ -47,50 +47,43 @@ void __bea_callspec__ MOD_RM(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 }
 void __bea_callspec__ RegSeg_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
+    Int32 reg;
     if (!Security(1, pMyDisasm)) return;
-    GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
-    if ((*pMyDisasm).Prefix.REX.R_ == 1) {
-        GV.REGOPCODE |= 0x8;
+    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    if (reg < 6) {
+        (*pMyArgument).ArgType = REGISTER_TYPE+SEGMENT_REG+REGS[reg];
+        (*pMyArgument).ArgSize = 16;
     }
-    #ifndef BEA_LIGHT_DISASSEMBLY
-       (void) strcpy ((char*) (*pMyArgument).ArgMnemonic, RegistersSEG[GV.REGOPCODE]);
-    #endif
-    (*pMyArgument).ArgType = REGISTER_TYPE+SEGMENT_REG+REGS[GV.REGOPCODE];
-    (*pMyArgument).ArgSize = 16;
+    else {
+        FailDecode(pMyDisasm);
+    }
 }
 
 void __bea_callspec__ RegCR_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
+    Int32 reg;
     if (!Security(1, pMyDisasm)) return;
-    GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
-    if ((*pMyDisasm).Prefix.REX.R_ == 1) {
-        GV.REGOPCODE |= 0x8;
+    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    if ((*pMyDisasm).Prefix.REX.R_) {
+        (*pMyArgument).ArgType = REGISTER_TYPE+CR_REG+REGS[reg|8];
     }
-    #ifndef BEA_LIGHT_DISASSEMBLY
-       (void) strcpy ((char*) (*pMyArgument).ArgMnemonic, RegistersCR[GV.REGOPCODE]);
-    #endif
-    (*pMyArgument).ArgType = REGISTER_TYPE+CR_REG+REGS[GV.REGOPCODE];
+    else {
+        (*pMyArgument).ArgType = REGISTER_TYPE+CR_REG+REGS[reg];
+    }
     (*pMyArgument).ArgSize = 32;
 }
 
 void __bea_callspec__ RegDR_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
+    Int32 reg;
     if (!Security(1, pMyDisasm)) return;
-    GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
-    if ((*pMyDisasm).Prefix.REX.R_ == 1) {
-        GV.REGOPCODE |= 0x8;
-    }
-    if (GV.SYNTAX_ == ATSyntax) {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((char*) (*pMyArgument).ArgMnemonic, RegistersDR_AT[GV.REGOPCODE]);
-        #endif
+    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    if ((*pMyDisasm).Prefix.REX.R_) {
+        (*pMyArgument).ArgType = REGISTER_TYPE+DR_REG+REGS[reg|8];
     }
     else {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((char*) (*pMyArgument).ArgMnemonic, RegistersDR[GV.REGOPCODE]);
-        #endif
+        (*pMyArgument).ArgType = REGISTER_TYPE+DR_REG+REGS[reg];
     }
-    (*pMyArgument).ArgType = REGISTER_TYPE+DR_REG+REGS[GV.REGOPCODE];
     (*pMyArgument).ArgSize = 32;
 }
 /* =======================================
@@ -98,65 +91,61 @@ void __bea_callspec__ RegDR_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Reg_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    size_t i = 0;
+    Int32 reg;
     if (!Security(1, pMyDisasm)) return;
-    GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
-    if ((*pMyDisasm).Prefix.REX.R_ == 1) {
-        GV.REGOPCODE += 0x8;
-    }
-    if (GV.MMX_  == 1) {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersMMX[GV.REGOPCODE]);
-        #endif
-        (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[GV.REGOPCODE];
+    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    
+    if (GV.MMX_) {
+        (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[reg];
         (*pMyArgument).ArgSize = 64;
+        return;
     }
-    else if (GV.SSE_ == 1) {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersSSE[GV.REGOPCODE]);
-        #endif
-        (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[GV.REGOPCODE];
-        (*pMyArgument).ArgSize = 128;
-    }
-    else if (GV.OperandSize == 8) {
-        if ((*pMyDisasm).Prefix.REXState == 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8BitsLegacy[GV.REGOPCODE]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[GV.REGOPCODE];
-			if (GV.REGOPCODE >= 4) {
-				(*pMyArgument).ArgPosition = HighPosition;
-			}
-            (*pMyArgument).ArgSize = 8;
+    
+    if (GV.SSE_) {
+        if ((*pMyDisasm).Prefix.REX.R_) {
+            (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[reg|8];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8Bits[GV.REGOPCODE]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[GV.REGOPCODE];
-            (*pMyArgument).ArgSize = 8;
+            (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[reg];
+        }
+        (*pMyArgument).ArgSize = 128;
+        return;
+    }
+    
+    /* general purpose register */
+    if ((*pMyDisasm).Prefix.REX.R_) {
+        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[reg|8];
+    }
+    else {
+        if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
+            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[reg];
+            /* determine HighPos from 3rd bit (Hxx)*/
+            (*pMyArgument).ArgPosition = reg >> 2;
+        }
+        else {
+            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[reg];
         }
     }
-    else if (GV.OperandSize == 16) {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[GV.REGOPCODE]);
-        #endif
-        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[GV.REGOPCODE];
-        (*pMyArgument).ArgSize = 16;
+    (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
+}
+
+static void _FillSegmentDS(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
+{
+    if ((*pMyDisasm).Prefix.SegmentState == InUsePrefix) {
+        (*pMyArgument).SegmentReg = (*pMyDisasm).Prefix.Segment;
     }
-    else if (GV.OperandSize == 32) {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[GV.REGOPCODE]);
-        #endif
-        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[GV.REGOPCODE];
-        (*pMyArgument).ArgSize = 32;
+    else {
+        (*pMyArgument).SegmentReg = DSReg;
     }
-    else if (GV.OperandSize == 64) {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[GV.REGOPCODE]);
-        #endif
-        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[GV.REGOPCODE];
-        (*pMyArgument).ArgSize = 64;
+}
+
+static void _FillSegmentSS(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
+{
+    if ((*pMyDisasm).Prefix.SegmentState == InUsePrefix) {
+        (*pMyArgument).SegmentReg = (*pMyDisasm).Prefix.Segment;
+    }
+    else {
+        (*pMyArgument).SegmentReg = SSReg;
     }
 }
 /* =======================================
@@ -164,115 +153,42 @@ void __bea_callspec__ Reg_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_EAX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    #ifndef BEA_LIGHT_DISASSEMBLY
-	size_t i = 0;
-    if (GV.SYNTAX_ == ATSyntax) {
-	   (void) strcpy((char*) (*pMyArgument).ArgMnemonic, "(%");
-	   i += 2;
-    }
-    #endif
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[8]);
-            #endif
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).Memory.BaseRegister = REGS[8];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[0]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[0];
-        }
-    }
-    else if (GV.AddressSize == 32) {
-
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[8]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[8];
-
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[0]);
-            #endif
             (*pMyArgument).Memory.BaseRegister = REGS[0];
         }
     }
     else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, BXSI_);
-            #endif
+        (*pMyArgument).Memory.BaseRegister = REGS[3];
+        (*pMyArgument).Memory.IndexRegister = REGS[6];
+        (*pMyArgument).Memory.Scale = 1;
     }
-    #ifndef BEA_LIGHT_DISASSEMBLY
-       i = strlen ((char*) &(*pMyArgument).ArgMnemonic);
-       if (GV.SYNTAX_ == ATSyntax) {
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-           i += 1;
-       }
-    #endif
-
+    _FillSegmentDS(pMyArgument, pMyDisasm);
 }
 /* =======================================
  *
  * ======================================= */
 void __bea_callspec__ Addr_ECX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    #ifndef BEA_LIGHT_DISASSEMBLY
-    size_t i = 0;
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic, "(%");
-        i += 2;
-    }
-	#endif
-
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[9]);
-            #endif
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).Memory.BaseRegister = REGS[1+8];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[1]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[1];
-        }
-    }
-    else if (GV.AddressSize == 32) {
-
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[9]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[1+8];
-
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[1]);
-            #endif
             (*pMyArgument).Memory.BaseRegister = REGS[1];
         }
     }
     else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, BXDI_);
-            #endif
+        (*pMyArgument).Memory.BaseRegister = REGS[3];
+        (*pMyArgument).Memory.IndexRegister = REGS[7];
+        (*pMyArgument).Memory.Scale = 1;
     }
-	#ifndef BEA_LIGHT_DISASSEMBLY
-		i = strlen ((char*) &(*pMyArgument).ArgMnemonic);
-		if (GV.SYNTAX_ == ATSyntax) {
-			(void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-			i += 1;
-		}
-	#endif
-
+    _FillSegmentDS(pMyArgument, pMyDisasm);
 }
 
 /* =======================================
@@ -280,55 +196,22 @@ void __bea_callspec__ Addr_ECX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_EDX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    #ifndef BEA_LIGHT_DISASSEMBLY
-		size_t i = 0;
-		if (GV.SYNTAX_ == ATSyntax) {
-			(void) strcpy((char*) (*pMyArgument).ArgMnemonic, "(%");
-			i += 2;
-		}
-	#endif
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[10]);
-            #endif
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).Memory.BaseRegister = REGS[2+8];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[2]);
-            #endif
             (*pMyArgument).Memory.BaseRegister = REGS[2];
         }
-    }
-    else if (GV.AddressSize == 32) {
-
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[10]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[2+8];
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[2]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[2];
-        }
+        _FillSegmentDS(pMyArgument, pMyDisasm);
     }
     else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, BPSI_);
-            #endif
+        (*pMyArgument).Memory.BaseRegister = REGS[5];
+        (*pMyArgument).Memory.IndexRegister = REGS[6];
+        (*pMyArgument).Memory.Scale = 1;
+        _FillSegmentSS(pMyArgument, pMyDisasm);
     }
-	#ifndef BEA_LIGHT_DISASSEMBLY
-		i = strlen ((char*) &(*pMyArgument).ArgMnemonic);
-		if (GV.SYNTAX_ == ATSyntax) {
-			(void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-			i += 1;
-		}
-	#endif
 }
 
 
@@ -337,56 +220,22 @@ void __bea_callspec__ Addr_EDX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_EBX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    #ifndef BEA_LIGHT_DISASSEMBLY
-	size_t i = 0;
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic, "(%");
-        i += 2;
-    }
-	#endif
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[11]);
-            #endif
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).Memory.BaseRegister = REGS[3+8];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[3]);
-            #endif
             (*pMyArgument).Memory.BaseRegister = REGS[3];
         }
-    }
-    else if (GV.AddressSize == 32) {
-
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[11]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[3+8];
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[3]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[3];
-        }
+        _FillSegmentDS(pMyArgument, pMyDisasm);
     }
     else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, BPDI_);
-            #endif
+        (*pMyArgument).Memory.BaseRegister = REGS[5];
+        (*pMyArgument).Memory.IndexRegister = REGS[7];
+        (*pMyArgument).Memory.Scale = 1;
+        _FillSegmentSS(pMyArgument, pMyDisasm);
     }
-    #ifndef BEA_LIGHT_DISASSEMBLY
-    i = strlen ((char*) &(*pMyArgument).ArgMnemonic);
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        i += 1;
-    }
-	#endif
-
 }
 
 /* =======================================
@@ -396,18 +245,12 @@ void __bea_callspec__ Addr_SIB(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
     if (!Security(2, pMyDisasm)) return;
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize >= 32) {
-        GV.DECALAGE_EIP++;
-        GV.BASE_  = ((UInt8) *((UInt8*) (UIntPtr) (GV.EIP_+2))) & 0x7;
-        GV.SCALE_  = (((UInt8) *((UInt8*) (UIntPtr)(GV.EIP_+2))) & 0xc0) >> 6;
-        GV.INDEX_  = (((UInt8) *((UInt8*) (UIntPtr)(GV.EIP_+2))) & 0x38) >> 3;
-        (void) SIB[GV.SCALE_ ](pMyArgument, 0, pMyDisasm);
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        _SIB(pMyArgument, pMyDisasm);
     }
     else {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((char*) (*pMyArgument).ArgMnemonic, Registers16Bits[6]);
-        #endif
         (*pMyArgument).Memory.BaseRegister = REGS[6];
+        _FillSegmentDS(pMyArgument, pMyDisasm);
     }
 }
 
@@ -418,23 +261,22 @@ void __bea_callspec__ Addr_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
     Int32 MyNumber;
     UInt64 MyAddress;
-    size_t i = 0;
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize >= 32) {
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
         if (!Security(6, pMyDisasm)) return;
         GV.DECALAGE_EIP+=4;
         MyNumber = *((Int32*)(UIntPtr) (GV.EIP_+2));
         (*pMyArgument).Memory.Displacement = MyNumber;
-        if (GV.Architecture == 64) {
+        if ((*pMyDisasm).Archi == 64) {
             MyNumber += 6;
             MyNumber += (*pMyDisasm).Prefix.Number;
             if (GV.ImmediatSize == 32) {
                 MyNumber += 4;
             }
-            if (GV.ImmediatSize == 16) {
+            else if (GV.ImmediatSize == 16) {
                 MyNumber += 2;
             }
-            if (GV.ImmediatSize == 8) {
+            else if (GV.ImmediatSize == 8) {
                 MyNumber += 1;
             }
             if ((*pMyDisasm).Instruction.Opcode >= 0x0F3800) {      /* add two bytes if opcode is a 3-bytes */
@@ -445,23 +287,13 @@ void __bea_callspec__ Addr_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             }
             CalculateRelativeAddress(&MyAddress, (Int64)MyNumber, pMyDisasm);
             (*pMyDisasm).Instruction.AddrValue = MyAddress;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.16llX", (Int64)MyAddress);
-            #endif
-            (*pMyArgument).ArgType |= RELATIVE_;
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X", (Int64)MyNumber);
-            #endif
+            (*pMyArgument).ArgType = MEMORY_TYPE+RELATIVE_;
         }
     }
     else {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((char*) (*pMyArgument).ArgMnemonic, Registers16Bits[7]);
-        #endif
         (*pMyArgument).Memory.BaseRegister = REGS[7];
     }
+    _FillSegmentDS(pMyArgument, pMyDisasm);
 }
 
 /* =======================================
@@ -469,60 +301,21 @@ void __bea_callspec__ Addr_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_ESI(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    long MyNumber;
-    #ifndef BEA_LIGHT_DISASSEMBLY
-	size_t i = 0;
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic, "(%");
-        i += 2;
-    }
-	#endif
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[14]);
-            #endif
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).Memory.BaseRegister = REGS[6+8];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[6]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[6];
-        }
-    }
-    else if (GV.AddressSize == 32) {
-
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[14]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[6+8];
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[6]);
-            #endif
             (*pMyArgument).Memory.BaseRegister = REGS[6];
         }
     }
     else {
         GV.DECALAGE_EIP+=2;
-        MyNumber = *((UInt16*)(UIntPtr) (GV.EIP_+2));
-        (*pMyArgument).Memory.Displacement = MyNumber;
+        (*pMyArgument).Memory.Displacement = *((UInt16*)(UIntPtr) (GV.EIP_+2));
         if (!Security(2, pMyDisasm)) return;
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.4X", (Int64)MyNumber);
-        #endif
     }
-    #ifndef BEA_LIGHT_DISASSEMBLY
-    i = strlen ((char*) &(*pMyArgument).ArgMnemonic);
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        i += 1;
-    }
-	#endif
+    _FillSegmentDS(pMyArgument, pMyDisasm);
 }
 
 /* =======================================
@@ -530,56 +323,19 @@ void __bea_callspec__ Addr_ESI(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_EDI(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    #ifndef BEA_LIGHT_DISASSEMBLY
-	size_t i = 0;
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic, "(%");
-        i += 2;
-    }
-	#endif
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[15]);
-            #endif
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).Memory.BaseRegister = REGS[7+8];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[7]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[7];
-        }
-    }
-    else if (GV.AddressSize == 32) {
-
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[15]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[7+8];
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[7]);
-            #endif
             (*pMyArgument).Memory.BaseRegister = REGS[7];
         }
     }
     else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[3]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[3];
+        (*pMyArgument).Memory.BaseRegister = REGS[3];
     }
-    #ifndef BEA_LIGHT_DISASSEMBLY
-    i = strlen ((char*) &(*pMyArgument).ArgMnemonic);
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        i += 1;
-    }
-	#endif
+    _FillSegmentDS(pMyArgument, pMyDisasm);
 }
 
 /* =======================================
@@ -587,96 +343,24 @@ void __bea_callspec__ Addr_EDI(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_EAX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    size_t i = 0, j;
     long MyNumber;
     MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+2));
     (*pMyArgument).Memory.Displacement = MyNumber;
-    if (GV.SYNTAX_ == ATSyntax) {
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) MyNumber);
-            #endif
-        }
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(%");
-        #endif
-        i+=2;
-    }
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[8]);
-            #endif
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).Memory.BaseRegister = REGS[8];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[0]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[0];
-        }
-    }
-    else if (GV.AddressSize == 32) {
-
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[8]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[8];
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[0]);
-            #endif
             (*pMyArgument).Memory.BaseRegister = REGS[0];
         }
     }
     else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, BXSI_);
-            #endif
+        (*pMyArgument).Memory.BaseRegister = REGS[3];
+        (*pMyArgument).Memory.IndexRegister = REGS[6];
+        (*pMyArgument).Memory.Scale = 1;
     }
-    #ifndef BEA_LIGHT_DISASSEMBLY
-    i = strlen ((char*) &(*pMyArgument).ArgMnemonic);
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        i += 1;
-	}
-	else {
-	#else
-	if(1) {
-    #endif
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "+");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) MyNumber);
-            #endif
-        }
-    }
+    _FillSegmentDS(pMyArgument, pMyDisasm);
 }
 
 /* =======================================
@@ -684,97 +368,24 @@ void __bea_callspec__ Addr_EAX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_ECX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    size_t i = 0, j;
     long MyNumber;
-    MyNumber = (Int8) *((UInt8*) (UIntPtr)GV.EIP_+2);
+    MyNumber = *((Int8*) (UIntPtr)GV.EIP_+2);
     (*pMyArgument).Memory.Displacement = MyNumber;
-    if (GV.SYNTAX_ == ATSyntax) {
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) MyNumber);
-            #endif
-        }
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(%");
-        #endif
-        i+=2;
-    }
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[9]);
-            #endif
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).Memory.BaseRegister = REGS[1+8];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[1]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[1];
-        }
-    }
-    else if (GV.AddressSize == 32) {
-
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[9]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[1+8];
-
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[1]);
-            #endif
             (*pMyArgument).Memory.BaseRegister = REGS[1];
         }
     }
     else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, BXDI_);
-            #endif
+        (*pMyArgument).Memory.BaseRegister = REGS[3];
+        (*pMyArgument).Memory.IndexRegister = REGS[7];
+        (*pMyArgument).Memory.Scale = 1;
     }
-    #ifndef BEA_LIGHT_DISASSEMBLY
-    i = strlen ((char*) &(*pMyArgument).ArgMnemonic);
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        i += 1;
-	}
-	else {
-	#else
-	if(1) {
-    #endif
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "+");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) MyNumber);
-            #endif
-        }
-    }
+    _FillSegmentDS(pMyArgument, pMyDisasm);
 }
 
 /* =======================================
@@ -782,95 +393,24 @@ void __bea_callspec__ Addr_ECX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_EDX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    size_t i = 0, j;
     long MyNumber;
     MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+2));
     (*pMyArgument).Memory.Displacement = MyNumber;
-    if (GV.SYNTAX_ == ATSyntax) {
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) MyNumber);
-            #endif
-        }
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(%");
-        #endif
-        i+=2;
-    }
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[10]);
-            #endif
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).Memory.BaseRegister = REGS[2+8];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[2]);
-            #endif
             (*pMyArgument).Memory.BaseRegister = REGS[2];
         }
-    }
-    else if (GV.AddressSize == 32) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[10]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[2+8];
-
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[2]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[2];
-        }
+        _FillSegmentDS(pMyArgument, pMyDisasm);
     }
     else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, BPSI_);
-            #endif
-    }
-    #ifndef BEA_LIGHT_DISASSEMBLY
-    i = strlen ((char*) &(*pMyArgument).ArgMnemonic);
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        i += 1;
-	}
-	else {
-	#else
-	if(1) {
-    #endif
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "+");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) MyNumber);
-            #endif
-        }
+        (*pMyArgument).Memory.BaseRegister = REGS[5];
+        (*pMyArgument).Memory.IndexRegister = REGS[6];
+        (*pMyArgument).Memory.Scale = 1;
+        _FillSegmentSS(pMyArgument, pMyDisasm);
     }
 }
 
@@ -879,95 +419,24 @@ void __bea_callspec__ Addr_EDX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_EBX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    size_t i = 0, j;
     long MyNumber;
     MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+2));
     (*pMyArgument).Memory.Displacement = MyNumber;
-    if (GV.SYNTAX_ == ATSyntax) {
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) MyNumber);
-            #endif
-        }
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(%");
-        #endif
-        i+=2;
-    }
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[11]);
-            #endif
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).Memory.BaseRegister = REGS[3+8];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[3]);
-            #endif
             (*pMyArgument).Memory.BaseRegister = REGS[3];
         }
-    }
-    else if (GV.AddressSize == 32) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[11]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[3+8];
-
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[3]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[3];
-        }
+        _FillSegmentDS(pMyArgument, pMyDisasm);
     }
     else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, BPDI_);
-            #endif
-    }
-    #ifndef BEA_LIGHT_DISASSEMBLY
-    i = strlen ((char*) &(*pMyArgument).ArgMnemonic);
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        i += 1;
-	}
-	else {
-	#else
-	if(1) {
-    #endif
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "+");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) MyNumber);
-            #endif
-        }
+        (*pMyArgument).Memory.BaseRegister = REGS[5];
+        (*pMyArgument).Memory.IndexRegister = REGS[7];
+        (*pMyArgument).Memory.Scale = 1;
+        _FillSegmentSS(pMyArgument, pMyDisasm);
     }
 }
 
@@ -976,81 +445,18 @@ void __bea_callspec__ Addr_EBX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_SIB_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    size_t i = 0, j;
-    long MyNumber;
-    if (!Security(2, pMyDisasm)) return;
-    if (GV.AddressSize >= 32) {
-        MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+3));
-    }
-    else {
-        MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+2));
-    }
-    (*pMyArgument).Memory.Displacement = MyNumber;
-    if (GV.SYNTAX_ == ATSyntax) {
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) MyNumber);
-            #endif
-        }
-        /*#ifndef BEA_LIGHT_DISASSEMBLY
-   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(%");
-#endif
-         *i+=2; */
-    }
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize >= 32) {
-        GV.DECALAGE_EIP++;
-        GV.BASE_  = (*((UInt8*)(UIntPtr) (GV.EIP_+2))) & 0x7;
-        GV.SCALE_  = ((*((UInt8*)(UIntPtr) (GV.EIP_+2))) & 0xc0) >> 6;
-        GV.INDEX_  = ((*((UInt8*)(UIntPtr) (GV.EIP_+2))) & 0x38) >> 3;
-        j = i;
-        i += SIB[GV.SCALE_ ](pMyArgument, j, pMyDisasm);
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        if (!Security(3, pMyDisasm)) return;
+        (*pMyArgument).Memory.Displacement = *((Int8*)(UIntPtr) (GV.EIP_+3));
+        _SIB(pMyArgument, pMyDisasm);
     }
     else {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((char*) (*pMyArgument).ArgMnemonic, Registers16Bits[6]);
-        #endif
-        i += strlen (Registers16Bits[6]);
+        if (!Security(2, pMyDisasm)) return;
+        (*pMyArgument).Memory.Displacement = *((Int8*)(UIntPtr) (GV.EIP_+2));
+        (*pMyArgument).Memory.BaseRegister = REGS[7];
+        _FillSegmentDS(pMyArgument, pMyDisasm);
     }
-
-    if (GV.SYNTAX_ == ATSyntax) {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        #endif
-        i++;
-    }
-    else {
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "+");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) MyNumber);
-            #endif
-        }
-    }
-
 }
 
 /* =======================================
@@ -1058,96 +464,23 @@ void __bea_callspec__ Addr_SIB_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_EBP_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    size_t i = 0, j;
     long MyNumber;
     MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+2));
     (*pMyArgument).Memory.Displacement = MyNumber;
-    if (GV.SYNTAX_ == ATSyntax) {
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) MyNumber);
-            #endif
-        }
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(%");
-        #endif
-        i+=2;
-    }
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[13]);
-            #endif
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).Memory.BaseRegister = REGS[5+8];
+            _FillSegmentDS(pMyArgument, pMyDisasm);
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[5]);
-            #endif
             (*pMyArgument).Memory.BaseRegister = REGS[5];
-        }
-    }
-    else if (GV.AddressSize == 32) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[13]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[5+8];
-
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[5]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[5];
+            _FillSegmentSS(pMyArgument, pMyDisasm);
         }
     }
     else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[7]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[7];
-    }
-    #ifndef BEA_LIGHT_DISASSEMBLY
-    i = strlen ((char*) &(*pMyArgument).ArgMnemonic);
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        i += 1;
-	}
-	else {
-	#else
-	if(1) {
-    #endif
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "+");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) MyNumber);
-            #endif
-        }
+        (*pMyArgument).Memory.BaseRegister = REGS[7];
+        _FillSegmentDS(pMyArgument, pMyDisasm);
     }
 }
 
@@ -1156,97 +489,24 @@ void __bea_callspec__ Addr_EBP_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_ESI_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    size_t i = 0, j;
     long MyNumber;
     MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+2));
     (*pMyArgument).Memory.Displacement = MyNumber;
-    if (GV.SYNTAX_ == ATSyntax) {
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) MyNumber);
-            #endif
-        }
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(%");
-        #endif
-        i+=2;
-    }
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[14]);
-            #endif
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).Memory.BaseRegister = REGS[6+8];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[6]);
-            #endif
             (*pMyArgument).Memory.BaseRegister = REGS[6];
         }
-    }
-    else if (GV.AddressSize == 32) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[14]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[6+8];
-
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[6]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[6];
-        }
+        _FillSegmentDS(pMyArgument, pMyDisasm);
     }
     else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[5]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[5];
+        (*pMyArgument).Memory.BaseRegister = REGS[5];
+        _FillSegmentSS(pMyArgument, pMyDisasm);
     }
-    #ifndef BEA_LIGHT_DISASSEMBLY
-    i = strlen ((char*) &(*pMyArgument).ArgMnemonic);
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        i += 1;
-	}
-	else {
-	#else
-	if(1) {
-    #endif
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "+");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) MyNumber);
-            #endif
-        }
-    }
+
 }
 
 /* =======================================
@@ -1254,97 +514,22 @@ void __bea_callspec__ Addr_ESI_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_EDI_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    size_t i = 0, j;
     long MyNumber;
     MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+2));
     (*pMyArgument).Memory.Displacement = MyNumber;
-    if (GV.SYNTAX_ == ATSyntax) {
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.2X",(Int64) MyNumber);
-            #endif
-        }
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(%");
-        #endif
-        i+=2;
-    }
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[15]);
-            #endif
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).Memory.BaseRegister = REGS[7+8];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[7]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[7];
-        }
-    }
-    else if (GV.AddressSize == 32) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[15]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[7+8];
-
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[7]);
-            #endif
             (*pMyArgument).Memory.BaseRegister = REGS[7];
         }
     }
     else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[3]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[3];
+        (*pMyArgument).Memory.BaseRegister = REGS[3];
     }
-    #ifndef BEA_LIGHT_DISASSEMBLY
-    i = strlen ((char*) &(*pMyArgument).ArgMnemonic);
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        i += 1;
-	}
-	else {
-	#else
-	if(1) {
-    #endif
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "+");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.2X",(Int64) MyNumber);
-            #endif
-        }
-    }
+    _FillSegmentDS(pMyArgument, pMyDisasm);
 }
 
 /* =======================================
@@ -1352,100 +537,23 @@ void __bea_callspec__ Addr_EDI_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_EAX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    size_t i = 0, j;
-    long MyNumber;
-    if (GV.AddressSize == 16) {
-        MyNumber = *((Int16*)(UIntPtr) (GV.EIP_+2));
-    }
-    else{
-        MyNumber = *((Int32*)(UIntPtr) (GV.EIP_+2));
-    }
-    (*pMyArgument).Memory.Displacement = MyNumber;
-    if (GV.SYNTAX_ == ATSyntax) {
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i ++;
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            j = i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) MyNumber);
-            #endif
-        }
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(%");
-        #endif
-        i+=2;
-    }
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[8]);
-            #endif
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+2));
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).Memory.BaseRegister = REGS[8];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[0]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[0];
-        }
-    }
-    else if (GV.AddressSize == 32) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[8]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[8];
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[0]);
-            #endif
             (*pMyArgument).Memory.BaseRegister = REGS[0];
         }
     }
     else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, BXSI_);
-            #endif
+        (*pMyArgument).Memory.Displacement = *((Int16*)(UIntPtr) (GV.EIP_+2));
+        (*pMyArgument).Memory.BaseRegister = REGS[3];
+        (*pMyArgument).Memory.IndexRegister = REGS[6];
+        (*pMyArgument).Memory.Scale = 1;
     }
-    #ifndef BEA_LIGHT_DISASSEMBLY
-    i = strlen ((char*) &(*pMyArgument).ArgMnemonic);
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        i += 1;
-	}
-	else {
-	#else
-	if(1) {
-    #endif
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "+");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) MyNumber);
-            #endif
-        }
-    }
+    _FillSegmentDS(pMyArgument, pMyDisasm);
 }
 
 
@@ -1454,101 +562,23 @@ void __bea_callspec__ Addr_EAX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_ECX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    size_t i = 0, j;
-    long MyNumber;
-    if (GV.AddressSize == 16) {
-        MyNumber = *((Int16*)(UIntPtr) (GV.EIP_+2));
-    }
-    else{
-        MyNumber = *((Int32*)(UIntPtr) (GV.EIP_+2));
-    }
-    (*pMyArgument).Memory.Displacement = MyNumber;
-    if (GV.SYNTAX_ == ATSyntax) {
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i ++;
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            j = i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) MyNumber);
-            #endif
-        }
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(%");
-        #endif
-        i+=2;
-    }
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[9]);
-            #endif
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+2));
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).Memory.BaseRegister = REGS[1+8];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[1]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[1];
-        }
-    }
-    else if (GV.AddressSize == 32) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[9]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[1+8];
-
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[1]);
-            #endif
             (*pMyArgument).Memory.BaseRegister = REGS[1];
         }
     }
     else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, BXDI_);
-            #endif
+        (*pMyArgument).Memory.Displacement = *((Int16*)(UIntPtr) (GV.EIP_+2));
+        (*pMyArgument).Memory.BaseRegister = REGS[3];
+        (*pMyArgument).Memory.IndexRegister = REGS[7];
+        (*pMyArgument).Memory.Scale = 1;
     }
-    #ifndef BEA_LIGHT_DISASSEMBLY
-    i = strlen ((char*) &(*pMyArgument).ArgMnemonic);
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        i += 1;
-	}
-	else {
-	#else
-	if(1) {
-    #endif
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "+");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) MyNumber);
-            #endif
-        }
-    }
+    _FillSegmentDS(pMyArgument, pMyDisasm);
 }
 
 /* =======================================
@@ -1556,100 +586,23 @@ void __bea_callspec__ Addr_ECX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_EDX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    size_t i = 0, j;
-    long MyNumber;
-    if (GV.AddressSize == 16) {
-        MyNumber = *((Int16*)(UIntPtr) (GV.EIP_+2));
-    }
-    else{
-        MyNumber = *((Int32*)(UIntPtr) (GV.EIP_+2));
-    }
-    (*pMyArgument).Memory.Displacement = MyNumber;
-    if (GV.SYNTAX_ == ATSyntax) {
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i ++;
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            j = i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) MyNumber);
-            #endif
-        }
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(%");
-        #endif
-        i+=2;
-    }
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[10]);
-            #endif
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+2));
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).Memory.BaseRegister = REGS[2+8];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[2]);
-            #endif
             (*pMyArgument).Memory.BaseRegister = REGS[2];
         }
-    }
-    else if (GV.AddressSize == 32) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[10]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[2+8];
-
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[2]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[2];
-        }
+        _FillSegmentDS(pMyArgument, pMyDisasm);
     }
     else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, BPSI_);
-            #endif
-    }
-    #ifndef BEA_LIGHT_DISASSEMBLY
-    i = strlen ((char*) &(*pMyArgument).ArgMnemonic);
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        i += 1;
-	}
-	else {
-	#else
-	if(1) {
-    #endif
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "+");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) MyNumber);
-            #endif
-        }
+        (*pMyArgument).Memory.Displacement = *((Int16*)(UIntPtr) (GV.EIP_+2));
+        (*pMyArgument).Memory.BaseRegister = REGS[5];
+        (*pMyArgument).Memory.IndexRegister = REGS[6];
+        (*pMyArgument).Memory.Scale = 1;
+        _FillSegmentSS(pMyArgument, pMyDisasm);
     }
 }
 
@@ -1658,100 +611,23 @@ void __bea_callspec__ Addr_EDX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_EBX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    size_t i = 0, j;
-    long MyNumber;
-    if (GV.AddressSize == 16) {
-        MyNumber = *((Int16*)(UIntPtr) (GV.EIP_+2));
-    }
-    else{
-        MyNumber = *((Int32*)(UIntPtr) (GV.EIP_+2));
-    }
-    (*pMyArgument).Memory.Displacement = MyNumber;
-    if (GV.SYNTAX_ == ATSyntax) {
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i ++;
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            j = i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) MyNumber);
-            #endif
-        }
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(%");
-        #endif
-        i+=2;
-    }
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[11]);
-            #endif
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+2));
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).Memory.BaseRegister = REGS[3+8];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[3]);
-            #endif
             (*pMyArgument).Memory.BaseRegister = REGS[3];
         }
-    }
-    else if (GV.AddressSize == 32) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[11]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[3+8];
-
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[3]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[3];
-        }
+        _FillSegmentDS(pMyArgument, pMyDisasm);
     }
     else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, BPDI_);
-            #endif
-    }
-    #ifndef BEA_LIGHT_DISASSEMBLY
-    i = strlen ((char*) &(*pMyArgument).ArgMnemonic);
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        i += 1;
-	}
-	else {
-	#else
-	if(1) {
-    #endif
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "+");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) MyNumber);
-            #endif
-        }
+        (*pMyArgument).Memory.Displacement = *((Int16*)(UIntPtr) (GV.EIP_+2));
+        (*pMyArgument).Memory.BaseRegister = REGS[5];
+        (*pMyArgument).Memory.IndexRegister = REGS[7];
+        (*pMyArgument).Memory.Scale = 1;
+        _FillSegmentSS(pMyArgument, pMyDisasm);
     }
 }
 
@@ -1760,83 +636,17 @@ void __bea_callspec__ Addr_EBX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_SIB_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    size_t i = 0, j;
-    long MyNumber;
     if (!Security(2, pMyDisasm)) return;
-    if (GV.AddressSize >= 32) {
-        MyNumber = *((Int32*)(UIntPtr) (GV.EIP_+3));
-    }
-    else {
-        MyNumber = *((Int16*)(UIntPtr) (GV.EIP_+2));
-    }
-
-    (*pMyArgument).Memory.Displacement = MyNumber;
-    if (GV.SYNTAX_ == ATSyntax) {
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i ++;
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            j = i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) MyNumber);
-            #endif
-        }
-        /*#ifndef BEA_LIGHT_DISASSEMBLY
-   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(%");
-#endif
-         *i+=2; */
-    }
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize >= 32) {
-        GV.DECALAGE_EIP++;
-        GV.BASE_  = ((UInt8) *((UInt8*) (UIntPtr)GV.EIP_+2)) & 0x7;
-        GV.SCALE_  = (((UInt8) *((UInt8*) (UIntPtr)GV.EIP_+2)) & 0xc0) >> 6;
-        GV.INDEX_  = (((UInt8) *((UInt8*) (UIntPtr)GV.EIP_+2)) & 0x38) >> 3;
-        j = i;
-        i += SIB[GV.SCALE_ ](pMyArgument, j, pMyDisasm);
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+3));
+        _SIB(pMyArgument, pMyDisasm);
     }
     else {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((char*) (*pMyArgument).ArgMnemonic, Registers16Bits[6]);
-        #endif
+        (*pMyArgument).Memory.Displacement = *((Int16*)(UIntPtr) (GV.EIP_+2));
         (*pMyArgument).Memory.BaseRegister = REGS[6];
-        i += strlen (Registers16Bits[6]);
+        _FillSegmentDS(pMyArgument, pMyDisasm);
     }
-
-    if (GV.SYNTAX_ == ATSyntax) {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        #endif
-        i += 1;
-    }
-    else {
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "+");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) MyNumber);
-            #endif
-        }
-    }
-
 }
 
 /* =======================================
@@ -1844,101 +654,22 @@ void __bea_callspec__ Addr_SIB_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_EBP_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    size_t i = 0, j;
-    long MyNumber;
-    if (GV.AddressSize == 16) {
-        MyNumber = *((Int16*)(UIntPtr) (GV.EIP_+2));
-    }
-    else{
-        MyNumber = *((Int32*)(UIntPtr) (GV.EIP_+2));
-    }
-    (*pMyArgument).Memory.Displacement = MyNumber;
-    if (GV.SYNTAX_ == ATSyntax) {
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i ++;
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            j = i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) MyNumber);
-            #endif
-        }
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(%");
-        #endif
-        i+=2;
-    }
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[13]);
-            #endif
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+2));
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).Memory.BaseRegister = REGS[5+8];
+            _FillSegmentDS(pMyArgument, pMyDisasm);
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[5]);
-            #endif
             (*pMyArgument).Memory.BaseRegister = REGS[5];
-        }
-    }
-    else if (GV.AddressSize == 32) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[13]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[5+8];
-
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[5]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[5];
+            _FillSegmentSS(pMyArgument, pMyDisasm);
         }
     }
     else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[7]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[7];
-    }
-    #ifndef BEA_LIGHT_DISASSEMBLY
-    i = strlen ((char*) &(*pMyArgument).ArgMnemonic);
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        i += 1;
-	}
-	else {
-	#else
-	if(1) {
-    #endif
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "+");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) MyNumber);
-            #endif
-        }
+        (*pMyArgument).Memory.Displacement = *((Int16*)(UIntPtr) (GV.EIP_+2));
+        (*pMyArgument).Memory.BaseRegister = REGS[7];
+        _FillSegmentDS(pMyArgument, pMyDisasm);
     }
 }
 
@@ -1947,101 +678,21 @@ void __bea_callspec__ Addr_EBP_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_ESI_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    size_t i = 0, j;
-    long MyNumber;
-    if (GV.AddressSize == 16) {
-        MyNumber = *((Int16*)(UIntPtr) (GV.EIP_+2));
-    }
-    else{
-        MyNumber = *((Int32*)(UIntPtr) (GV.EIP_+2));
-    }
-    (*pMyArgument).Memory.Displacement = MyNumber;
-    if (GV.SYNTAX_ == ATSyntax) {
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i ++;
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            j = i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) MyNumber);
-            #endif
-        }
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(%");
-        #endif
-        i+=2;
-    }
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[14]);
-            #endif
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+2));
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).Memory.BaseRegister = REGS[6+8];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[6]);
-            #endif
             (*pMyArgument).Memory.BaseRegister = REGS[6];
         }
-    }
-    else if (GV.AddressSize == 32) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[14]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[6+8];
-
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[6]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[6];
-        }
+        _FillSegmentDS(pMyArgument, pMyDisasm);
     }
     else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[5]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[5];
-    }
-    #ifndef BEA_LIGHT_DISASSEMBLY
-    i = strlen ((char*) &(*pMyArgument).ArgMnemonic);
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        i += 1;
-	}
-	else {
-	#else
-	if(1) {
-    #endif
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "+");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) MyNumber);
-            #endif
-        }
+        (*pMyArgument).Memory.Displacement = *((Int16*)(UIntPtr) (GV.EIP_+2));
+        (*pMyArgument).Memory.BaseRegister = REGS[5];
+        _FillSegmentSS(pMyArgument, pMyDisasm);
     }
 }
 
@@ -2050,102 +701,21 @@ void __bea_callspec__ Addr_ESI_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ Addr_EDI_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    size_t i = 0, j;
-    long MyNumber;
-    if (GV.AddressSize == 16) {
-        MyNumber = *((Int16*)(UIntPtr) (GV.EIP_+2));
-    }
-    else{
-        MyNumber = *((Int32*)(UIntPtr) (GV.EIP_+2));
-    }
-    (*pMyArgument).Memory.Displacement = MyNumber;
-    if (GV.SYNTAX_ == ATSyntax) {
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i ++;
-            j=i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            j = i;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) MyNumber);
-            #endif
-        }
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(%");
-        #endif
-        i+=2;
-    }
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if (GV.AddressSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[15]);
-            #endif
+    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+        (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+2));
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).Memory.BaseRegister = REGS[7+8];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[7]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[7];
-        }
-    }
-    else if (GV.AddressSize == 32) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[15]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[7+8];
-
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[7]);
-            #endif
             (*pMyArgument).Memory.BaseRegister = REGS[7];
         }
     }
     else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[3]);
-            #endif
-            (*pMyArgument).Memory.BaseRegister = REGS[3];
+        (*pMyArgument).Memory.Displacement = *((Int16*)(UIntPtr) (GV.EIP_+2));
+        (*pMyArgument).Memory.BaseRegister = REGS[3];
     }
-    #ifndef BEA_LIGHT_DISASSEMBLY
-    i = strlen ((char*) &(*pMyArgument).ArgMnemonic);
-    if (GV.SYNTAX_ == ATSyntax) {
-        (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        i += 1;
-	}
-	else {
-	#else
-	if(1) {
-    #endif
-        if (MyNumber < 0) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "-");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) ~MyNumber+1);
-            #endif
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "+");
-            #endif
-            i++;
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+i,"%.8X",(Int64) MyNumber);
-            #endif
-        }
-    }
+    _FillSegmentDS(pMyArgument, pMyDisasm);
 }
 
 /* =======================================
@@ -2153,107 +723,37 @@ void __bea_callspec__ Addr_EDI_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ _rEAX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    int i = 0;
-    GV.MemDecoration = 0;
-    if (GV.MMX_  == 1) {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersMMX[0]);
-        #endif
+    if (GV.MMX_) {
         (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[0];
         (*pMyArgument).ArgSize = 64;
         return;
     }
 
-    if (GV.SSE_ == 1) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersSSE[8]);
-            #endif
+    if (GV.SSE_) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[8];
             (*pMyArgument).ArgSize = 128;
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersSSE[0]);
-            #endif
             (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[0];
             (*pMyArgument).ArgSize = 128;
         }
         return;
     }
-    if (GV.OperandSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[8];
-            (*pMyArgument).ArgSize = 64;
+
+    /* general purpose register */
+    if ((*pMyDisasm).Prefix.REX.B_) {
+        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[8];
+    }
+    else {
+        if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
+            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[0];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[0]);
-            #endif
             (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[0];
-            (*pMyArgument).ArgSize = 64;
         }
     }
-    else if (GV.OperandSize == 32) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[8];
-            (*pMyArgument).ArgSize = 32;
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[0]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[0];
-            (*pMyArgument).ArgSize = 32;
-        }
-    }
-    else if (GV.OperandSize == 16) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[8];
-            (*pMyArgument).ArgSize = 16;
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[0]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[0];
-            (*pMyArgument).ArgSize = 16;
-        }
-    }
-    else if (GV.OperandSize == 8) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8Bits[8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[8];
-            (*pMyArgument).ArgSize = 8;
-        }
-        else {
-            if ((*pMyDisasm).Prefix.REXState == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8BitsLegacy[0]);
-                #endif
-                (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[0];
-                (*pMyArgument).ArgSize = 8;
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8Bits[0]);
-                #endif
-                (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[0];
-                (*pMyArgument).ArgSize = 8;
-            }
-        }
-    }
+    (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
 }
 
 
@@ -2262,107 +762,37 @@ void __bea_callspec__ _rEAX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ _rECX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    int i = 0;
-    GV.MemDecoration = 0;
-    if (GV.MMX_  == 1) {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersMMX[1]);
-        #endif
+    if (GV.MMX_) {
         (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[1];
         (*pMyArgument).ArgSize = 64;
         return;
     }
 
-    if (GV.SSE_ == 1) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersSSE[1+8]);
-            #endif
+    if (GV.SSE_) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[1+8];
             (*pMyArgument).ArgSize = 128;
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersSSE[1]);
-            #endif
             (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[1];
             (*pMyArgument).ArgSize = 128;
         }
         return;
     }
-    if (GV.OperandSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[1+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[1+8];
-            (*pMyArgument).ArgSize = 64;
+
+    /* general purpose register */
+    if ((*pMyDisasm).Prefix.REX.B_) {
+        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[1+8];
+    }
+    else {
+        if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
+            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[1];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[1]);
-            #endif
             (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[1];
-            (*pMyArgument).ArgSize = 64;
         }
     }
-    else if (GV.OperandSize == 32) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[1+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[1+8];
-            (*pMyArgument).ArgSize = 32;
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[1]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[1];
-            (*pMyArgument).ArgSize = 32;
-        }
-    }
-    else if (GV.OperandSize == 16) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[1+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[1+8];
-            (*pMyArgument).ArgSize = 16;
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[1]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[1];
-            (*pMyArgument).ArgSize = 16;
-        }
-    }
-    else if (GV.OperandSize == 8) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8Bits[1+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[1+8];
-            (*pMyArgument).ArgSize = 8;
-        }
-        else {
-            if ((*pMyDisasm).Prefix.REXState == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8BitsLegacy[1]);
-                #endif
-                (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[1];
-                (*pMyArgument).ArgSize = 8;
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8Bits[1]);
-                #endif
-                (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[1];
-                (*pMyArgument).ArgSize = 8;
-            }
-        }
-    }
+    (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
 }
 
 
@@ -2372,107 +802,37 @@ void __bea_callspec__ _rECX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ _rEDX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    int i = 0;
-    GV.MemDecoration = 0;
-    if (GV.MMX_  == 1) {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersMMX[2+0]);
-        #endif
+    if (GV.MMX_) {
         (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[2+0];
         (*pMyArgument).ArgSize = 64;
         return;
     }
 
-    if (GV.SSE_ == 1) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersSSE[2+8]);
-            #endif
+    if (GV.SSE_) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[2+8];
             (*pMyArgument).ArgSize = 128;
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersSSE[2+0]);
-            #endif
             (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[2+0];
             (*pMyArgument).ArgSize = 128;
         }
         return;
     }
-    if (GV.OperandSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[2+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[2+8];
-            (*pMyArgument).ArgSize = 64;
+
+    /* general purpose register */
+    if ((*pMyDisasm).Prefix.REX.B_) {
+        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[2+8];
+    }
+    else {
+        if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
+            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[2+0];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[2+0]);
-            #endif
             (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[2+0];
-            (*pMyArgument).ArgSize = 64;
         }
     }
-    else if (GV.OperandSize == 32) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[2+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[2+8];
-            (*pMyArgument).ArgSize = 32;
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[2+0]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[2+0];
-            (*pMyArgument).ArgSize = 32;
-        }
-    }
-    else if (GV.OperandSize == 16) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[2+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[2+8];
-            (*pMyArgument).ArgSize = 16;
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[2+0]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[2+0];
-            (*pMyArgument).ArgSize = 16;
-        }
-    }
-    else if (GV.OperandSize == 8) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8Bits[2+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[2+8];
-            (*pMyArgument).ArgSize = 8;
-        }
-        else {
-            if ((*pMyDisasm).Prefix.REXState == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8BitsLegacy[2+0]);
-                #endif
-                (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[2+0];
-                (*pMyArgument).ArgSize = 8;
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8Bits[2+0]);
-                #endif
-                (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[2+0];
-                (*pMyArgument).ArgSize = 8;
-            }
-        }
-    }
+    (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
 }
 
 
@@ -2482,107 +842,36 @@ void __bea_callspec__ _rEDX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ _rEBX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    int i = 0;
-    GV.MemDecoration = 0;
-    if (GV.MMX_  == 1) {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersMMX[3+0]);
-        #endif
+    if (GV.MMX_) {
         (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[3+0];
         (*pMyArgument).ArgSize = 64;
         return;
     }
 
-    if (GV.SSE_ == 1) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersSSE[3+8]);
-            #endif
+    if (GV.SSE_) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[3+8];
             (*pMyArgument).ArgSize = 128;
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersSSE[3+0]);
-            #endif
             (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[3+0];
             (*pMyArgument).ArgSize = 128;
         }
         return;
     }
-    if (GV.OperandSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[3+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[3+8];
-            (*pMyArgument).ArgSize = 64;
+    /* general purpose register */
+    if ((*pMyDisasm).Prefix.REX.B_) {
+        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[3+8];
+    }
+    else {
+        if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
+            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[3+0];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[3+0]);
-            #endif
             (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[3+0];
-            (*pMyArgument).ArgSize = 64;
         }
     }
-    else if (GV.OperandSize == 32) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[3+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[3+8];
-            (*pMyArgument).ArgSize = 32;
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[3+0]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[3+0];
-            (*pMyArgument).ArgSize = 32;
-        }
-    }
-    else if (GV.OperandSize == 16) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[3+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[3+8];
-            (*pMyArgument).ArgSize = 16;
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[3+0]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[3+0];
-            (*pMyArgument).ArgSize = 16;
-        }
-    }
-    else if (GV.OperandSize == 8) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8Bits[3+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[3+8];
-            (*pMyArgument).ArgSize = 8;
-        }
-        else {
-            if ((*pMyDisasm).Prefix.REXState == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8BitsLegacy[3+0]);
-                #endif
-                (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[3+0];
-                (*pMyArgument).ArgSize = 8;
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8Bits[3+0]);
-                #endif
-                (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[3+0];
-                (*pMyArgument).ArgSize = 8;
-            }
-        }
-    }
+    (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
 }
 
 
@@ -2592,108 +881,38 @@ void __bea_callspec__ _rEBX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ _rESP(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    int i = 0;
-    GV.MemDecoration = 0;
-    if (GV.MMX_  == 1) {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersMMX[4+0]);
-        #endif
+    if (GV.MMX_) {
         (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[4+0];
         (*pMyArgument).ArgSize = 64;
         return;
     }
 
-    if (GV.SSE_ == 1) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersSSE[4+8]);
-            #endif
+    if (GV.SSE_) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[4+8];
             (*pMyArgument).ArgSize = 128;
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersSSE[4+0]);
-            #endif
             (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[4+0];
             (*pMyArgument).ArgSize = 128;
         }
         return;
     }
-    if (GV.OperandSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[4+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[4+8];
-            (*pMyArgument).ArgSize = 64;
+
+    /* general purpose register */
+    if ((*pMyDisasm).Prefix.REX.B_) {
+        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[4+8];
+    }
+    else {
+        if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
+            (*pMyArgument).ArgPosition = HighPosition;
+            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[4+0];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[4+0]);
-            #endif
             (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[4+0];
-            (*pMyArgument).ArgSize = 64;
         }
     }
-    else if (GV.OperandSize == 32) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[4+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[4+8];
-            (*pMyArgument).ArgSize = 32;
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[4+0]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[4+0];
-            (*pMyArgument).ArgSize = 32;
-        }
-    }
-    else if (GV.OperandSize == 16) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[4+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[4+8];
-            (*pMyArgument).ArgSize = 16;
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[4+0]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[4+0];
-            (*pMyArgument).ArgSize = 16;
-        }
-    }
-    else if (GV.OperandSize == 8) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8Bits[4+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[4+8];
-            (*pMyArgument).ArgSize = 8;
-        }
-        else {
-            if ((*pMyDisasm).Prefix.REXState == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8BitsLegacy[4+0]);
-                #endif
-                (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[4+0];
-				(*pMyArgument).ArgPosition = HighPosition;
-                (*pMyArgument).ArgSize = 8;
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8Bits[4+0]);
-                #endif
-                (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[4+0];
-                (*pMyArgument).ArgSize = 8;
-            }
-        }
-    }
+    (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
 }
 
 
@@ -2703,108 +922,38 @@ void __bea_callspec__ _rESP(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ _rEBP(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    int i = 0;
-    GV.MemDecoration = 0;
-    if (GV.MMX_  == 1) {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersMMX[5+0]);
-        #endif
+    if (GV.MMX_) {
         (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[5+0];
         (*pMyArgument).ArgSize = 64;
         return;
     }
 
-    if (GV.SSE_ == 1) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersSSE[5+8]);
-            #endif
+    if (GV.SSE_) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[5+8];
             (*pMyArgument).ArgSize = 128;
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersSSE[5+0]);
-            #endif
             (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[5+0];
             (*pMyArgument).ArgSize = 128;
         }
         return;
     }
-    if (GV.OperandSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[5+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[5+8];
-            (*pMyArgument).ArgSize = 64;
+
+    /* general purpose register */
+    if ((*pMyDisasm).Prefix.REX.B_) {
+        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[5+8];
+    }
+    else {
+        if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
+            (*pMyArgument).ArgPosition = HighPosition;
+            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[5+0];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[5+0]);
-            #endif
             (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[5+0];
-            (*pMyArgument).ArgSize = 64;
         }
     }
-    else if (GV.OperandSize == 32) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[5+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[5+8];
-            (*pMyArgument).ArgSize = 32;
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[5+0]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[5+0];
-            (*pMyArgument).ArgSize = 32;
-        }
-    }
-    else if (GV.OperandSize == 16) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[5+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[5+8];
-            (*pMyArgument).ArgSize = 16;
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[5+0]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[5+0];
-            (*pMyArgument).ArgSize = 16;
-        }
-    }
-    else if (GV.OperandSize == 8) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8Bits[5+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[5+8];
-            (*pMyArgument).ArgSize = 8;
-        }
-        else {
-            if ((*pMyDisasm).Prefix.REXState == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8BitsLegacy[5+0]);
-                #endif
-                (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[5+0];
-				(*pMyArgument).ArgPosition = HighPosition;
-                (*pMyArgument).ArgSize = 8;
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8Bits[5+0]);
-                #endif
-                (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[5+0];
-                (*pMyArgument).ArgSize = 8;
-            }
-        }
-    }
+    (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
 }
 
 
@@ -2814,108 +963,38 @@ void __bea_callspec__ _rEBP(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ _rESI(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    int i = 0;
-    GV.MemDecoration = 0;
-    if (GV.MMX_  == 1) {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersMMX[6+0]);
-        #endif
+    if (GV.MMX_) {
         (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[6+0];
         (*pMyArgument).ArgSize = 64;
         return;
     }
 
-    if (GV.SSE_ == 1) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersSSE[6+8]);
-            #endif
+    if (GV.SSE_) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[6+8];
             (*pMyArgument).ArgSize = 128;
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersSSE[6+0]);
-            #endif
             (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[6+0];
             (*pMyArgument).ArgSize = 128;
         }
         return;
     }
-    if (GV.OperandSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[6+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[6+8];
-            (*pMyArgument).ArgSize = 64;
+
+    /* general purpose register */
+    if ((*pMyDisasm).Prefix.REX.B_) {
+        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[6+8];
+    }
+    else {
+        if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
+            (*pMyArgument).ArgPosition = HighPosition;
+            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[6+0];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[6+0]);
-            #endif
             (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[6+0];
-            (*pMyArgument).ArgSize = 64;
         }
     }
-    else if (GV.OperandSize == 32) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[6+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[6+8];
-            (*pMyArgument).ArgSize = 32;
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[6+0]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[6+0];
-            (*pMyArgument).ArgSize = 32;
-        }
-    }
-    else if (GV.OperandSize == 16) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[6+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[6+8];
-            (*pMyArgument).ArgSize = 16;
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[6+0]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[6+0];
-            (*pMyArgument).ArgSize = 16;
-        }
-    }
-    else if (GV.OperandSize == 8) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8Bits[6+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[6+8];
-            (*pMyArgument).ArgSize = 8;
-        }
-        else {
-            if ((*pMyDisasm).Prefix.REXState == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8BitsLegacy[6+0]);
-                #endif
-                (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[6+0];
-				(*pMyArgument).ArgPosition = HighPosition;
-                (*pMyArgument).ArgSize = 8;
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8Bits[6+0]);
-                #endif
-                (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[6+0];
-                (*pMyArgument).ArgSize = 8;
-            }
-        }
-    }
+    (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
 }
 
 
@@ -2925,651 +1004,87 @@ void __bea_callspec__ _rESI(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ _rEDI(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    int i = 0;
-    GV.MemDecoration = 0;
-    if (GV.MMX_  == 1) {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersMMX[7+0]);
-        #endif
+    if (GV.MMX_) {
         (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[7+0];
         (*pMyArgument).ArgSize = 64;
         return;
     }
 
-    if (GV.SSE_ == 1) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersSSE[7+8]);
-            #endif
+    if (GV.SSE_) {
+        if ((*pMyDisasm).Prefix.REX.B_) {
             (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[7+8];
             (*pMyArgument).ArgSize = 128;
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, RegistersSSE[7+0]);
-            #endif
             (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[7+0];
             (*pMyArgument).ArgSize = 128;
         }
         return;
     }
-    if (GV.OperandSize == 64) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[7+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[7+8];
-            (*pMyArgument).ArgSize = 64;
+
+    /* general purpose register */
+    if ((*pMyDisasm).Prefix.REX.B_) {
+        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[7+8];
+    }
+    else {
+        if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
+            (*pMyArgument).ArgPosition = HighPosition;
+            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[7+0];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[7+0]);
-            #endif
             (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[7+0];
-            (*pMyArgument).ArgSize = 64;
         }
     }
-    else if (GV.OperandSize == 32) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[7+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[7+8];
-            (*pMyArgument).ArgSize = 32;
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[7+0]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[7+0];
-            (*pMyArgument).ArgSize = 32;
-        }
-    }
-    else if (GV.OperandSize == 16) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[7+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[7+8];
-            (*pMyArgument).ArgSize = 16;
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers16Bits[7+0]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[7+0];
-            (*pMyArgument).ArgSize = 16;
-        }
-    }
-    else if (GV.OperandSize == 8) {
-        if ((*pMyDisasm).Prefix.REX.B_ == 1) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8Bits[7+8]);
-            #endif
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[7+8];
-            (*pMyArgument).ArgSize = 8;
-        }
-        else {
-            if ((*pMyDisasm).Prefix.REXState == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8BitsLegacy[7+0]);
-                #endif
-                (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[7+0];
-				(*pMyArgument).ArgPosition = HighPosition;
-                (*pMyArgument).ArgSize = 8;
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy ((char*) (*pMyArgument).ArgMnemonic+i, Registers8Bits[7+0]);
-                #endif
-                (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[7+0];
-                (*pMyArgument).ArgSize = 8;
-            }
-        }
-    }
-}
-
-
-/* =======================================
- *
- * ======================================= */
-size_t __bea_callspec__ SIB_0(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
-{
-
-    /* ========================= Interpret Base */
-    size_t j;
-    if ((GV.BASE_  == 5) && (GV.MOD_ == 0)) {
-        GV.DECALAGE_EIP += 4;
-        if (!Security(7, pMyDisasm)) return i;
-        j = i;
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) *((UInt32*)(UIntPtr) (GV.EIP_+3)));
-        #endif
-        (*pMyArgument).Memory.Displacement = *((UInt32*)(UIntPtr) (GV.EIP_+3));
-
-    }
-    else {
-
-        if (GV.SYNTAX_ == ATSyntax) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(%");
-               i += 2;
-            #endif
-        }
-        if (GV.AddressSize == 64) {
-            if ((*pMyDisasm).Prefix.REX.B_ == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[GV.BASE_ ]);
-                   i += strlen(Registers64Bits[GV.BASE_ ]);
-                #endif
-                (*pMyArgument).Memory.BaseRegister = REGS[GV.BASE_ ];
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[GV.BASE_ +8]);
-                i += strlen( Registers64Bits[GV.BASE_ +8]);
-                #endif
-                (*pMyArgument).Memory.BaseRegister = REGS[GV.BASE_ +8];
-            }
-        }
-        else if (GV.AddressSize == 32) {
-            if ((*pMyDisasm).Prefix.REX.B_ == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[GV.BASE_ ]);
-                   i += strlen( Registers32Bits[GV.BASE_ ]);
-                #endif
-                (*pMyArgument).Memory.BaseRegister = REGS[GV.BASE_ ];
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[GV.BASE_ +8]);
-                   i += strlen( Registers32Bits[GV.BASE_ +8]);
-                #endif
-                (*pMyArgument).Memory.BaseRegister = REGS[GV.BASE_ +8];
-            }
-        }
-    }
-    /* ======================== Interpret Index */
-
-
-    if (GV.INDEX_  != 4 || (*pMyDisasm).Prefix.REX.X_) {
-        if (GV.SYNTAX_ == ATSyntax) {
-            if (GV.BASE_  == 5) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(,%");
-                i+=3;
-                #endif
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ",%");
-                i+=2;
-                #endif
-            }
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "+");
-            i+=1;
-            #endif
-        }
-
-        if (GV.AddressSize == 64) {
-            if ((*pMyDisasm).Prefix.REX.X_ == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[GV.INDEX_ ]);
-                   i += strlen( Registers64Bits[GV.INDEX_ ]);
-                #endif
-                (*pMyArgument).Memory.IndexRegister = REGS[GV.INDEX_ ];
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[GV.INDEX_ +8]);
-                   i += strlen( Registers64Bits[GV.INDEX_ +8]);
-                #endif
-                (*pMyArgument).Memory.IndexRegister = REGS[GV.INDEX_ +8];
-            }
-        }
-        else if (GV.AddressSize == 32) {
-            if ((*pMyDisasm).Prefix.REX.X_ == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[GV.INDEX_ ]);
-                   i += strlen( Registers32Bits[GV.INDEX_ ]);
-                #endif
-                (*pMyArgument).Memory.IndexRegister = REGS[GV.INDEX_ ];
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[GV.INDEX_ +8]);
-                   i += strlen( Registers32Bits[GV.INDEX_ +8]);
-                #endif
-                (*pMyArgument).Memory.IndexRegister = REGS[GV.INDEX_ +8];
-            }
-        }
-    }
-    (*pMyArgument).Memory.Scale = 1;
-    if ((GV.SYNTAX_ == ATSyntax) && ((GV.BASE_  != 5) || (GV.INDEX_  != 4 || (*pMyDisasm).Prefix.REX.X_))) {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        i++;
-        #endif
-    }
-    return i;
+    (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
 }
 
 /* =======================================
  *
  * ======================================= */
-size_t __bea_callspec__ SIB_1(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
+void __bea_callspec__ _SIB(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    size_t j;
+    Int32 base, scale, index;
+    
+    GV.DECALAGE_EIP++;
+    
+    base  = (*((UInt8*) (UIntPtr) (GV.EIP_+2))) & 0x7;
+    index = ((*((UInt8*)(UIntPtr) (GV.EIP_+2))) >> 3) & 0x7;
+    scale = 1 << ((*((UInt8*) (UIntPtr) (GV.EIP_+2))) >> 6);
     /* ========================= Interpret Base */
-
-    if ((GV.BASE_  == 5) && (GV.MOD_ == 0)) {
+    if ((base == 5) && (GV.MOD_ == 0)) {
         GV.DECALAGE_EIP += 4;
-        if (!Security(7, pMyDisasm)) return i;
-        j = i;
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) *((UInt32*)(UIntPtr) (GV.EIP_+3)));
-        #endif
+        if (!Security(7, pMyDisasm)) return;
         (*pMyArgument).Memory.Displacement = *((UInt32*)(UIntPtr) (GV.EIP_+3));
+        _FillSegmentDS(pMyArgument, pMyDisasm);
     }
     else {
-
-        if (GV.SYNTAX_ == ATSyntax) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(%");
-               i += 2;
-            #endif
-        }
-        if (GV.AddressSize == 64) {
-            if ((*pMyDisasm).Prefix.REX.B_ == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[GV.BASE_ ]);
-                   i += strlen( Registers64Bits[GV.BASE_ ]);
-                #endif
-                (*pMyArgument).Memory.BaseRegister = REGS[GV.BASE_ ];
+        if ((*pMyDisasm).Prefix.REX.B_ == 0) {
+            (*pMyArgument).Memory.BaseRegister = REGS[base];
+            if ((*pMyDisasm).Prefix.SegmentState == InUsePrefix) {
+                (*pMyArgument).SegmentReg = (*pMyDisasm).Prefix.Segment;
+            }
+            else if (base == 4 || base == 5) {
+                (*pMyArgument).SegmentReg = SSReg;
             }
             else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[GV.BASE_ +8]);
-                   i += strlen( Registers64Bits[GV.BASE_ +8]);
-                #endif
-                (*pMyArgument).Memory.BaseRegister = REGS[GV.BASE_ +8];
+                (*pMyArgument).SegmentReg = DSReg;
             }
         }
-        else if (GV.AddressSize == 32) {
-            if ((*pMyDisasm).Prefix.REX.B_ == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[GV.BASE_ ]);
-                   i += strlen( Registers32Bits[GV.BASE_ ]);
-                #endif
-                (*pMyArgument).Memory.BaseRegister = REGS[GV.BASE_ ];
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[GV.BASE_ +8]);
-                   i += strlen( Registers32Bits[GV.BASE_ +8]);
-                #endif
-                (*pMyArgument).Memory.BaseRegister = REGS[GV.BASE_ +8];
-            }
+        else {
+            (*pMyArgument).Memory.BaseRegister = REGS[base|8];
+            _FillSegmentDS(pMyArgument, pMyDisasm);
         }
     }
+
     /* ======================== Interpret Index */
-
-    if (GV.INDEX_  != 4 || (*pMyDisasm).Prefix.REX.X_) {
-        if (GV.SYNTAX_ == ATSyntax) {
-            if (GV.BASE_  == 5) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(,%");
-                   i+=3;
-                #endif
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ",%");
-                   i+=2;
-                #endif
-            }
+    if (index != 4 || (*pMyDisasm).Prefix.REX.X_) {
+        if ((*pMyDisasm).Prefix.REX.X_ == 0) {
+            (*pMyArgument).Memory.IndexRegister = REGS[index];
         }
         else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "+");
-               i+=1;
-            #endif
+            (*pMyArgument).Memory.IndexRegister = REGS[index|8];
         }
-
-        if (GV.AddressSize == 64) {
-            if ((*pMyDisasm).Prefix.REX.X_ == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[GV.INDEX_ ]);
-                   i += strlen( Registers64Bits[GV.INDEX_ ]);
-                #endif
-                (*pMyArgument).Memory.IndexRegister = REGS[GV.INDEX_ ];
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[GV.INDEX_ +8]);
-                   i += strlen( Registers64Bits[GV.INDEX_ +8]);
-                #endif
-                (*pMyArgument).Memory.IndexRegister = REGS[GV.INDEX_ +8];
-            }
-        }
-        else if (GV.AddressSize == 32) {
-            if ((*pMyDisasm).Prefix.REX.X_ == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[GV.INDEX_ ]);
-                   i += strlen( Registers32Bits[GV.INDEX_ ]);
-                #endif
-                (*pMyArgument).Memory.IndexRegister = REGS[GV.INDEX_ ];
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[GV.INDEX_ +8]);
-                   i += strlen( Registers32Bits[GV.INDEX_ +8]);
-                #endif
-                (*pMyArgument).Memory.IndexRegister = REGS[GV.INDEX_ +8];
-            }
-        }
-        (*pMyArgument).Memory.Scale = 2;
-        if (GV.SYNTAX_ == ATSyntax) {
-            if ((GV.BASE_  != 5) || (GV.INDEX_  != 4 || (*pMyDisasm).Prefix.REX.X_)) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ",2");
-                   i+=2;
-                #endif
-            }
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "*2");
-               i+=2;
-            #endif
-        }
+        
+        (*pMyArgument).Memory.Scale = scale;
     }
-    if ((GV.SYNTAX_ == ATSyntax) && ((GV.BASE_  != 5) || (GV.INDEX_  != 4 || (*pMyDisasm).Prefix.REX.X_))) {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-           i++;
-        #endif
-    }
-    return i;
-}
-
-/* =======================================
- *
- * ======================================= */
-size_t __bea_callspec__ SIB_2(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
-{
-    size_t j;
-    /* ========================= Interpret Base */
-
-    if ((GV.BASE_  == 5) && (GV.MOD_ == 0)) {
-        GV.DECALAGE_EIP += 4;
-        if (!Security(7, pMyDisasm)) return i;
-        j = i;
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) *((UInt32*)(UIntPtr) (GV.EIP_+3)));
-        #endif
-        (*pMyArgument).Memory.Displacement = *((UInt32*)(UIntPtr) (GV.EIP_+3));
-    }
-    else {
-
-        if (GV.SYNTAX_ == ATSyntax) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(%");
-               i += 2;
-            #endif
-        }
-        if (GV.AddressSize == 64) {
-            if ((*pMyDisasm).Prefix.REX.B_ == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[GV.BASE_ ]);
-                   i += strlen( Registers64Bits[GV.BASE_ ]);
-                #endif
-                (*pMyArgument).Memory.BaseRegister = REGS[GV.BASE_ ];
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[GV.BASE_ +8]);
-                   i += strlen( Registers64Bits[GV.BASE_ +8]);
-                #endif
-                (*pMyArgument).Memory.BaseRegister = REGS[GV.BASE_ +8];
-            }
-        }
-        else if (GV.AddressSize == 32) {
-            if ((*pMyDisasm).Prefix.REX.B_ == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[GV.BASE_ ]);
-                   i += strlen( Registers32Bits[GV.BASE_ ]);
-                #endif
-                (*pMyArgument).Memory.BaseRegister = REGS[GV.BASE_ ];
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[GV.BASE_ +8]);
-                   i += strlen( Registers32Bits[GV.BASE_ +8]);
-                #endif
-                (*pMyArgument).Memory.BaseRegister = REGS[GV.BASE_ +8];
-            }
-        }
-    }
-    /* ======================== Interpret Index */
-
-    if (GV.INDEX_  != 4 || (*pMyDisasm).Prefix.REX.X_) {
-        if (GV.SYNTAX_ == ATSyntax) {
-            if (GV.BASE_  == 5) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(,%");
-                   i+=3;
-                #endif
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ",%");
-                   i+=2;
-                #endif
-            }
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "+");
-               i+=1;
-            #endif
-        }
-
-        if (GV.AddressSize == 64) {
-            if ((*pMyDisasm).Prefix.REX.X_ == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[GV.INDEX_ ]);
-                   i += strlen( Registers64Bits[GV.INDEX_ ]);
-                #endif
-                (*pMyArgument).Memory.IndexRegister = REGS[GV.INDEX_ ];
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[GV.INDEX_ +8]);
-                   i += strlen( Registers64Bits[GV.INDEX_ +8]);
-                #endif
-                (*pMyArgument).Memory.IndexRegister = REGS[GV.INDEX_ +8];
-            }
-        }
-        else if (GV.AddressSize == 32) {
-            if ((*pMyDisasm).Prefix.REX.X_ == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[GV.INDEX_ ]);
-                   i += strlen( Registers32Bits[GV.INDEX_ ]);
-                #endif
-                (*pMyArgument).Memory.IndexRegister = REGS[GV.INDEX_ ];
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[GV.INDEX_ +8]);
-                   i += strlen( Registers32Bits[GV.INDEX_ +8]);
-                #endif
-                (*pMyArgument).Memory.IndexRegister = REGS[GV.INDEX_ +8];
-            }
-        }
-        (*pMyArgument).Memory.Scale = 4;
-        if (GV.SYNTAX_ == ATSyntax) {
-            if ((GV.BASE_  != 5) || (GV.INDEX_  != 4 || (*pMyDisasm).Prefix.REX.X_)) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ",4");
-                   i+=2;
-                #endif
-            }
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "*4");
-            i+=2;
-            #endif
-        }
-    }
-    if ((GV.SYNTAX_ == ATSyntax) && ((GV.BASE_  != 5) || (GV.INDEX_  != 4 || (*pMyDisasm).Prefix.REX.X_))) {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        i++;
-        #endif
-    }
-    return i;
-}
-
-/* =======================================
- *
- * ======================================= */
-size_t __bea_callspec__ SIB_3(ARGTYPE* pMyArgument, size_t i, PDISASM pMyDisasm)
-{
-    size_t j;
-    /* ========================= Interpret Base */
-
-    if ((GV.BASE_  == 5) && (GV.MOD_ == 0)) {
-        GV.DECALAGE_EIP += 4;
-        if (!Security(7, pMyDisasm)) return i;
-        j = i;
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           i+= CopyFormattedNumber(pMyDisasm, (char*) (*pMyArgument).ArgMnemonic+j,"%.8X",(Int64) *((UInt32*)(UIntPtr) (GV.EIP_+3)));
-        #endif
-        (*pMyArgument).Memory.Displacement = *((UInt32*)(UIntPtr) (GV.EIP_+3));
-    }
-    else {
-
-        if (GV.SYNTAX_ == ATSyntax) {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(%");
-            i += 2;
-            #endif
-        }
-        if (GV.AddressSize == 64) {
-            if ((*pMyDisasm).Prefix.REX.B_ == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[GV.BASE_ ]);
-                i += strlen( Registers64Bits[GV.BASE_ ]);
-                #endif
-                (*pMyArgument).Memory.BaseRegister = REGS[GV.BASE_ ];
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[GV.BASE_ +8]);
-                i += strlen( Registers64Bits[GV.BASE_ +8]);
-                #endif
-                (*pMyArgument).Memory.BaseRegister = REGS[GV.BASE_ +8];
-            }
-        }
-        else if (GV.AddressSize == 32) {
-            if ((*pMyDisasm).Prefix.REX.B_ == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[GV.BASE_ ]);
-                i += strlen( Registers32Bits[GV.BASE_ ]);
-                #endif
-                (*pMyArgument).Memory.BaseRegister = REGS[GV.BASE_ ];
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[GV.BASE_ +8]);
-                i += strlen( Registers32Bits[GV.BASE_ +8]);
-                #endif
-                (*pMyArgument).Memory.BaseRegister = REGS[GV.BASE_ +8];
-            }
-        }
-    }
-    /* ======================== Interpret Index */
-
-    if (GV.INDEX_  != 4 || (*pMyDisasm).Prefix.REX.X_) {
-        if (GV.SYNTAX_ == ATSyntax) {
-            if (GV.BASE_  == 5) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "(,%");
-                i+=3;
-                #endif
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ",%");
-                i+=2;
-                #endif
-            }
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "+");
-            i+=1;
-            #endif
-        }
-
-        if (GV.AddressSize == 64) {
-            if ((*pMyDisasm).Prefix.REX.X_ == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[GV.INDEX_ ]);
-                i += strlen( Registers64Bits[GV.INDEX_ ]);
-                #endif
-                (*pMyArgument).Memory.IndexRegister = REGS[GV.INDEX_ ];
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers64Bits[GV.INDEX_ +8]);
-                i += strlen( Registers64Bits[GV.INDEX_ +8]);
-                #endif
-                (*pMyArgument).Memory.IndexRegister = REGS[GV.INDEX_ +8];
-            }
-        }
-        else if (GV.AddressSize == 32) {
-            if ((*pMyDisasm).Prefix.REX.X_ == 0) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[GV.INDEX_ ]);
-                i += strlen( Registers32Bits[GV.INDEX_ ]);
-                #endif
-                (*pMyArgument).Memory.IndexRegister = REGS[GV.INDEX_ ];
-            }
-            else {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, Registers32Bits[GV.INDEX_ +8]);
-                i += strlen( Registers32Bits[GV.INDEX_ +8]);
-                #endif
-                (*pMyArgument).Memory.IndexRegister = REGS[GV.INDEX_ +8];
-            }
-        }
-        (*pMyArgument).Memory.Scale = 8;
-        if (GV.SYNTAX_ == ATSyntax) {
-            if ((GV.BASE_  != 5) || (GV.INDEX_  != 4 || (*pMyDisasm).Prefix.REX.X_)) {
-                #ifndef BEA_LIGHT_DISASSEMBLY
-                   (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ",8");
-                i+=2;
-                #endif
-            }
-        }
-        else {
-            #ifndef BEA_LIGHT_DISASSEMBLY
-               (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, "*8");
-            i+=2;
-            #endif
-        }
-    }
-    if ((GV.SYNTAX_ == ATSyntax) && ((GV.BASE_  != 5) || (GV.INDEX_  != 4 || (*pMyDisasm).Prefix.REX.X_))) {
-        #ifndef BEA_LIGHT_DISASSEMBLY
-           (void) strcpy((char*) (*pMyArgument).ArgMnemonic+i, ")");
-        i++;
-        #endif
-    }
-    return i;
 }

@@ -23,7 +23,7 @@ void __bea_callspec__ PrefLock(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Prefix.LockState = InvalidPrefix;
     (*pMyDisasm).Prefix.Number++;
-    
+
     if ((*pMyDisasm).Prefix.REXState == InUsePrefix) {
         (*pMyDisasm).Prefix.REX.W_ = 0;
         (*pMyDisasm).Prefix.REX.R_ = 0;
@@ -32,11 +32,11 @@ void __bea_callspec__ PrefLock(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.REXState = NotUsedPrefix;
         /* only 64-bit have REX prefix, so no need to check architecture */
         if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix)
-            GV.OperandSize = 16;
+            (*pMyDisasm).Instruction.OperandSize = 16;
         else
-            GV.OperandSize = 32;
+            (*pMyDisasm).Instruction.OperandSize = 32;
     }
-    
+
     GV.EIP_++;
     if (!Security(1, pMyDisasm)) return;
     (*pMyDisasm).Instruction.Opcode =  *((UInt8*) (UIntPtr)GV.EIP_);
@@ -51,7 +51,7 @@ void __bea_callspec__ PrefREPNE(PDISASM pMyDisasm)
     (*pMyDisasm).Prefix.Repeat = PrefixRepne;
     (*pMyDisasm).Prefix.RepeatState = SuperfluousPrefix;
     (*pMyDisasm).Prefix.Number++;
-    
+
     if ((*pMyDisasm).Prefix.REXState == InUsePrefix) {
         (*pMyDisasm).Prefix.REX.W_ = 0;
         (*pMyDisasm).Prefix.REX.R_ = 0;
@@ -60,11 +60,11 @@ void __bea_callspec__ PrefREPNE(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.REXState = NotUsedPrefix;
         /* only 64-bit have REX prefix, so no need to check architecture */
         if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix)
-            GV.OperandSize = 16;
+            (*pMyDisasm).Instruction.OperandSize = 16;
         else
-            GV.OperandSize = 32;
+            (*pMyDisasm).Instruction.OperandSize = 32;
     }
-    
+
     GV.EIP_++;
     if (!Security(1, pMyDisasm)) return;
     (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_);
@@ -79,7 +79,7 @@ void __bea_callspec__ PrefREPE(PDISASM pMyDisasm)
     (*pMyDisasm).Prefix.Repeat = PrefixRepe;
     (*pMyDisasm).Prefix.RepeatState = SuperfluousPrefix;
     (*pMyDisasm).Prefix.Number++;
-    
+
     if ((*pMyDisasm).Prefix.REXState == InUsePrefix) {
         (*pMyDisasm).Prefix.REX.W_ = 0;
         (*pMyDisasm).Prefix.REX.R_ = 0;
@@ -88,11 +88,11 @@ void __bea_callspec__ PrefREPE(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.REXState = NotUsedPrefix;
         /* only 64-bit have REX prefix, so no need to check architecture */
         if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix)
-            GV.OperandSize = 16;
+            (*pMyDisasm).Instruction.OperandSize = 16;
         else
-            GV.OperandSize = 32;
+            (*pMyDisasm).Instruction.OperandSize = 32;
     }
-    
+
     GV.EIP_++;
     if (!Security(1, pMyDisasm)) return;
     (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_);
@@ -105,13 +105,13 @@ void __bea_callspec__ PrefREPE(PDISASM pMyDisasm)
 void __bea_callspec__ PrefSEGCS(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Prefix.Number++;
-    if (GV.Architecture != 64) {
+    if ((*pMyDisasm).Archi != 64) {
         (*pMyDisasm).Prefix.Segment = PrefixCS;
         (*pMyDisasm).Prefix.SegmentState = InUsePrefix;
     }
     (*pMyDisasm).Prefix.BranchHints = PrefixBranchNotTaken;
     (*pMyDisasm).Prefix.BranchHintsState = SuperfluousPrefix;
-    
+
     if ((*pMyDisasm).Prefix.REXState == InUsePrefix) {
         (*pMyDisasm).Prefix.REX.W_ = 0;
         (*pMyDisasm).Prefix.REX.R_ = 0;
@@ -120,11 +120,11 @@ void __bea_callspec__ PrefSEGCS(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.REXState = NotUsedPrefix;
         /* only 64-bit have REX prefix, so no need to check architecture */
         if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix)
-            GV.OperandSize = 16;
+            (*pMyDisasm).Instruction.OperandSize = 16;
         else
-            GV.OperandSize = 32;
+            (*pMyDisasm).Instruction.OperandSize = 32;
     }
-    
+
     GV.EIP_++;
     if (!Security(1, pMyDisasm)) return;
     (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_);
@@ -137,13 +137,13 @@ void __bea_callspec__ PrefSEGCS(PDISASM pMyDisasm)
 void __bea_callspec__ PrefSEGDS(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Prefix.Number++;
-    if (GV.Architecture != 64) {
+    if ((*pMyDisasm).Archi != 64) {
         (*pMyDisasm).Prefix.Segment = PrefixDS;
         (*pMyDisasm).Prefix.SegmentState = InUsePrefix;
     }
     (*pMyDisasm).Prefix.BranchHints = PrefixBranchTaken;
     (*pMyDisasm).Prefix.BranchHintsState = SuperfluousPrefix;
-    
+
     if ((*pMyDisasm).Prefix.REXState == InUsePrefix) {
         (*pMyDisasm).Prefix.REX.W_ = 0;
         (*pMyDisasm).Prefix.REX.R_ = 0;
@@ -152,11 +152,11 @@ void __bea_callspec__ PrefSEGDS(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.REXState = NotUsedPrefix;
         /* only 64-bit have REX prefix, so no need to check architecture */
         if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix)
-            GV.OperandSize = 16;
+            (*pMyDisasm).Instruction.OperandSize = 16;
         else
-            GV.OperandSize = 32;
+            (*pMyDisasm).Instruction.OperandSize = 32;
     }
-    
+
     GV.EIP_++;
     if (!Security(1, pMyDisasm)) return;
     (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_);
@@ -169,12 +169,12 @@ void __bea_callspec__ PrefSEGDS(PDISASM pMyDisasm)
 void __bea_callspec__ PrefSEGES(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Prefix.Number++;
-    if (GV.Architecture != 64) {
+    if ((*pMyDisasm).Archi != 64) {
         (*pMyDisasm).Prefix.Segment = PrefixES;
         (*pMyDisasm).Prefix.SegmentState = InUsePrefix;
     }
     (*pMyDisasm).Prefix.BranchHintsState = NotUsedPrefix;
-    
+
     if ((*pMyDisasm).Prefix.REXState == InUsePrefix) {
         (*pMyDisasm).Prefix.REX.W_ = 0;
         (*pMyDisasm).Prefix.REX.R_ = 0;
@@ -183,11 +183,11 @@ void __bea_callspec__ PrefSEGES(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.REXState = NotUsedPrefix;
         /* only 64-bit have REX prefix, so no need to check architecture */
         if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix)
-            GV.OperandSize = 16;
+            (*pMyDisasm).Instruction.OperandSize = 16;
         else
-            GV.OperandSize = 32;
+            (*pMyDisasm).Instruction.OperandSize = 32;
     }
-    
+
     GV.EIP_++;
     if (!Security(1, pMyDisasm)) return;
     (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_);
@@ -203,7 +203,7 @@ void __bea_callspec__ PrefSEGFS(PDISASM pMyDisasm)
     (*pMyDisasm).Prefix.Segment = PrefixFS;
     (*pMyDisasm).Prefix.SegmentState = InUsePrefix;
     (*pMyDisasm).Prefix.BranchHintsState = NotUsedPrefix;
-    
+
     if ((*pMyDisasm).Prefix.REXState == InUsePrefix) {
         (*pMyDisasm).Prefix.REX.W_ = 0;
         (*pMyDisasm).Prefix.REX.R_ = 0;
@@ -212,11 +212,11 @@ void __bea_callspec__ PrefSEGFS(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.REXState = NotUsedPrefix;
         /* only 64-bit have REX prefix, so no need to check architecture */
         if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix)
-            GV.OperandSize = 16;
+            (*pMyDisasm).Instruction.OperandSize = 16;
         else
-            GV.OperandSize = 32;
+            (*pMyDisasm).Instruction.OperandSize = 32;
     }
-    
+
     GV.EIP_++;
     if (!Security(1, pMyDisasm)) return;
     (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_);
@@ -232,7 +232,7 @@ void __bea_callspec__ PrefSEGGS(PDISASM pMyDisasm)
     (*pMyDisasm).Prefix.Segment = PrefixGS;
     (*pMyDisasm).Prefix.SegmentState = InUsePrefix;
     (*pMyDisasm).Prefix.BranchHintsState = NotUsedPrefix;
-    
+
     if ((*pMyDisasm).Prefix.REXState == InUsePrefix) {
         (*pMyDisasm).Prefix.REX.W_ = 0;
         (*pMyDisasm).Prefix.REX.R_ = 0;
@@ -241,11 +241,11 @@ void __bea_callspec__ PrefSEGGS(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.REXState = NotUsedPrefix;
         /* only 64-bit have REX prefix, so no need to check architecture */
         if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix)
-            GV.OperandSize = 16;
+            (*pMyDisasm).Instruction.OperandSize = 16;
         else
-            GV.OperandSize = 32;
+            (*pMyDisasm).Instruction.OperandSize = 32;
     }
-    
+
     GV.EIP_++;
     if (!Security(1, pMyDisasm)) return;
     (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_);
@@ -259,12 +259,12 @@ void __bea_callspec__ PrefSEGGS(PDISASM pMyDisasm)
 void __bea_callspec__ PrefSEGSS(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Prefix.Number++;
-    if (GV.Architecture != 64) {
+    if ((*pMyDisasm).Archi != 64) {
         (*pMyDisasm).Prefix.Segment = PrefixSS;
         (*pMyDisasm).Prefix.SegmentState = InUsePrefix;
     }
     (*pMyDisasm).Prefix.BranchHintsState = NotUsedPrefix;
-    
+
     if ((*pMyDisasm).Prefix.REXState == InUsePrefix) {
         (*pMyDisasm).Prefix.REX.W_ = 0;
         (*pMyDisasm).Prefix.REX.R_ = 0;
@@ -273,11 +273,11 @@ void __bea_callspec__ PrefSEGSS(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.REXState = NotUsedPrefix;
         /* only 64-bit have REX prefix, so no need to check architecture */
         if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix)
-            GV.OperandSize = 16;
+            (*pMyDisasm).Instruction.OperandSize = 16;
         else
-            GV.OperandSize = 32;
+            (*pMyDisasm).Instruction.OperandSize = 32;
     }
-    
+
     GV.EIP_++;
     if (!Security(1, pMyDisasm)) return;
     (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_);
@@ -291,13 +291,13 @@ void __bea_callspec__ PrefOpSize(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Prefix.OperandSizeState = InUsePrefix;
     (*pMyDisasm).Prefix.Number++;
-    if (GV.Architecture == 16) {
-        GV.OperandSize = 32;
+    if ((*pMyDisasm).Archi == 16) {
+        (*pMyDisasm).Instruction.OperandSize = 32;
     }
     else {
-        GV.OperandSize = 16;
+        (*pMyDisasm).Instruction.OperandSize = 16;
     }
-    
+
     if ((*pMyDisasm).Prefix.REXState == InUsePrefix) {
         (*pMyDisasm).Prefix.REX.W_ = 0;
         (*pMyDisasm).Prefix.REX.R_ = 0;
@@ -305,7 +305,7 @@ void __bea_callspec__ PrefOpSize(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.REX.B_ = 0;
         (*pMyDisasm).Prefix.REXState = NotUsedPrefix;
     }
-    
+
     GV.EIP_++;
     if (!Security(1, pMyDisasm)) return;
     (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_);
@@ -319,12 +319,12 @@ void __bea_callspec__ PrefAdSize(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Prefix.AddressSizeState = InUsePrefix;
     (*pMyDisasm).Prefix.Number++;
-    if (GV.Architecture == 32) {
-        GV.AddressSize = 16;
+    if ((*pMyDisasm).Archi == 32) {
+        (*pMyDisasm).Instruction.AddressSize = 16;
     }
     else  {
         /* 16-bit and 64-bit architecture*/
-        GV.AddressSize = 32;
+        (*pMyDisasm).Instruction.AddressSize = 32;
     }
 
     if ((*pMyDisasm).Prefix.REXState == InUsePrefix) {
@@ -335,13 +335,13 @@ void __bea_callspec__ PrefAdSize(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.REXState = NotUsedPrefix;
         /* only 64-bit have REX prefix, so no need to check architecture */
         if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix)
-            GV.OperandSize = 16;
+            (*pMyDisasm).Instruction.OperandSize = 16;
         else
-            GV.OperandSize = 32;
+            (*pMyDisasm).Instruction.OperandSize = 32;
     }
-    
+
     GV.EIP_++;
-    if (!Security(1, pMyDisasm)) return;    
+    if (!Security(1, pMyDisasm)) return;
     (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_);
     (void) opcode_map1[*((UInt8*) (UIntPtr)GV.EIP_)](pMyDisasm);
 }
