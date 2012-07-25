@@ -27,31 +27,45 @@ Windows: (reqires Windows SDK and (maybe) VC Express; tested on Windows 7 64bit)
 The include files that used for using this project is /beaengine directory
 
 
-GOAL
---------------
-My goal is making BeaEngine light version easier to use (at least for me)
-and possible to build complete assembly from decoded data.
-I do not care about CompleteInstruction in full version after changed.
-So please do not report bugs regarding to CompleteInstruction, ArgumentMnemonic.
-
 
 MODIFICATIONS
 --------------
 Here is a list of my modifications:
 
-### INSTRTYPE.MnemonicId
+### No more Mnemonic/ArgMnemonic/CompleteInstruction string
 
-Added in order to know the mnemonic in light version. MnemonicId constant
-can be found in beaengine/BeaEngine.h. The constant pattern is I_{upper(mnemonic)}.
-For example
+No string operation while decoding the binary. So no full and light version.
+There is only one build now. This change also makes BeaEngine smaller and faster.
+
+There is a new library API for building a complete instruction. It is
+
+    BEA_API void __bea_callspec__ BuildAssembly(PDISASM pMyDisasm, char *buffer);
+
+This function must be called after Disasm() returns successfully. The function
+does not check for invalid value in DISASM structure. Do try to do it.
+
+Now, BuildAssembly() function supports only MASM syntax. But you can use
+decoded data to build your own assembly. You can see BuildAssembly() code
+as an example.
+
+NOTE: There are 2 types of instruction that still cannot build assembly.
+I have to change ARGTYPE structure (later)
+1. more than 1 immediate value (enter)
+2. far pointer operand
+
+### INSTRTYPE.Mnemonic
+
+Now Mnemonic is integer. It is supposed to be easier for comparison. 
+Mnemonic constant can be found in beaengine/BeaEngine.h. The constant
+pattern is I_{upper(mnemonic)}. For example
 
     I_MOV => "mov"
     I_ADD => "add"
     I_CALL_FAR => "call far"
 
-The MnemonicId can be converted to string by using exported variable MNEMONICS.
+The Mnemonic can be converted to string by using exported variable MNEMONICS.
 
-    BEA_API const__ char MNEMONICS[NUM_MNEMONIC_ID][16];
+    BEA_API const__ char MNEMONICS[NUM_MNEMONIC][16];
 
 For example:
 
@@ -60,8 +74,8 @@ For example:
 
 ### IMPLICIT_ARG flag (in progress)
 
-The implicited argument now is flag with IMPLICIT_ARG. With this and 
-MnemonicId, we can construct assembly in light version easily.
+The implicited argument now is flag with IMPLICIT_ARG. This can help 
+constructing assembly.
 
 All arguments should not be composited like below (from previous 'popad').
 
@@ -174,7 +188,7 @@ Now branch type is very simple as defined below.
 
 There are no more Jxx type. For an original code that compared it with 
 conditional jump (JC, JB, ...), you have to change the comparision to 
-MnemonicId.
+Mnemonic.
 
     // code for original version
     if (disasm.Instruction.BranchType == JC)
@@ -182,7 +196,7 @@ MnemonicId.
     
     // new code with same result
     // note: no JC in my modification
-    if (disasm.Instruction.MnemonicId == I_JB)
+    if (disasm.Instruction.Mnemonic == I_JB)
         // do something
     
     // or use ConditionalType that work on LoopType too
@@ -199,3 +213,9 @@ If there are more than one prefixes from same prefix group in one instruction,
 the last prefix takes affect. The original BeaEngine just keep all found
 prefixed. It is awkward to code on that structure to get what prefix is
 effective. See the new structure in beaengine/BeaEngine.h
+
+### Effective OperandSize and AddressSize
+
+Now you can access effective OperandSize and AddressSize from INSTRTYPE
+structure. The OperandSize value can be 8, 16, 32, 64. The AddressSize value
+can be 16, 32, 64.
