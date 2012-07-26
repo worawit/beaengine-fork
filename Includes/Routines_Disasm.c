@@ -562,7 +562,7 @@ static size_t BuildMemoryMnemonic(PDISASM pMyDisasm, ARGTYPE* arg, char *buffer)
         i += BuildMemoryRegister(RegValue2Index((*arg).Memory.BaseRegister), (*pMyDisasm).Instruction.AddressSize, buffer+i);
         has_base = 1;
     }
-    else if ((*pMyDisasm).Archi == 64 && (*arg).Memory.IndexRegister == 0 && (*pMyDisasm).Prefix.SegmentState != InUsePrefix) {
+    else if ((*arg).ArgType & RELATIVE_) {
         /* RIP relative, should display relative result? */
         (void) strcpy(buffer+i, "rip");
         i += 3;
