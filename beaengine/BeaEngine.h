@@ -347,10 +347,16 @@ enum ARGUMENTS_TYPE
   SPECIAL_REG = 0x400000,
   MEMORY_MANAGEMENT_REG = 0x800000,
   SEGMENT_REG = 0x1000000,
+  
+  /* value for memory type */
+  MMX_MEM = 0x10000,
+  GENERAL_MEM = 0x20000,
+  FPU_MEM = 0x40000,
+  SSE_MEM = 0x80000,
 
   /* value for constant type */
-  RELATIVE_ = 0x10000,
-  ABSOLUTE_ = 0x20000,
+  RELATIVE_ = 0x4000000,
+  ABSOLUTE_ = 0x8000000,
 
   /* argument access mode */
   READ = 0x1,

@@ -19,10 +19,15 @@
 
 /* ====================================== Routines_MODRM */
 void __bea_callspec__ MOD_RM(ARGTYPE*, PDISASM);
+void __bea_callspec__ MOD_RM_MMX(ARGTYPE*, PDISASM);
+void __bea_callspec__ MOD_RM_SSE(ARGTYPE*, PDISASM);
+
 void __bea_callspec__ Reg_Opcode(ARGTYPE*, PDISASM);
 void __bea_callspec__ RegSeg_Opcode(ARGTYPE*, PDISASM);
 void __bea_callspec__ RegCR_Opcode(ARGTYPE*, PDISASM);
 void __bea_callspec__ RegDR_Opcode(ARGTYPE*, PDISASM);
+void __bea_callspec__ RegMMX_Opcode(ARGTYPE*, PDISASM);
+void __bea_callspec__ RegSSE_Opcode(ARGTYPE*, PDISASM);
 
 void __bea_callspec__ _SIB(ARGTYPE*, PDISASM);
 

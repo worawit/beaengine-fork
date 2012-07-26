@@ -141,7 +141,7 @@ void __bea_callspec__ ExGx(PDISASM pMyDisasm)
 }
 
 /* ====================================================================
- *  MMX R/M, Reg
+ *  MMX R/M, MMX Reg
  * ==================================================================== */
 void __bea_callspec__ NxPx(PDISASM pMyDisasm)
 {
@@ -153,7 +153,7 @@ void __bea_callspec__ NxPx(PDISASM pMyDisasm)
 }
 
 /* ====================================================================
- *  SSE R/M, Reg
+ *  SSE R/M, MMX Reg
  * ==================================================================== */
 void __bea_callspec__ UxVx(PDISASM pMyDisasm)
 {

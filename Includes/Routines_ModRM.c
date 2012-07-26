@@ -42,7 +42,6 @@ static void _FillSegmentSS(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 static void _ModRM0(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    (*pMyArgument).ArgType = MEMORY_TYPE;
     if (GV.RM_ == 4) {
         if (!Security(2, pMyDisasm)) return;
         _SIB(pMyArgument, pMyDisasm);
@@ -76,7 +75,6 @@ static void _ModRM0(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 static void _ModRM1(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
     GV.DECALAGE_EIP++;
-    (*pMyArgument).ArgType = MEMORY_TYPE;
     if (GV.RM_ == 4) {
         if (!Security(3, pMyDisasm)) return;
         (*pMyArgument).Memory.Displacement = *((Int8*)(UIntPtr) (GV.EIP_+3));
@@ -104,7 +102,6 @@ static void _ModRM1(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 static void _ModRM2(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
     GV.DECALAGE_EIP += 4;
-    (*pMyArgument).ArgType = MEMORY_TYPE;
     if (GV.RM_ == 4) {
         if (!Security(6, pMyDisasm)) return;
         (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+3));
@@ -276,28 +273,33 @@ void __bea_callspec__ MOD_RM(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
     GV.MOD_ = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6);
     if ((*pMyDisasm).Instruction.AddressSize >= 32) {
         GV.RM_  = (*((UInt8*)(UIntPtr) (GV.EIP_+1))) & 0x7;
-        if (GV.MOD_ == 0) {
-            _ModRM0(pMyArgument, pMyDisasm);
-        }
-        else if (GV.MOD_ == 1) {
-            _ModRM1(pMyArgument, pMyDisasm);
-        }
-        else if (GV.MOD_ == 2) {
-            _ModRM2(pMyArgument, pMyDisasm);
+        if (GV.MOD_ == 3) {
+            _ModRM3(pMyArgument, pMyDisasm);
         }
         else {
-            _ModRM3(pMyArgument, pMyDisasm);
+            (*pMyArgument).ArgType = MEMORY_TYPE;
+            if (GV.MOD_ == 0) {
+                _ModRM0(pMyArgument, pMyDisasm);
+            }
+            else if (GV.MOD_ == 1) {
+                _ModRM1(pMyArgument, pMyDisasm);
+            }
+            else {
+                _ModRM2(pMyArgument, pMyDisasm);
+            }
         }
     }
     else {
         GV.RM_  = (*((UInt8*)(UIntPtr) (GV.EIP_+1))) & 0x7;
         if (GV.MOD_ == 0) {
+            (*pMyArgument).ArgType = MEMORY_TYPE;
             _ModRM0_16(pMyArgument, pMyDisasm);
         }
         else if (GV.MOD_ == 3) {
             _ModRM3(pMyArgument, pMyDisasm);
         }
         else {
+            (*pMyArgument).ArgType = MEMORY_TYPE;
             if (GV.MOD_ == 1) {
                 GV.DECALAGE_EIP++;
                 (*pMyArgument).Memory.Displacement = *((Int8*)(UIntPtr) (GV.EIP_+2));
@@ -315,21 +317,23 @@ void __bea_callspec__ MOD_RM_MMX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
     GV.DECALAGE_EIP = 0;
     (*pMyArgument).ArgSize = 64;
-    /* TODO: MEMORY subtype should have MMX too */
     if (!Security(1, pMyDisasm)) return;
     GV.MOD_ = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6);
     GV.RM_  = (*((UInt8*)(UIntPtr) (GV.EIP_+1))) & 0x7;
-    if (GV.MOD_ == 0) {
-        _ModRM0(pMyArgument, pMyDisasm);
-    }
-    else if (GV.MOD_ == 1) {
-        _ModRM1(pMyArgument, pMyDisasm);
-    }
-    else if (GV.MOD_ == 2) {
-        _ModRM2(pMyArgument, pMyDisasm);
+    if (GV.MOD_ == 3) {
+        _ModRM3_MMX(pMyArgument, pMyDisasm);
     }
     else {
-        _ModRM3_MMX(pMyArgument, pMyDisasm);
+        (*pMyArgument).ArgType = MEMORY_TYPE|MMX_MEM;
+        if (GV.MOD_ == 0) {
+            _ModRM0(pMyArgument, pMyDisasm);
+        }
+        else if (GV.MOD_ == 1) {
+            _ModRM1(pMyArgument, pMyDisasm);
+        }
+        else {
+            _ModRM2(pMyArgument, pMyDisasm);
+        }
     }
 }
 
@@ -337,21 +341,23 @@ void __bea_callspec__ MOD_RM_SSE(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
     GV.DECALAGE_EIP = 0;
     (*pMyArgument).ArgSize = 128;
-    /* TODO: MEMORY subtype should have SSE too */
     if (!Security(1, pMyDisasm)) return;
     GV.MOD_ = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6);
     GV.RM_  = (*((UInt8*)(UIntPtr) (GV.EIP_+1))) & 0x7;
-    if (GV.MOD_ == 0) {
-        _ModRM0(pMyArgument, pMyDisasm);
-    }
-    else if (GV.MOD_ == 1) {
-        _ModRM1(pMyArgument, pMyDisasm);
-    }
-    else if (GV.MOD_ == 2) {
-        _ModRM2(pMyArgument, pMyDisasm);
+    if (GV.MOD_ == 3) {
+        _ModRM3_SSE(pMyArgument, pMyDisasm);
     }
     else {
-        _ModRM3_SSE(pMyArgument, pMyDisasm);
+        (*pMyArgument).ArgType = MEMORY_TYPE|SSE_MEM;
+        if (GV.MOD_ == 0) {
+            _ModRM0(pMyArgument, pMyDisasm);
+        }
+        else if (GV.MOD_ == 1) {
+            _ModRM1(pMyArgument, pMyDisasm);
+        }
+        else {
+            _ModRM2(pMyArgument, pMyDisasm);
+        }
     }
 }
 
@@ -361,7 +367,7 @@ void __bea_callspec__ RegSeg_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
     if (!Security(1, pMyDisasm)) return;
     reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
     if (reg < 6) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+SEGMENT_REG+REGS[reg];
+        (*pMyArgument).ArgType = REGISTER_TYPE|SEGMENT_REG|REGVAL(reg);
         (*pMyArgument).ArgSize = 16;
     }
     else {
@@ -392,7 +398,7 @@ void __bea_callspec__ RegMMX_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
     Int32 reg;
     if (!Security(1, pMyDisasm)) return;
     reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
-    (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[reg];
+    (*pMyArgument).ArgType = REGISTER_TYPE|MMX_REG|REGVAL(reg);
     (*pMyArgument).ArgSize = 64;
 }
 
