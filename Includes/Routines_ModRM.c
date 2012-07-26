@@ -18,117 +18,6 @@
  * =======================================
  *
  * ======================================= */
-void __bea_callspec__ MOD_RM(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    GV.DECALAGE_EIP = 0;
-    if (!Security(1, pMyDisasm)) return;
-    GV.MOD_ = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6);
-    GV.RM_  = (*((UInt8*)(UIntPtr) (GV.EIP_+1))) & 0x7;
-    if (GV.MOD_ == 0) {
-        ModRM_0[GV.RM_](pMyArgument, pMyDisasm);
-    }
-    else if (GV.MOD_ == 1) {
-        GV.DECALAGE_EIP++;
-        ModRM_1[GV.RM_](pMyArgument, pMyDisasm);
-    }
-    else if (GV.MOD_ == 2) {
-        if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-            GV.DECALAGE_EIP += 4;
-        }
-        else {
-            GV.DECALAGE_EIP += 2;
-        }
-        ModRM_2[GV.RM_](pMyArgument, pMyDisasm);
-    }
-    else {
-        ModRM_3[GV.RM_](pMyArgument, pMyDisasm);
-    }
-
-}
-void __bea_callspec__ RegSeg_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    Int32 reg;
-    if (!Security(1, pMyDisasm)) return;
-    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
-    if (reg < 6) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+SEGMENT_REG+REGS[reg];
-        (*pMyArgument).ArgSize = 16;
-    }
-    else {
-        FailDecode(pMyDisasm);
-    }
-}
-
-void __bea_callspec__ RegCR_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    Int32 reg;
-    if (!Security(1, pMyDisasm)) return;
-    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
-    if ((*pMyDisasm).Prefix.REX.R_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+CR_REG+REGS[reg|8];
-    }
-    else {
-        (*pMyArgument).ArgType = REGISTER_TYPE+CR_REG+REGS[reg];
-    }
-    (*pMyArgument).ArgSize = 32;
-}
-
-void __bea_callspec__ RegDR_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    Int32 reg;
-    if (!Security(1, pMyDisasm)) return;
-    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
-    if ((*pMyDisasm).Prefix.REX.R_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+DR_REG+REGS[reg|8];
-    }
-    else {
-        (*pMyArgument).ArgType = REGISTER_TYPE+DR_REG+REGS[reg];
-    }
-    (*pMyArgument).ArgSize = 32;
-}
-/* =======================================
- *
- * ======================================= */
-void __bea_callspec__ Reg_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    Int32 reg;
-    if (!Security(1, pMyDisasm)) return;
-    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
-    
-    if (GV.MMX_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[reg];
-        (*pMyArgument).ArgSize = 64;
-        return;
-    }
-    
-    if (GV.SSE_) {
-        if ((*pMyDisasm).Prefix.REX.R_) {
-            (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[reg|8];
-        }
-        else {
-            (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[reg];
-        }
-        (*pMyArgument).ArgSize = 128;
-        return;
-    }
-    
-    /* general purpose register */
-    if ((*pMyDisasm).Prefix.REX.R_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[reg|8];
-    }
-    else {
-        if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[reg];
-            /* determine HighPos from 3rd bit (Hxx)*/
-            (*pMyArgument).ArgPosition = reg >> 2;
-        }
-        else {
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[reg];
-        }
-    }
-    (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
-}
-
 static void _FillSegmentDS(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
     if ((*pMyDisasm).Prefix.SegmentState == InUsePrefix) {
@@ -149,304 +38,46 @@ static void _FillSegmentSS(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
     }
 }
 /* =======================================
- *          ModRM_0
+ *     Mod/RM 0
  * ======================================= */
-void __bea_callspec__ Addr_EAX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
+static void _ModRM0(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).Memory.BaseRegister = REGS[8];
-        }
-        else {
-            (*pMyArgument).Memory.BaseRegister = REGS[0];
-        }
-    }
-    else {
-        (*pMyArgument).Memory.BaseRegister = REGS[3];
-        (*pMyArgument).Memory.IndexRegister = REGS[6];
-        (*pMyArgument).Memory.Scale = 1;
-    }
-    _FillSegmentDS(pMyArgument, pMyDisasm);
-}
-/* =======================================
- *
- * ======================================= */
-void __bea_callspec__ Addr_ECX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).Memory.BaseRegister = REGS[1+8];
-        }
-        else {
-            (*pMyArgument).Memory.BaseRegister = REGS[1];
-        }
-    }
-    else {
-        (*pMyArgument).Memory.BaseRegister = REGS[3];
-        (*pMyArgument).Memory.IndexRegister = REGS[7];
-        (*pMyArgument).Memory.Scale = 1;
-    }
-    _FillSegmentDS(pMyArgument, pMyDisasm);
-}
-
-/* =======================================
- *
- * ======================================= */
-void __bea_callspec__ Addr_EDX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).Memory.BaseRegister = REGS[2+8];
-        }
-        else {
-            (*pMyArgument).Memory.BaseRegister = REGS[2];
-        }
-        _FillSegmentDS(pMyArgument, pMyDisasm);
-    }
-    else {
-        (*pMyArgument).Memory.BaseRegister = REGS[5];
-        (*pMyArgument).Memory.IndexRegister = REGS[6];
-        (*pMyArgument).Memory.Scale = 1;
-        _FillSegmentSS(pMyArgument, pMyDisasm);
-    }
-}
-
-
-/* =======================================
- *
- * ======================================= */
-void __bea_callspec__ Addr_EBX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).Memory.BaseRegister = REGS[3+8];
-        }
-        else {
-            (*pMyArgument).Memory.BaseRegister = REGS[3];
-        }
-        _FillSegmentDS(pMyArgument, pMyDisasm);
-    }
-    else {
-        (*pMyArgument).Memory.BaseRegister = REGS[5];
-        (*pMyArgument).Memory.IndexRegister = REGS[7];
-        (*pMyArgument).Memory.Scale = 1;
-        _FillSegmentSS(pMyArgument, pMyDisasm);
-    }
-}
-
-/* =======================================
- *
- * ======================================= */
-void __bea_callspec__ Addr_SIB(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    if (!Security(2, pMyDisasm)) return;
-    (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+    if (GV.RM_ == 4) {
+        if (!Security(2, pMyDisasm)) return;
         _SIB(pMyArgument, pMyDisasm);
     }
-    else {
-        (*pMyArgument).Memory.BaseRegister = REGS[6];
-        _FillSegmentDS(pMyArgument, pMyDisasm);
-    }
-}
-
-/* =======================================
- *
- * ======================================= */
-void __bea_callspec__ Addr_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    Int32 MyNumber;
-    UInt64 MyAddress;
-    (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+    else if (GV.RM_ == 5) {
+        Int32 MyNumber;
+        UInt64 MyAddress;
         if (!Security(6, pMyDisasm)) return;
         GV.DECALAGE_EIP+=4;
         MyNumber = *((Int32*)(UIntPtr) (GV.EIP_+2));
         (*pMyArgument).Memory.Displacement = MyNumber;
         if ((*pMyDisasm).Archi == 64) {
-            MyNumber += 6;
-            MyNumber += (*pMyDisasm).Prefix.Number;
-            if (GV.ImmediatSize == 32) {
-                MyNumber += 4;
-            }
-            else if (GV.ImmediatSize == 16) {
-                MyNumber += 2;
-            }
-            else if (GV.ImmediatSize == 8) {
-                MyNumber += 1;
-            }
-            if ((*pMyDisasm).Instruction.Opcode >= 0x0F3800) {      /* add two bytes if opcode is a 3-bytes */
-                MyNumber +=2;
-            }
-            else if ((*pMyDisasm).Instruction.Opcode >= 0x0100) {   /* add one byte if opcode is a 2-bytes */
-                MyNumber +=1;
-            }
+            MyNumber += 6 + 1;
+            MyNumber += (int) (GV.EIP_-(*pMyDisasm).EIP);
+            MyNumber += (GV.ImmediatSize >> 3);
             CalculateRelativeAddress(&MyAddress, (Int64)MyNumber, pMyDisasm);
             (*pMyDisasm).Instruction.AddrValue = MyAddress;
             (*pMyArgument).ArgType = MEMORY_TYPE+RELATIVE_;
         }
-    }
-    else {
-        (*pMyArgument).Memory.BaseRegister = REGS[7];
-    }
-    _FillSegmentDS(pMyArgument, pMyDisasm);
-}
-
-/* =======================================
- *
- * ======================================= */
-void __bea_callspec__ Addr_ESI(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).Memory.BaseRegister = REGS[6+8];
-        }
-        else {
-            (*pMyArgument).Memory.BaseRegister = REGS[6];
-        }
-    }
-    else {
-        GV.DECALAGE_EIP+=2;
-        (*pMyArgument).Memory.Displacement = *((UInt16*)(UIntPtr) (GV.EIP_+2));
-        if (!Security(2, pMyDisasm)) return;
-    }
-    _FillSegmentDS(pMyArgument, pMyDisasm);
-}
-
-/* =======================================
- *
- * ======================================= */
-void __bea_callspec__ Addr_EDI(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).Memory.BaseRegister = REGS[7+8];
-        }
-        else {
-            (*pMyArgument).Memory.BaseRegister = REGS[7];
-        }
-    }
-    else {
-        (*pMyArgument).Memory.BaseRegister = REGS[3];
-    }
-    _FillSegmentDS(pMyArgument, pMyDisasm);
-}
-
-/* =======================================
- *          ModRM_1
- * ======================================= */
-void __bea_callspec__ Addr_EAX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    long MyNumber;
-    MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+2));
-    (*pMyArgument).Memory.Displacement = MyNumber;
-    (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).Memory.BaseRegister = REGS[8];
-        }
-        else {
-            (*pMyArgument).Memory.BaseRegister = REGS[0];
-        }
-    }
-    else {
-        (*pMyArgument).Memory.BaseRegister = REGS[3];
-        (*pMyArgument).Memory.IndexRegister = REGS[6];
-        (*pMyArgument).Memory.Scale = 1;
-    }
-    _FillSegmentDS(pMyArgument, pMyDisasm);
-}
-
-/* =======================================
- *          ModRM_1
- * ======================================= */
-void __bea_callspec__ Addr_ECX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    long MyNumber;
-    MyNumber = *((Int8*) (UIntPtr)GV.EIP_+2);
-    (*pMyArgument).Memory.Displacement = MyNumber;
-    (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).Memory.BaseRegister = REGS[1+8];
-        }
-        else {
-            (*pMyArgument).Memory.BaseRegister = REGS[1];
-        }
-    }
-    else {
-        (*pMyArgument).Memory.BaseRegister = REGS[3];
-        (*pMyArgument).Memory.IndexRegister = REGS[7];
-        (*pMyArgument).Memory.Scale = 1;
-    }
-    _FillSegmentDS(pMyArgument, pMyDisasm);
-}
-
-/* =======================================
- *          ModRM_1
- * ======================================= */
-void __bea_callspec__ Addr_EDX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    long MyNumber;
-    MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+2));
-    (*pMyArgument).Memory.Displacement = MyNumber;
-    (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).Memory.BaseRegister = REGS[2+8];
-        }
-        else {
-            (*pMyArgument).Memory.BaseRegister = REGS[2];
-        }
         _FillSegmentDS(pMyArgument, pMyDisasm);
     }
     else {
-        (*pMyArgument).Memory.BaseRegister = REGS[5];
-        (*pMyArgument).Memory.IndexRegister = REGS[6];
-        (*pMyArgument).Memory.Scale = 1;
-        _FillSegmentSS(pMyArgument, pMyDisasm);
-    }
-}
-
-/* =======================================
- *          ModRM_1
- * ======================================= */
-void __bea_callspec__ Addr_EBX_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    long MyNumber;
-    MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+2));
-    (*pMyArgument).Memory.Displacement = MyNumber;
-    (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).Memory.BaseRegister = REGS[3+8];
-        }
-        else {
-            (*pMyArgument).Memory.BaseRegister = REGS[3];
-        }
+        (*pMyArgument).Memory.BaseRegister = REGVAL(GV.RM_|(*pMyDisasm).Prefix.REX.B_);
         _FillSegmentDS(pMyArgument, pMyDisasm);
     }
-    else {
-        (*pMyArgument).Memory.BaseRegister = REGS[5];
-        (*pMyArgument).Memory.IndexRegister = REGS[7];
-        (*pMyArgument).Memory.Scale = 1;
-        _FillSegmentSS(pMyArgument, pMyDisasm);
-    }
 }
 
 /* =======================================
- *
+ *     Mod/RM 1
  * ======================================= */
-void __bea_callspec__ Addr_SIB_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
+static void _ModRM1(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
+    GV.DECALAGE_EIP++;
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+    if (GV.RM_ == 4) {
         if (!Security(3, pMyDisasm)) return;
         (*pMyArgument).Memory.Displacement = *((Int8*)(UIntPtr) (GV.EIP_+3));
         _SIB(pMyArgument, pMyDisasm);
@@ -454,588 +85,356 @@ void __bea_callspec__ Addr_SIB_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
     else {
         if (!Security(2, pMyDisasm)) return;
         (*pMyArgument).Memory.Displacement = *((Int8*)(UIntPtr) (GV.EIP_+2));
-        (*pMyArgument).Memory.BaseRegister = REGS[7];
-        _FillSegmentDS(pMyArgument, pMyDisasm);
-    }
-}
-
-/* =======================================
- *          ModRM_1
- * ======================================= */
-void __bea_callspec__ Addr_EBP_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    long MyNumber;
-    MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+2));
-    (*pMyArgument).Memory.Displacement = MyNumber;
-    (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).Memory.BaseRegister = REGS[5+8];
-            _FillSegmentDS(pMyArgument, pMyDisasm);
+        (*pMyArgument).Memory.BaseRegister = REGVAL(GV.RM_|(*pMyDisasm).Prefix.REX.B_);
+        if ((*pMyDisasm).Prefix.SegmentState == InUsePrefix) {
+            (*pMyArgument).SegmentReg = (*pMyDisasm).Prefix.Segment;
+        }
+        else if (GV.RM_ == 5 && (*pMyDisasm).Prefix.REX.B_ == 0) {
+            (*pMyArgument).SegmentReg = SSReg;
         }
         else {
-            (*pMyArgument).Memory.BaseRegister = REGS[5];
-            _FillSegmentSS(pMyArgument, pMyDisasm);
+            (*pMyArgument).SegmentReg = DSReg;
         }
-    }
-    else {
-        (*pMyArgument).Memory.BaseRegister = REGS[7];
-        _FillSegmentDS(pMyArgument, pMyDisasm);
     }
 }
 
 /* =======================================
- *          ModRM_1
+ *     Mod/RM 2
  * ======================================= */
-void __bea_callspec__ Addr_ESI_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
+static void _ModRM2(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    long MyNumber;
-    MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+2));
-    (*pMyArgument).Memory.Displacement = MyNumber;
+    GV.DECALAGE_EIP += 4;
     (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).Memory.BaseRegister = REGS[6+8];
-        }
-        else {
-            (*pMyArgument).Memory.BaseRegister = REGS[6];
-        }
-        _FillSegmentDS(pMyArgument, pMyDisasm);
-    }
-    else {
-        (*pMyArgument).Memory.BaseRegister = REGS[5];
-        _FillSegmentSS(pMyArgument, pMyDisasm);
-    }
-
-}
-
-/* =======================================
- *          ModRM_1
- * ======================================= */
-void __bea_callspec__ Addr_EDI_disp8(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    long MyNumber;
-    MyNumber = *((Int8*)(UIntPtr) (GV.EIP_+2));
-    (*pMyArgument).Memory.Displacement = MyNumber;
-    (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).Memory.BaseRegister = REGS[7+8];
-        }
-        else {
-            (*pMyArgument).Memory.BaseRegister = REGS[7];
-        }
-    }
-    else {
-        (*pMyArgument).Memory.BaseRegister = REGS[3];
-    }
-    _FillSegmentDS(pMyArgument, pMyDisasm);
-}
-
-/* =======================================
- *          ModRM_2
- * ======================================= */
-void __bea_callspec__ Addr_EAX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+2));
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).Memory.BaseRegister = REGS[8];
-        }
-        else {
-            (*pMyArgument).Memory.BaseRegister = REGS[0];
-        }
-    }
-    else {
-        (*pMyArgument).Memory.Displacement = *((Int16*)(UIntPtr) (GV.EIP_+2));
-        (*pMyArgument).Memory.BaseRegister = REGS[3];
-        (*pMyArgument).Memory.IndexRegister = REGS[6];
-        (*pMyArgument).Memory.Scale = 1;
-    }
-    _FillSegmentDS(pMyArgument, pMyDisasm);
-}
-
-
-/* =======================================
- *          ModRM_2
- * ======================================= */
-void __bea_callspec__ Addr_ECX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+2));
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).Memory.BaseRegister = REGS[1+8];
-        }
-        else {
-            (*pMyArgument).Memory.BaseRegister = REGS[1];
-        }
-    }
-    else {
-        (*pMyArgument).Memory.Displacement = *((Int16*)(UIntPtr) (GV.EIP_+2));
-        (*pMyArgument).Memory.BaseRegister = REGS[3];
-        (*pMyArgument).Memory.IndexRegister = REGS[7];
-        (*pMyArgument).Memory.Scale = 1;
-    }
-    _FillSegmentDS(pMyArgument, pMyDisasm);
-}
-
-/* =======================================
- *          ModRM_2
- * ======================================= */
-void __bea_callspec__ Addr_EDX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+2));
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).Memory.BaseRegister = REGS[2+8];
-        }
-        else {
-            (*pMyArgument).Memory.BaseRegister = REGS[2];
-        }
-        _FillSegmentDS(pMyArgument, pMyDisasm);
-    }
-    else {
-        (*pMyArgument).Memory.Displacement = *((Int16*)(UIntPtr) (GV.EIP_+2));
-        (*pMyArgument).Memory.BaseRegister = REGS[5];
-        (*pMyArgument).Memory.IndexRegister = REGS[6];
-        (*pMyArgument).Memory.Scale = 1;
-        _FillSegmentSS(pMyArgument, pMyDisasm);
-    }
-}
-
-/* =======================================
- *          ModRM_2
- * ======================================= */
-void __bea_callspec__ Addr_EBX_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+2));
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).Memory.BaseRegister = REGS[3+8];
-        }
-        else {
-            (*pMyArgument).Memory.BaseRegister = REGS[3];
-        }
-        _FillSegmentDS(pMyArgument, pMyDisasm);
-    }
-    else {
-        (*pMyArgument).Memory.Displacement = *((Int16*)(UIntPtr) (GV.EIP_+2));
-        (*pMyArgument).Memory.BaseRegister = REGS[5];
-        (*pMyArgument).Memory.IndexRegister = REGS[7];
-        (*pMyArgument).Memory.Scale = 1;
-        _FillSegmentSS(pMyArgument, pMyDisasm);
-    }
-}
-
-/* =======================================
- *
- * ======================================= */
-void __bea_callspec__ Addr_SIB_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    if (!Security(2, pMyDisasm)) return;
-    (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
+    if (GV.RM_ == 4) {
+        if (!Security(6, pMyDisasm)) return;
         (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+3));
         _SIB(pMyArgument, pMyDisasm);
     }
     else {
-        (*pMyArgument).Memory.Displacement = *((Int16*)(UIntPtr) (GV.EIP_+2));
-        (*pMyArgument).Memory.BaseRegister = REGS[6];
-        _FillSegmentDS(pMyArgument, pMyDisasm);
+        if (!Security(5, pMyDisasm)) return;
+        (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+2));
+        (*pMyArgument).Memory.BaseRegister = REGVAL(GV.RM_|(*pMyDisasm).Prefix.REX.B_);
+        if ((*pMyDisasm).Prefix.SegmentState == InUsePrefix) {
+            (*pMyArgument).SegmentReg = (*pMyDisasm).Prefix.Segment;
+        }
+        else if (GV.RM_ == 5 && (*pMyDisasm).Prefix.REX.B_ == 0) {
+            (*pMyArgument).SegmentReg = SSReg;
+        }
+        else {
+            (*pMyArgument).SegmentReg = DSReg;
+        }
     }
 }
 
 /* =======================================
- *          ModRM_2
+ *     Mod/RM 3
  * ======================================= */
-void __bea_callspec__ Addr_EBP_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
+static void _ModRM3(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+2));
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).Memory.BaseRegister = REGS[5+8];
+    if (GV.MMX_) {
+        (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[GV.RM_];
+        (*pMyArgument).ArgSize = 64;
+        return;
+    }
+    
+    if (GV.SSE_) {
+        (*pMyArgument).ArgType = REGISTER_TYPE|SSE_REG|REGVAL(GV.RM_|(*pMyDisasm).Prefix.REX.B_);
+        (*pMyArgument).ArgSize = 128;
+        return;
+    }
+    
+    /* general purpose register */
+    (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
+    if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
+        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[GV.RM_];
+        /* determine HighPos from 3rd bit (Hxx)*/
+        (*pMyArgument).ArgPosition = GV.RM_ >> 2;
+    }
+    else {
+        (*pMyArgument).ArgType = REGISTER_TYPE|GENERAL_REG|REGVAL(GV.RM_|(*pMyDisasm).Prefix.REX.B_);
+    }
+}
+/* =======================================
+ *     Mod/RM 3 MMX
+ * ======================================= */
+static void _ModRM3_MMX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
+{
+    (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGVAL(GV.RM_);
+}
+
+/* =======================================
+ *     Mod/RM 3 SSE
+ * ======================================= */
+static void _ModRM3_SSE(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
+{
+    (*pMyArgument).ArgType = REGISTER_TYPE|SSE_REG|REGVAL(GV.RM_|(*pMyDisasm).Prefix.REX.B_);
+}
+
+/* =======================================
+ *     Mod/RM 0  AddressSize=16
+ * ======================================= */
+static void _ModRM0_16(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
+{
+    switch (GV.RM_) {
+        case 0:
+            (*pMyArgument).Memory.BaseRegister = REGS[3];
+            (*pMyArgument).Memory.IndexRegister = REGS[6];
+            (*pMyArgument).Memory.Scale = 1;
             _FillSegmentDS(pMyArgument, pMyDisasm);
-        }
-        else {
+            break;
+        case 1:
+            (*pMyArgument).Memory.BaseRegister = REGS[3];
+            (*pMyArgument).Memory.IndexRegister = REGS[7];
+            (*pMyArgument).Memory.Scale = 1;
+            _FillSegmentDS(pMyArgument, pMyDisasm);
+            break;
+        case 2:
+            (*pMyArgument).Memory.BaseRegister = REGS[5];
+            (*pMyArgument).Memory.IndexRegister = REGS[6];
+            (*pMyArgument).Memory.Scale = 1;
+            _FillSegmentSS(pMyArgument, pMyDisasm);
+            break;
+        case 3:
+            (*pMyArgument).Memory.BaseRegister = REGS[5];
+            (*pMyArgument).Memory.IndexRegister = REGS[7];
+            (*pMyArgument).Memory.Scale = 1;
+            _FillSegmentSS(pMyArgument, pMyDisasm);
+            break;
+        case 4:
+            (*pMyArgument).Memory.BaseRegister = REGS[6];
+            _FillSegmentDS(pMyArgument, pMyDisasm);
+            break;
+        case 5:
+            (*pMyArgument).Memory.BaseRegister = REGS[7];
+            _FillSegmentDS(pMyArgument, pMyDisasm);
+            break;
+        case 6:
+            GV.DECALAGE_EIP+=2;
+            if (!Security(2, pMyDisasm)) return;
+            (*pMyArgument).Memory.Displacement = *((UInt16*)(UIntPtr) (GV.EIP_+2));
+            _FillSegmentDS(pMyArgument, pMyDisasm);
+            break;
+        case 7:
+            (*pMyArgument).Memory.BaseRegister = REGS[3];
+            _FillSegmentDS(pMyArgument, pMyDisasm);
+            break;
+    }
+}
+/* =======================================
+ *     Mod/RM 1/2  AddressSize=16
+ * ======================================= */
+static void _ModRM12_16(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
+{
+    switch (GV.RM_) {
+        case 0:
+            (*pMyArgument).Memory.BaseRegister = REGS[3];
+            (*pMyArgument).Memory.IndexRegister = REGS[6];
+            (*pMyArgument).Memory.Scale = 1;
+            _FillSegmentDS(pMyArgument, pMyDisasm);
+            break;
+        case 1:
+            (*pMyArgument).Memory.BaseRegister = REGS[3];
+            (*pMyArgument).Memory.IndexRegister = REGS[7];
+            (*pMyArgument).Memory.Scale = 1;
+            _FillSegmentDS(pMyArgument, pMyDisasm);
+            break;
+        case 2:
+            (*pMyArgument).Memory.BaseRegister = REGS[5];
+            (*pMyArgument).Memory.IndexRegister = REGS[6];
+            (*pMyArgument).Memory.Scale = 1;
+            _FillSegmentSS(pMyArgument, pMyDisasm);
+            break;
+        case 3:
+            (*pMyArgument).Memory.BaseRegister = REGS[5];
+            (*pMyArgument).Memory.IndexRegister = REGS[7];
+            (*pMyArgument).Memory.Scale = 1;
+            _FillSegmentSS(pMyArgument, pMyDisasm);
+            break;
+        case 4:
+            (*pMyArgument).Memory.BaseRegister = REGS[6];
+            _FillSegmentDS(pMyArgument, pMyDisasm);
+            break;
+        case 5:
+            (*pMyArgument).Memory.BaseRegister = REGS[7];
+            _FillSegmentDS(pMyArgument, pMyDisasm);
+            break;
+        case 6:
             (*pMyArgument).Memory.BaseRegister = REGS[5];
             _FillSegmentSS(pMyArgument, pMyDisasm);
-        }
-    }
-    else {
-        (*pMyArgument).Memory.Displacement = *((Int16*)(UIntPtr) (GV.EIP_+2));
-        (*pMyArgument).Memory.BaseRegister = REGS[7];
-        _FillSegmentDS(pMyArgument, pMyDisasm);
+            break;
+        case 7:
+            (*pMyArgument).Memory.BaseRegister = REGS[3];
+            _FillSegmentDS(pMyArgument, pMyDisasm);
+            break;
     }
 }
 
-/* =======================================
- *          ModRM_2
- * ======================================= */
-void __bea_callspec__ Addr_ESI_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
+void __bea_callspec__ MOD_RM(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    (*pMyArgument).ArgType = MEMORY_TYPE;
+    GV.DECALAGE_EIP = 0;
+    if (!Security(1, pMyDisasm)) return;
+    GV.MOD_ = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6);
     if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+2));
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).Memory.BaseRegister = REGS[6+8];
+        GV.RM_  = (*((UInt8*)(UIntPtr) (GV.EIP_+1))) & 0x7;
+        if (GV.MOD_ == 0) {
+            _ModRM0(pMyArgument, pMyDisasm);
+        }
+        else if (GV.MOD_ == 1) {
+            _ModRM1(pMyArgument, pMyDisasm);
+        }
+        else if (GV.MOD_ == 2) {
+            _ModRM2(pMyArgument, pMyDisasm);
         }
         else {
-            (*pMyArgument).Memory.BaseRegister = REGS[6];
-        }
-        _FillSegmentDS(pMyArgument, pMyDisasm);
-    }
-    else {
-        (*pMyArgument).Memory.Displacement = *((Int16*)(UIntPtr) (GV.EIP_+2));
-        (*pMyArgument).Memory.BaseRegister = REGS[5];
-        _FillSegmentSS(pMyArgument, pMyDisasm);
-    }
-}
-
-/* =======================================
- *          ModRM_2
- * ======================================= */
-void __bea_callspec__ Addr_EDI_disp32(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    (*pMyArgument).ArgType = MEMORY_TYPE;
-    if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+2));
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).Memory.BaseRegister = REGS[7+8];
-        }
-        else {
-            (*pMyArgument).Memory.BaseRegister = REGS[7];
+            _ModRM3(pMyArgument, pMyDisasm);
         }
     }
     else {
-        (*pMyArgument).Memory.Displacement = *((Int16*)(UIntPtr) (GV.EIP_+2));
-        (*pMyArgument).Memory.BaseRegister = REGS[3];
+        GV.RM_  = (*((UInt8*)(UIntPtr) (GV.EIP_+1))) & 0x7;
+        if (GV.MOD_ == 0) {
+            _ModRM0_16(pMyArgument, pMyDisasm);
+        }
+        else if (GV.MOD_ == 3) {
+            _ModRM3(pMyArgument, pMyDisasm);
+        }
+        else {
+            if (GV.MOD_ == 1) {
+                GV.DECALAGE_EIP++;
+                (*pMyArgument).Memory.Displacement = *((Int8*)(UIntPtr) (GV.EIP_+2));
+            }
+            else {
+                GV.DECALAGE_EIP += 2;
+                (*pMyArgument).Memory.Displacement = *((Int16*)(UIntPtr) (GV.EIP_+2));
+            }
+            _ModRM12_16(pMyArgument, pMyDisasm);
+        }
     }
-    _FillSegmentDS(pMyArgument, pMyDisasm);
 }
 
-/* =======================================
- *          ModRM_3
- * ======================================= */
-void __bea_callspec__ _rEAX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
+void __bea_callspec__ MOD_RM_MMX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
+    GV.DECALAGE_EIP = 0;
+    (*pMyArgument).ArgSize = 64;
+    /* TODO: MEMORY subtype should have MMX too */
+    if (!Security(1, pMyDisasm)) return;
+    GV.MOD_ = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6);
+    GV.RM_  = (*((UInt8*)(UIntPtr) (GV.EIP_+1))) & 0x7;
+    if (GV.MOD_ == 0) {
+        _ModRM0(pMyArgument, pMyDisasm);
+    }
+    else if (GV.MOD_ == 1) {
+        _ModRM1(pMyArgument, pMyDisasm);
+    }
+    else if (GV.MOD_ == 2) {
+        _ModRM2(pMyArgument, pMyDisasm);
+    }
+    else {
+        _ModRM3_MMX(pMyArgument, pMyDisasm);
+    }
+}
+
+void __bea_callspec__ MOD_RM_SSE(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
+{
+    GV.DECALAGE_EIP = 0;
+    (*pMyArgument).ArgSize = 128;
+    /* TODO: MEMORY subtype should have SSE too */
+    if (!Security(1, pMyDisasm)) return;
+    GV.MOD_ = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6);
+    GV.RM_  = (*((UInt8*)(UIntPtr) (GV.EIP_+1))) & 0x7;
+    if (GV.MOD_ == 0) {
+        _ModRM0(pMyArgument, pMyDisasm);
+    }
+    else if (GV.MOD_ == 1) {
+        _ModRM1(pMyArgument, pMyDisasm);
+    }
+    else if (GV.MOD_ == 2) {
+        _ModRM2(pMyArgument, pMyDisasm);
+    }
+    else {
+        _ModRM3_SSE(pMyArgument, pMyDisasm);
+    }
+}
+
+void __bea_callspec__ RegSeg_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
+{
+    Int32 reg;
+    if (!Security(1, pMyDisasm)) return;
+    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    if (reg < 6) {
+        (*pMyArgument).ArgType = REGISTER_TYPE+SEGMENT_REG+REGS[reg];
+        (*pMyArgument).ArgSize = 16;
+    }
+    else {
+        FailDecode(pMyDisasm);
+    }
+}
+
+void __bea_callspec__ RegCR_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
+{
+    Int32 reg;
+    if (!Security(1, pMyDisasm)) return;
+    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    (*pMyArgument).ArgType = REGISTER_TYPE+CR_REG+REGVAL(reg|(*pMyDisasm).Prefix.REX.R_);
+    (*pMyArgument).ArgSize = 32;
+}
+
+void __bea_callspec__ RegDR_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
+{
+    Int32 reg;
+    if (!Security(1, pMyDisasm)) return;
+    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    (*pMyArgument).ArgType = REGISTER_TYPE+DR_REG+REGVAL(reg|(*pMyDisasm).Prefix.REX.R_);
+    (*pMyArgument).ArgSize = 32;
+}
+
+void __bea_callspec__ RegMMX_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
+{
+    Int32 reg;
+    if (!Security(1, pMyDisasm)) return;
+    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[reg];
+    (*pMyArgument).ArgSize = 64;
+}
+
+void __bea_callspec__ RegSSE_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
+{
+    Int32 reg;
+    if (!Security(1, pMyDisasm)) return;
+    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    (*pMyArgument).ArgType = REGISTER_TYPE|SSE_REG|REGVAL(reg|(*pMyDisasm).Prefix.REX.R_);
+    (*pMyArgument).ArgSize = 128;
+}
+/* =======================================
+ *
+ * ======================================= */
+void __bea_callspec__ Reg_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
+{
+    Int32 reg;
+    if (!Security(1, pMyDisasm)) return;
+    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    
     if (GV.MMX_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[0];
+        (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[reg];
         (*pMyArgument).ArgSize = 64;
         return;
     }
-
+    
     if (GV.SSE_) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[8];
-            (*pMyArgument).ArgSize = 128;
-        }
-        else {
-            (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[0];
-            (*pMyArgument).ArgSize = 128;
-        }
+        (*pMyArgument).ArgType = REGISTER_TYPE|SSE_REG|REGVAL(reg|(*pMyDisasm).Prefix.REX.R_);
+        (*pMyArgument).ArgSize = 128;
         return;
     }
-
+    
     /* general purpose register */
-    if ((*pMyDisasm).Prefix.REX.B_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[8];
+    (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
+    if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
+        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[reg];
+        /* determine HighPos from 3rd bit (Hxx)*/
+        (*pMyArgument).ArgPosition = reg >> 2;
     }
     else {
-        if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[0];
-        }
-        else {
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[0];
-        }
+        (*pMyArgument).ArgType = REGISTER_TYPE|GENERAL_REG|REGVAL(reg|(*pMyDisasm).Prefix.REX.R_);
     }
-    (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
-}
-
-
-/* =======================================
- *          ModRM_3
- * ======================================= */
-void __bea_callspec__ _rECX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    if (GV.MMX_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[1];
-        (*pMyArgument).ArgSize = 64;
-        return;
-    }
-
-    if (GV.SSE_) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[1+8];
-            (*pMyArgument).ArgSize = 128;
-        }
-        else {
-            (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[1];
-            (*pMyArgument).ArgSize = 128;
-        }
-        return;
-    }
-
-    /* general purpose register */
-    if ((*pMyDisasm).Prefix.REX.B_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[1+8];
-    }
-    else {
-        if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[1];
-        }
-        else {
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[1];
-        }
-    }
-    (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
-}
-
-
-
-/* =======================================
- *          ModRM_3
- * ======================================= */
-void __bea_callspec__ _rEDX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    if (GV.MMX_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[2+0];
-        (*pMyArgument).ArgSize = 64;
-        return;
-    }
-
-    if (GV.SSE_) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[2+8];
-            (*pMyArgument).ArgSize = 128;
-        }
-        else {
-            (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[2+0];
-            (*pMyArgument).ArgSize = 128;
-        }
-        return;
-    }
-
-    /* general purpose register */
-    if ((*pMyDisasm).Prefix.REX.B_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[2+8];
-    }
-    else {
-        if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[2+0];
-        }
-        else {
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[2+0];
-        }
-    }
-    (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
-}
-
-
-
-/* =======================================
- *          ModRM_3
- * ======================================= */
-void __bea_callspec__ _rEBX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    if (GV.MMX_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[3+0];
-        (*pMyArgument).ArgSize = 64;
-        return;
-    }
-
-    if (GV.SSE_) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[3+8];
-            (*pMyArgument).ArgSize = 128;
-        }
-        else {
-            (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[3+0];
-            (*pMyArgument).ArgSize = 128;
-        }
-        return;
-    }
-    /* general purpose register */
-    if ((*pMyDisasm).Prefix.REX.B_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[3+8];
-    }
-    else {
-        if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[3+0];
-        }
-        else {
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[3+0];
-        }
-    }
-    (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
-}
-
-
-
-/* =======================================
- *          ModRM_3
- * ======================================= */
-void __bea_callspec__ _rESP(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    if (GV.MMX_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[4+0];
-        (*pMyArgument).ArgSize = 64;
-        return;
-    }
-
-    if (GV.SSE_) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[4+8];
-            (*pMyArgument).ArgSize = 128;
-        }
-        else {
-            (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[4+0];
-            (*pMyArgument).ArgSize = 128;
-        }
-        return;
-    }
-
-    /* general purpose register */
-    if ((*pMyDisasm).Prefix.REX.B_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[4+8];
-    }
-    else {
-        if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
-            (*pMyArgument).ArgPosition = HighPosition;
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[4+0];
-        }
-        else {
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[4+0];
-        }
-    }
-    (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
-}
-
-
-
-/* =======================================
- *          ModRM_3
- * ======================================= */
-void __bea_callspec__ _rEBP(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    if (GV.MMX_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[5+0];
-        (*pMyArgument).ArgSize = 64;
-        return;
-    }
-
-    if (GV.SSE_) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[5+8];
-            (*pMyArgument).ArgSize = 128;
-        }
-        else {
-            (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[5+0];
-            (*pMyArgument).ArgSize = 128;
-        }
-        return;
-    }
-
-    /* general purpose register */
-    if ((*pMyDisasm).Prefix.REX.B_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[5+8];
-    }
-    else {
-        if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
-            (*pMyArgument).ArgPosition = HighPosition;
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[5+0];
-        }
-        else {
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[5+0];
-        }
-    }
-    (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
-}
-
-
-
-/* =======================================
- *          ModRM_3
- * ======================================= */
-void __bea_callspec__ _rESI(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    if (GV.MMX_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[6+0];
-        (*pMyArgument).ArgSize = 64;
-        return;
-    }
-
-    if (GV.SSE_) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[6+8];
-            (*pMyArgument).ArgSize = 128;
-        }
-        else {
-            (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[6+0];
-            (*pMyArgument).ArgSize = 128;
-        }
-        return;
-    }
-
-    /* general purpose register */
-    if ((*pMyDisasm).Prefix.REX.B_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[6+8];
-    }
-    else {
-        if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
-            (*pMyArgument).ArgPosition = HighPosition;
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[6+0];
-        }
-        else {
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[6+0];
-        }
-    }
-    (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
-}
-
-
-
-/* =======================================
- *          ModRM_3
- * ======================================= */
-void __bea_callspec__ _rEDI(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
-{
-    if (GV.MMX_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[7+0];
-        (*pMyArgument).ArgSize = 64;
-        return;
-    }
-
-    if (GV.SSE_) {
-        if ((*pMyDisasm).Prefix.REX.B_) {
-            (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[7+8];
-            (*pMyArgument).ArgSize = 128;
-        }
-        else {
-            (*pMyArgument).ArgType = REGISTER_TYPE+SSE_REG+REGS[7+0];
-            (*pMyArgument).ArgSize = 128;
-        }
-        return;
-    }
-
-    /* general purpose register */
-    if ((*pMyDisasm).Prefix.REX.B_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[7+8];
-    }
-    else {
-        if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
-            (*pMyArgument).ArgPosition = HighPosition;
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS8BITS[7+0];
-        }
-        else {
-            (*pMyArgument).ArgType = REGISTER_TYPE+GENERAL_REG+REGS[7+0];
-        }
-    }
-    (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
 }
 
 /* =======================================
@@ -1078,13 +477,7 @@ void __bea_callspec__ _SIB(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 
     /* ======================== Interpret Index */
     if (index != 4 || (*pMyDisasm).Prefix.REX.X_) {
-        if ((*pMyDisasm).Prefix.REX.X_ == 0) {
-            (*pMyArgument).Memory.IndexRegister = REGS[index];
-        }
-        else {
-            (*pMyArgument).Memory.IndexRegister = REGS[index|8];
-        }
-        
+        (*pMyArgument).Memory.IndexRegister = REGS[index|(*pMyDisasm).Prefix.REX.X_];
         (*pMyArgument).Memory.Scale = scale;
     }
 }

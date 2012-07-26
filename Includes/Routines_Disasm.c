@@ -66,21 +66,12 @@ int __bea_callspec__ InitVariables (PDISASM pMyDisasm) {
     else
         GV.EndOfBlock = GV.EIP_+(*pMyDisasm).SecurityBlock;
 
-    (*pMyDisasm).Archi = (*pMyDisasm).Archi;
-    if ((*pMyDisasm).Archi == 32) {
-        (*pMyDisasm).Instruction.OperandSize = 32;
-        GV.OriginalOperandSize = 32;
-        (*pMyDisasm).Instruction.AddressSize = 32;
-    }
-    else if ((*pMyDisasm).Archi == 64) {
-        (*pMyDisasm).Instruction.OperandSize = 32;
-        GV.OriginalOperandSize = 32;
-        (*pMyDisasm).Instruction.AddressSize = 64;
-    }
-    else if ((*pMyDisasm).Archi == 16) {
+    (*pMyDisasm).Instruction.OperandSize = 32;
+    GV.OriginalOperandSize = 32;
+    (*pMyDisasm).Instruction.AddressSize = (*pMyDisasm).Archi;
+    if ((*pMyDisasm).Archi == 16) {
         (*pMyDisasm).Instruction.OperandSize = 16;
         GV.OriginalOperandSize = 16;
-        (*pMyDisasm).Instruction.AddressSize = 16;
     }
 
     (*pMyDisasm).Argument1.AccessMode = WRITE;
@@ -133,15 +124,7 @@ void __bea_callspec__ GbEb(PDISASM pMyDisasm)
  * ==================================================================== */
 void __bea_callspec__ EvGv(PDISASM pMyDisasm)
 {
-    if ((*pMyDisasm).Instruction.OperandSize == 64) {
-        (*pMyDisasm).Argument1.ArgSize = 64;
-    }
-    else if ((*pMyDisasm).Instruction.OperandSize == 32) {
-        (*pMyDisasm).Argument1.ArgSize = 32;
-    }
-    else {
-        (*pMyDisasm).Argument1.ArgSize = 16;
-    }
+    (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
     Reg_Opcode(&(*pMyDisasm).Argument2, pMyDisasm);
     GV.EIP_ += GV.DECALAGE_EIP+2;
@@ -186,13 +169,8 @@ void __bea_callspec__ UxVx(PDISASM pMyDisasm)
  * ==================================================================== */
 void __bea_callspec__ EvIv(PDISASM pMyDisasm)
 {
+    (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     if ((*pMyDisasm).Instruction.OperandSize >= 32) {
-        if ((*pMyDisasm).Instruction.OperandSize == 64) {
-            (*pMyDisasm).Argument1.ArgSize = 64;
-        }
-        else {
-            (*pMyDisasm).Argument1.ArgSize = 32;
-        }
         GV.ImmediatSize = 32;                       /* place this instruction before MOD_RM routine to inform it there is an immediat value */
         MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
         GV.EIP_ += GV.DECALAGE_EIP+6;
@@ -208,7 +186,6 @@ void __bea_callspec__ EvIv(PDISASM pMyDisasm)
         }
     }
     else {
-        (*pMyDisasm).Argument1.ArgSize = 16;
         GV.ImmediatSize = 16;
         MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
         GV.EIP_ += GV.DECALAGE_EIP+4;
@@ -354,7 +331,6 @@ void __bea_callspec__ ALIb(PDISASM pMyDisasm)
 {
     long MyNumber;
     if (!Security(2, pMyDisasm)) return;
-    GV.ImmediatSize = 8;
     MyNumber = *((UInt8*)(IntPtr) (GV.EIP_+1));
     (*pMyDisasm).Instruction.Immediat = MyNumber;
     (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0;
@@ -372,10 +348,9 @@ void __bea_callspec__ eAX_Iv(PDISASM pMyDisasm)
     UInt32 MyNumber;
     (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0;
     (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
+    (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     if ((*pMyDisasm).Instruction.OperandSize == 64) {
         if (!Security(5, pMyDisasm)) return;
-        GV.ImmediatSize = 32;
-        (*pMyDisasm).Argument1.ArgSize = 64;
         (*pMyDisasm).Argument2.ArgSize = 32;
         MyNumber = *((UInt32*)(UIntPtr) (GV.EIP_+1));
         (*pMyDisasm).Instruction.Immediat = (Int32) MyNumber;
@@ -383,8 +358,6 @@ void __bea_callspec__ eAX_Iv(PDISASM pMyDisasm)
     }
     else if ((*pMyDisasm).Instruction.OperandSize == 32) {
         if (!Security(5, pMyDisasm)) return;
-        GV.ImmediatSize = 32;
-        (*pMyDisasm).Argument1.ArgSize = 32;
         (*pMyDisasm).Argument2.ArgSize = 32;
         MyNumber = *((UInt32*)(UIntPtr) (GV.EIP_+1));
         (*pMyDisasm).Instruction.Immediat = MyNumber;
@@ -392,8 +365,6 @@ void __bea_callspec__ eAX_Iv(PDISASM pMyDisasm)
     }
     else {
         if (!Security(3, pMyDisasm)) return;
-        GV.ImmediatSize = 16;
-        (*pMyDisasm).Argument1.ArgSize = 16;
         (*pMyDisasm).Argument2.ArgSize = 16;
         MyNumber = *((UInt16*)(UIntPtr) (GV.EIP_+1));
         (*pMyDisasm).Instruction.Immediat = MyNumber;
@@ -406,7 +377,7 @@ void __bea_callspec__ eAX_Iv(PDISASM pMyDisasm)
  * ==================================================================== */
 int __bea_callspec__ Security(int len, PDISASM pMyDisasm)
 {
-    if (GV.EIP_+(UInt64)len > GV.EndOfBlock) {
+    if ((GV.EIP_+(UInt64)len-1) >= GV.EndOfBlock) {
         GV.OutOfBlock = 1;
         return 0;
     }

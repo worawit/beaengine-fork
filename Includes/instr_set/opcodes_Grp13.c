@@ -39,13 +39,14 @@ void __bea_callspec__ G13_(PDISASM pMyDisasm)
             else {
                 FailDecode(pMyDisasm);
             }
-            GV.EIP_ += GV.DECALAGE_EIP+3;
-            if (!Security(0, pMyDisasm)) return;
+            GV.EIP_ += GV.DECALAGE_EIP+2;
+            if (!Security(1, pMyDisasm)) return;
 
-            MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_-1));
+            MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_));
             (*pMyDisasm).Instruction.Immediat = MyNumber;
             (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
             (*pMyDisasm).Argument2.ArgSize = 8;
+            GV.EIP_++;
         }
         else {
             (*pMyDisasm).Instruction.Category = MMX_INSTRUCTION+SHIFT_ROTATE;
@@ -61,13 +62,14 @@ void __bea_callspec__ G13_(PDISASM pMyDisasm)
             else {
                 FailDecode(pMyDisasm);
             }
-            GV.EIP_ += GV.DECALAGE_EIP+3;
-            if (!Security(0, pMyDisasm)) return;
+            GV.EIP_ += GV.DECALAGE_EIP+2;
+            if (!Security(1, pMyDisasm)) return;
 
-            MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_-1));
+            MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_));
             (*pMyDisasm).Instruction.Immediat = MyNumber;
             (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
             (*pMyDisasm).Argument2.ArgSize = 8;
+            GV.EIP_++;
         }
     }
     else if (GV.REGOPCODE == 4) {
@@ -85,12 +87,13 @@ void __bea_callspec__ G13_(PDISASM pMyDisasm)
             else {
                 FailDecode(pMyDisasm);
             }
-            GV.EIP_ += GV.DECALAGE_EIP+3;
-            if (!Security(0, pMyDisasm)) return;
-            MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_-1));
+            GV.EIP_ += GV.DECALAGE_EIP+2;
+            if (!Security(1, pMyDisasm)) return;
+            MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_));
             (*pMyDisasm).Instruction.Immediat = MyNumber;
             (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
             (*pMyDisasm).Argument2.ArgSize = 8;
+            GV.EIP_++;
         }
         else {
             (*pMyDisasm).Instruction.Category = MMX_INSTRUCTION+SHIFT_ROTATE;
@@ -106,13 +109,14 @@ void __bea_callspec__ G13_(PDISASM pMyDisasm)
             else {
                 FailDecode(pMyDisasm);
             }
-            GV.EIP_ += GV.DECALAGE_EIP+3;
-            if (!Security(0, pMyDisasm)) return;
+            GV.EIP_ += GV.DECALAGE_EIP+2;
+            if (!Security(1, pMyDisasm)) return;
 
-            MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_-1));
+            MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_));
             (*pMyDisasm).Instruction.Immediat = MyNumber;
             (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
             (*pMyDisasm).Argument2.ArgSize = 8;
+            GV.EIP_++;
         }
 
     }
@@ -131,13 +135,14 @@ void __bea_callspec__ G13_(PDISASM pMyDisasm)
             else {
                 FailDecode(pMyDisasm);
             }
-            GV.EIP_ += GV.DECALAGE_EIP+3;
-            if (!Security(0, pMyDisasm)) return;
+            GV.EIP_ += GV.DECALAGE_EIP+2;
+            if (!Security(1, pMyDisasm)) return;
 
-            MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_-1));
+            MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_));
             (*pMyDisasm).Instruction.Immediat = MyNumber;
             (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
             (*pMyDisasm).Argument2.ArgSize = 8;
+            GV.EIP_++;
         }
         else {
             (*pMyDisasm).Instruction.Category = MMX_INSTRUCTION+SHIFT_ROTATE;
@@ -153,13 +158,14 @@ void __bea_callspec__ G13_(PDISASM pMyDisasm)
             else {
                 FailDecode(pMyDisasm);
             }
-            GV.EIP_ += GV.DECALAGE_EIP+3;
-            if (!Security(0, pMyDisasm)) return;
+            GV.EIP_ += GV.DECALAGE_EIP+2;
+            if (!Security(1, pMyDisasm)) return;
 
-            MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_-1));
+            MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_));
             (*pMyDisasm).Instruction.Immediat = MyNumber;
             (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
             (*pMyDisasm).Argument2.ArgSize = 8;
+            GV.EIP_++;
         }
     }
 

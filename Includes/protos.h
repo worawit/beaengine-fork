@@ -24,42 +24,6 @@ void __bea_callspec__ RegSeg_Opcode(ARGTYPE*, PDISASM);
 void __bea_callspec__ RegCR_Opcode(ARGTYPE*, PDISASM);
 void __bea_callspec__ RegDR_Opcode(ARGTYPE*, PDISASM);
 
-void __bea_callspec__ Addr_EAX(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_ECX(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_EDX(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_EBX(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_SIB(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_disp32(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_ESI(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_EDI(ARGTYPE*, PDISASM);
-
-void __bea_callspec__ Addr_EAX_disp8(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_ECX_disp8(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_EDX_disp8(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_EBX_disp8(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_SIB_disp8(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_EBP_disp8(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_ESI_disp8(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_EDI_disp8(ARGTYPE*, PDISASM);
-
-void __bea_callspec__ Addr_EAX_disp32(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_ECX_disp32(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_EDX_disp32(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_EBX_disp32(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_SIB_disp32(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_EBP_disp32(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_ESI_disp32(ARGTYPE*, PDISASM);
-void __bea_callspec__ Addr_EDI_disp32(ARGTYPE*, PDISASM);
-
-void __bea_callspec__ _rEAX(ARGTYPE*, PDISASM);
-void __bea_callspec__ _rECX(ARGTYPE*, PDISASM);
-void __bea_callspec__ _rEDX(ARGTYPE*, PDISASM);
-void __bea_callspec__ _rEBX(ARGTYPE*, PDISASM);
-void __bea_callspec__ _rESP(ARGTYPE*, PDISASM);
-void __bea_callspec__ _rEBP(ARGTYPE*, PDISASM);
-void __bea_callspec__ _rESI(ARGTYPE*, PDISASM);
-void __bea_callspec__ _rEDI(ARGTYPE*, PDISASM);
-
 void __bea_callspec__ _SIB(ARGTYPE*, PDISASM);
 
 /* ====================================== Routines_Disasm */

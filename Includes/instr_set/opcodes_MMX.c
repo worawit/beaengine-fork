@@ -47,7 +47,7 @@ void __bea_callspec__ movd_EP(PDISASM pMyDisasm)
     else if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix) {
         (*pMyDisasm).Instruction.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSizeState = MandatoryPrefix;
-        if ((*pMyDisasm).Prefix.REX.W_ == 1) {
+        if ((*pMyDisasm).Prefix.REX.W_) {
             (*pMyDisasm).Argument1.ArgSize = 64;
             (*pMyDisasm).Instruction.Mnemonic = I_MOVQ;
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
@@ -67,7 +67,7 @@ void __bea_callspec__ movd_EP(PDISASM pMyDisasm)
         }
     }
     else {
-        if ((*pMyDisasm).Prefix.REX.W_ == 1) {
+        if ((*pMyDisasm).Prefix.REX.W_) {
             (*pMyDisasm).Argument1.ArgSize = 64;
             (*pMyDisasm).Instruction.Mnemonic = I_MOVQ;
             MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
@@ -99,7 +99,7 @@ void __bea_callspec__ movd_PE(PDISASM pMyDisasm)
     if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix) {
         (*pMyDisasm).Instruction.OperandSize = GV.OriginalOperandSize;
         (*pMyDisasm).Prefix.OperandSizeState = MandatoryPrefix;
-        if ((*pMyDisasm).Prefix.REX.W_ == 1) {
+        if ((*pMyDisasm).Prefix.REX.W_) {
             (*pMyDisasm).Argument2.ArgSize = 64;
             (*pMyDisasm).Instruction.Mnemonic = I_MOVQ;
             MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
@@ -119,7 +119,7 @@ void __bea_callspec__ movd_PE(PDISASM pMyDisasm)
         }
     }
     else {
-        if ((*pMyDisasm).Prefix.REX.W_ == 1) {
+        if ((*pMyDisasm).Prefix.REX.W_) {
             (*pMyDisasm).Argument2.ArgSize = 64;
             (*pMyDisasm).Instruction.Mnemonic = I_MOVQ;
             MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);

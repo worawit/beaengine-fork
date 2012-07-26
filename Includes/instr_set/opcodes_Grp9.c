@@ -31,7 +31,7 @@ void __bea_callspec__ G9_(PDISASM pMyDisasm)
     }
     if (GV.REGOPCODE == 1) {
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
-        if ((*pMyDisasm).Prefix.REX.W_ == 1) {
+        if ((*pMyDisasm).Prefix.REX.W_) {
             (*pMyDisasm).Argument1.ArgSize = 128;
             (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
             (*pMyDisasm).Instruction.Mnemonic = I_CMPXCHG16B;

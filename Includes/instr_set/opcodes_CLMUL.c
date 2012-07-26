@@ -32,10 +32,9 @@ void __bea_callspec__ pclmulqdq_(PDISASM pMyDisasm)
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
+        if (!Security(1, pMyDisasm)) return;
+        (*pMyDisasm).Instruction.Immediat = *((UInt8*)(UIntPtr) (GV.EIP_));
         GV.EIP_++;
-        if (!Security(0, pMyDisasm)) return;
-
-        (*pMyDisasm).Instruction.Immediat = *((UInt8*)(UIntPtr) (GV.EIP_- 1));
 
         if ((*pMyDisasm).Instruction.Immediat == 0) {
             (*pMyDisasm).Instruction.Mnemonic = I_PCLMULLQLQDQ;

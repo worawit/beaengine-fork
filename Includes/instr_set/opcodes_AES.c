@@ -141,11 +141,11 @@ void __bea_callspec__ aeskeygen(PDISASM pMyDisasm)
         GV.SSE_ = 1;
         GxEx(pMyDisasm);
         GV.SSE_ = 0;
-        GV.EIP_++;
-        if (!Security(0, pMyDisasm)) return;
-        (*pMyDisasm).Instruction.Immediat = *((UInt8*)(UIntPtr) (GV.EIP_- 1));
+        if (!Security(1, pMyDisasm)) return;
+        (*pMyDisasm).Instruction.Immediat = *((UInt8*)(UIntPtr) (GV.EIP_));
         (*pMyDisasm).Argument3.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument3.ArgSize = 8;
+        GV.EIP_++;
     }
     else {
         FailDecode(pMyDisasm);

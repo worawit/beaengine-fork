@@ -60,14 +60,14 @@ void (__bea_callspec__ *opcode_map2[])(PDISASM) = {
     punpcklbw_, punpcklwd_, punpckldq_, packsswb_ , pcmpgtb_  , pcmpgtw_  , pcmpgtd_  , packuswb_ , punpckhbw_, punpckhwd_, punpckhdq_, packssdw_ ,punpcklqdq_,punpckhqdq_, movd_PE   , movq_PQ   ,
     pshufw_   , G12_      , G13_      , G14_      , pcmpeqb_  , pcmpeqw_  , pcmpeqd_  , emms_     , vmread_   , vmwrite_  , FailDecode, FailDecode, haddpd_VW , hsubpd_VW , movd_EP   , movq_QP   ,
     jo_near   , jno_near  , jb_near   , jae_near  , je_near   , jne_near  , jbe_near  , ja_near   , js_near   , jns_near  , jp_near   , jnp_near  , jl_near   , jge_near  , jle_near  , jg_near   ,
-    seto_     , setno_    , setb_     , setae_    , sete_     , setne_    , setbe_    , seta_     , sets_     , setns_    , setp_     , setnp_    , setl_     , setge_    , setle_    , setge_    ,
+    seto_     , setno_    , setb_     , setae_    , sete_     , setne_    , setbe_    , seta_     , sets_     , setns_    , setp_     , setnp_    , setl_     , setge_    , setle_    , setg_    ,
     push_fs   , pop_fs    , cpuid_    , bt_EvGv   ,shld_EvGvIb,shld_EvGvCL, FailDecode, FailDecode, push_gs   , pop_gs    , rsm_      , bts_EvGv  ,shrd_EvGvIb,shrd_EvGvCL, G15_      , imul_GvEv ,
     cmpx_EbGb , cmpx_EvGv , lss_Mp    , btr_EvGv  , lfs_Mp    , lgs_Mp    , movzx_GvEb, movzx_GvEw, popcnt_   , ud2_      , G8_EvIb   , btc_EvGv  , bsf_GvEv  , bsr_GvEv  , movsx_GvEb, movsx_GvEw,
     xadd_EbGb , xadd_EvGv , cmpps_VW  , movnti_   , pinsrw_   , pextrw_   , shufps_   , G9_       , bswap_eax , bswap_ecx , bswap_edx , bswap_ebx , bswap_esp , bswap_ebp , bswap_esi , bswap_edi ,
     addsubpd_ , psrlw_    , psrld_    , psrlq_    , paddq_    , pmullw_   , movq_WV   , pmovmskb_ , psubusb_  , psubusw_  , pminub_   , pand_     , paddusb_  , paddusw_  , pmaxub_   , pandn_    ,
     pavgb_    , psraw_    , psrad_    , pavgw_    , pmulhuw_  , pmulhw_   , cvtpd2dq_ , movntq_   , psubsb_   , psubsw_   , pminsw_   , por_      , paddsb_   , paddsw_   , pmaxsw_   , pxor_     ,
     lddqu_    , psllw_    , pslld_    , psllq_    , pmuludq_  , pmaddwd_  , psadbw_   , maskmovq_ , psubb_    , psubw_    , psubd_    , psubq_    , paddb_    , paddw_    , paddd_    , FailDecode,
- };
+};
 
 /* ===============================================================================  */
 /*														                            */
@@ -76,7 +76,7 @@ void (__bea_callspec__ *opcode_map2[])(PDISASM) = {
 /*														                            */
 /*														                            */
 /* ===============================================================================  */
- void (__bea_callspec__ *opcode_map3[])(PDISASM) = {
+void (__bea_callspec__ *opcode_map3[])(PDISASM) = {
     pshufb_   , phaddw_   , phaddd_   , phaddsw_  , pmaddubsw_, phsubw_   , phsubd_   , phsubsw_  , psignb_   , psignw_   , psignd_   , pmulhrsw_ , FailDecode, FailDecode, FailDecode, FailDecode,
     pblendvb_ , FailDecode, FailDecode, FailDecode, blendvps_ , blendvpd_ , FailDecode, ptest_    , FailDecode, FailDecode, FailDecode, FailDecode, pabsb_    , pabsw_    , pabsd_    , FailDecode,
     pmovsxbw_ , pmovsxbd_ , pmovsxbq_ , pmovsxwd_ , pmovsxwq_ , pmovsxdq_ , FailDecode, FailDecode, pmuldq_   , pcmpeqq_  , movntdqa_ , packusdw_ , FailDecode, FailDecode, FailDecode, FailDecode,
@@ -93,7 +93,7 @@ void (__bea_callspec__ *opcode_map2[])(PDISASM) = {
     FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, aesimc    , aesenc    , aesenclast, aesdec    , aesdeclast,
     FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
     crc32_GvEb, crc32_GvEv, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
- };
+};
 
 /* ===============================================================================  */
 /*														                            */
@@ -102,7 +102,7 @@ void (__bea_callspec__ *opcode_map2[])(PDISASM) = {
 /*														                            */
 /*														                            */
 /* ===============================================================================  */
- void (__bea_callspec__ *opcode_map4[])(PDISASM) = {
+void (__bea_callspec__ *opcode_map4[])(PDISASM) = {
     FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, roundps_  , roundpd_  , roundss_  , roundsd_  , blendps_  , blendpd_  , pblendw_  , palignr_  ,
     FailDecode, FailDecode, FailDecode, FailDecode, pextrb_   , pextrw2_  , pextrd_   , extractps_, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
     pinsrb_   , insertps_ , pinsrd_   , FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
@@ -119,49 +119,4 @@ void (__bea_callspec__ *opcode_map2[])(PDISASM) = {
     FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, aeskeygen ,
     FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
     FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode, FailDecode,
- };
-
-
-void (__bea_callspec__ *ModRM_0[])(ARGTYPE*, PDISASM) = {
-    Addr_EAX,
-    Addr_ECX,
-    Addr_EDX,
-    Addr_EBX,
-    Addr_SIB,
-    Addr_disp32,
-    Addr_ESI,
-    Addr_EDI,
- };
-
- void (__bea_callspec__ *ModRM_1[])(ARGTYPE*, PDISASM) = {
-    Addr_EAX_disp8,
-    Addr_ECX_disp8,
-    Addr_EDX_disp8,
-    Addr_EBX_disp8,
-    Addr_SIB_disp8,
-    Addr_EBP_disp8,
-    Addr_ESI_disp8,
-    Addr_EDI_disp8,
- };
-
- void (__bea_callspec__ *ModRM_2[])(ARGTYPE*, PDISASM) = {
-    Addr_EAX_disp32,
-    Addr_ECX_disp32,
-    Addr_EDX_disp32,
-    Addr_EBX_disp32,
-    Addr_SIB_disp32,
-    Addr_EBP_disp32,
-    Addr_ESI_disp32,
-    Addr_EDI_disp32,
- };
-
- void (__bea_callspec__ *ModRM_3[])(ARGTYPE*, PDISASM) = {
-    _rEAX,
-    _rECX,
-    _rEDX,
-    _rEBX,
-    _rESP,
-    _rEBP,
-    _rESI,
-    _rEDI,
- };
+};
