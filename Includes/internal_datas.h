@@ -195,12 +195,12 @@
 enum EFLAGS_ENUM { EFLAGS_MAP_DEF };
 #undef EFLAGS_DEF
 #define EFLAGS_DEF(id, ...) __VA_ARGS__
-static const EFLStruct const EFLAGS_TABLE[] = { EFLAGS_MAP_DEF };
+static const EFLStruct EFLAGS_TABLE[] = { EFLAGS_MAP_DEF };
 
 /* =====================================================
  * To make a tabulation between mnemonic and first argument
  * ===================================================== */
-static const char const space_tab[11][16] = {
+static const char space_tab[11][16] = {
     " ",
     "  ",
     "   ",
@@ -217,7 +217,7 @@ static const char const space_tab[11][16] = {
 /* =====================================================
  * Segment registers
  * ===================================================== */
-static const char const SegmentRegs[7][4] = {
+static const char SegmentRegs[7][4] = {
     "??:",      /* +0 */
     "es:",      /* +1 */
     "ds:",      /* +2 */
@@ -229,7 +229,7 @@ static const char const SegmentRegs[7][4] = {
 /* =====================================================
  * AT&T Suffixes
  * ===================================================== */
-static const char const ATSuffixes[8][4] = {
+static const char ATSuffixes[8][4] = {
     "b ",     /* GV.MemDecoration == 1 */
     "w ",     /* GV.MemDecoration == 2 */
     "l ",     /* GV.MemDecoration == 3 */
@@ -244,7 +244,7 @@ static const char const ATSuffixes[8][4] = {
  * MASM Prefixes for MemoryType
  * ===================================================== */
 
-static const char const MasmPrefixes[8][16] = {
+static const char MasmPrefixes[8][16] = {
     "byte ptr ",        /* GV.MemDecoration == 1 */
     "word ptr ",        /* GV.MemDecoration == 2 */
     "dword ptr ",       /* GV.MemDecoration == 3 */
@@ -258,7 +258,7 @@ static const char const MasmPrefixes[8][16] = {
 /* =====================================================
  * NASM Prefixes for MemoryType
  * ===================================================== */
-static const char const NasmPrefixes[8][8] = {
+static const char NasmPrefixes[8][8] = {
     "byte ",      /* GV.MemDecoration == 1 */
     "word ",      /* GV.MemDecoration == 2 */
     "dword ",     /* GV.MemDecoration == 3 */
@@ -274,7 +274,7 @@ static const char const NasmPrefixes[8][8] = {
 /* =====================================================
  * GOASM Prefixes for MemoryType
  * ===================================================== */
-static const char const GoAsmPrefixes[8][4] = {
+static const char GoAsmPrefixes[8][4] = {
     "b ",     /* GV.MemDecoration == 1 */
     "w ",     /* GV.MemDecoration == 2 */
     "d ",     /* GV.MemDecoration == 3 */
@@ -289,7 +289,7 @@ static const char const GoAsmPrefixes[8][4] = {
 /* =====================================================
  * Segment registers
  * ===================================================== */
-static const char const RegistersSEG[8][8] = {
+static const char RegistersSEG[8][8] = {
     "es",      /* +0 */
     "cs",      /* +1 */
     "ss",      /* +2 */
@@ -303,7 +303,7 @@ static const char const RegistersSEG[8][8] = {
 /* =====================================================
  * FPU Registers
  * ===================================================== */
-static const char const RegistersFPU_Masm[8][8] = {
+static const char RegistersFPU_Masm[8][8] = {
     "st(0)",      /* +0 */
     "st(1)",      /* +1 */
     "st(2)",      /* +2 */
@@ -314,7 +314,7 @@ static const char const RegistersFPU_Masm[8][8] = {
     "st(7)",      /* +7 */
 };
 
-static const char const RegistersFPU_Nasm[8][8] = {
+static const char RegistersFPU_Nasm[8][8] = {
     "st0",      /* +0 */
     "st1",      /* +1 */
     "st2",      /* +2 */
@@ -328,7 +328,7 @@ static const char const RegistersFPU_Nasm[8][8] = {
 /* =====================================================
  * debug registers
  * ===================================================== */
-static const char const RegistersDR[16][8] = {
+static const char RegistersDR[16][8] = {
     "dr0",      /* +0 */
     "dr1",      /* +1 */
     "dr2",      /* +2 */
@@ -350,7 +350,7 @@ static const char const RegistersDR[16][8] = {
 /* =====================================================
  * debug registers-AT&T syntax
  * ===================================================== */
-static const char const RegistersDR_AT[16][8] = {
+static const char RegistersDR_AT[16][8] = {
     "db0",      /* +0 */
     "db1",      /* +1 */
     "db2",      /* +2 */
@@ -373,7 +373,7 @@ static const char const RegistersDR_AT[16][8] = {
 /* =====================================================
  * control registers
  * ===================================================== */
-static const char const RegistersCR[16][8] = {
+static const char RegistersCR[16][8] = {
     "cr0",      /* +0 */
     "cr1",      /* +1 */
     "cr2",      /* +2 */
@@ -397,7 +397,7 @@ static const char const RegistersCR[16][8] = {
 /* =====================================================
  * 64 bits registers
  * ===================================================== */
-static const char const Registers64Bits[16][4] = {
+static const char Registers64Bits[16][4] = {
     "rax",      /* +0 */
     "rcx",      /* +1 */
     "rdx",      /* +2 */
@@ -419,7 +419,7 @@ static const char const Registers64Bits[16][4] = {
 /* =====================================================
  * 32 bits registers
  * ===================================================== */
-static const char const Registers32Bits[16][8] = {
+static const char Registers32Bits[16][8] = {
     "eax",
     "ecx",
     "edx",
@@ -441,7 +441,7 @@ static const char const Registers32Bits[16][8] = {
 /* =====================================================
  * 16 bits registers
  * ===================================================== */
-static const char const Registers16Bits[16][8] = {
+static const char Registers16Bits[16][8] = {
     "ax",
     "cx",
     "dx",
@@ -462,7 +462,7 @@ static const char const Registers16Bits[16][8] = {
 /* =====================================================
  * 8 bits registers
  * ===================================================== */
-static const char const Registers8BitsLegacy[8][4] = {
+static const char Registers8BitsLegacy[8][4] = {
     "al",
     "cl",
     "dl",
@@ -473,14 +473,14 @@ static const char const Registers8BitsLegacy[8][4] = {
     "bh",
 };
 
-static const char const Registers8BitsHigh[4][4] = {
+static const char Registers8BitsHigh[4][4] = {
     "ah",
     "ch",
     "dh",
     "bh",
 };
 
-static const Int32 const REGS8BITS[] = {
+static const Int32 REGS8BITS[] = {
     REG0,
     REG1,
     REG2,
@@ -494,7 +494,7 @@ static const Int32 const REGS8BITS[] = {
 /* =====================================================
  * 8 bits registers
  * ===================================================== */
-static const char const Registers8Bits[16][8] = {
+static const char Registers8Bits[16][8] = {
     "al",
     "cl",
     "dl",
@@ -515,7 +515,7 @@ static const char const Registers8Bits[16][8] = {
 /* =====================================================
  * MMX Registers
  * ===================================================== */
-static const char const RegistersMMX[8][4] = {
+static const char RegistersMMX[8][4] = {
     "mm0",
     "mm1",
     "mm2",
@@ -529,7 +529,7 @@ static const char const RegistersMMX[8][4] = {
 /* =====================================================
  * SSE Registers
  * ===================================================== */
-static const char const RegistersSSE[16][8] = {
+static const char RegistersSSE[16][8] = {
     "xmm0",
     "xmm1",
     "xmm2",
@@ -548,7 +548,7 @@ static const char const RegistersSSE[16][8] = {
     "xmm15",    /* SSE3, SSSE3, SSE4 */
 };
 
-static const Int32 const REGS[] = {
+static const Int32 REGS[] = {
     REG0,        /* REG0 */
     REG1,        /* REG1 */
     REG2,        /* REG2 */
