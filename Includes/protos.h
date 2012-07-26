@@ -49,12 +49,15 @@ void __bea_callspec__ GvEw(PDISASM);
 void __bea_callspec__ GbEb(PDISASM);
 void __bea_callspec__ ALIb(PDISASM);
 void __bea_callspec__ eAX_Iv(PDISASM);
+
+void __bea_callspec__ QxPx(PDISASM);
+void __bea_callspec__ PxQx(PDISASM);
+void __bea_callspec__ VxWx(PDISASM);
+void __bea_callspec__ WxVx(PDISASM);
+
 void __bea_callspec__ AnalyzeOpcode (PDISASM);
 int __bea_callspec__ Security(int, PDISASM);
 void __bea_callspec__ CalculateRelativeAddress(UInt64 *, Int64, PDISASM);
-size_t __bea_callspec__ CopyFormattedNumber(PDISASM, char*, const char*, Int64);
-void __bea_callspec__ BuildCompleteInstruction(PDISASM);
-void __bea_callspec__ BuildCompleteInstructionATSyntax(PDISASM);
 int __bea_callspec__ InitVariables (PDISASM);
 void __bea_callspec__ FillFlags(PDISASM, int);
 

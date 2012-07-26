@@ -141,26 +141,82 @@ void __bea_callspec__ ExGx(PDISASM pMyDisasm)
 }
 
 /* ====================================================================
- *  MMX R/M, MMX Reg
+ *  MMX r/m, MMX reg
  * ==================================================================== */
-void __bea_callspec__ NxPx(PDISASM pMyDisasm)
+void __bea_callspec__ QxPx(PDISASM pMyDisasm)
 {
-    MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
-    Reg_Opcode(&(*pMyDisasm).Argument2, pMyDisasm);
-    (*pMyDisasm).Argument1.ArgSize = 64;
-    (*pMyDisasm).Argument2.ArgSize = 64;
+    MOD_RM_MMX(&(*pMyDisasm).Argument1, pMyDisasm);
+    RegMMX_Opcode(&(*pMyDisasm).Argument2, pMyDisasm);
     GV.EIP_ += GV.DECALAGE_EIP+2;
 }
 
 /* ====================================================================
- *  SSE R/M, MMX Reg
+ *  MMX reg, MMX r/m
  * ==================================================================== */
-void __bea_callspec__ UxVx(PDISASM pMyDisasm)
+void __bea_callspec__ PxQx(PDISASM pMyDisasm)
 {
-    MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
-    Reg_Opcode(&(*pMyDisasm).Argument2, pMyDisasm);
-    (*pMyDisasm).Argument1.ArgSize = 128;
-    (*pMyDisasm).Argument2.ArgSize = 128;
+    MOD_RM_MMX(&(*pMyDisasm).Argument2, pMyDisasm);
+    RegMMX_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
+    GV.EIP_ += GV.DECALAGE_EIP+2;
+}
+
+/* ====================================================================
+ *  SSE r/m, SSE reg
+ * ==================================================================== */
+void __bea_callspec__ WxVx(PDISASM pMyDisasm)
+{
+    MOD_RM_SSE(&(*pMyDisasm).Argument1, pMyDisasm);
+    RegSSE_Opcode(&(*pMyDisasm).Argument2, pMyDisasm);
+    GV.EIP_ += GV.DECALAGE_EIP+2;
+}
+
+/* ====================================================================
+ *  SSE reg, SSE r/m
+ * ==================================================================== */
+void __bea_callspec__ VxWx(PDISASM pMyDisasm)
+{
+    MOD_RM_SSE(&(*pMyDisasm).Argument2, pMyDisasm);
+    RegSSE_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
+    GV.EIP_ += GV.DECALAGE_EIP+2;
+}
+
+/* ====================================================================
+ *  MMX reg, SSE r/m
+ * ==================================================================== */
+void __bea_callspec__ PxWx(PDISASM pMyDisasm)
+{
+    MOD_RM_SSE(&(*pMyDisasm).Argument2, pMyDisasm);
+    RegMMX_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
+    GV.EIP_ += GV.DECALAGE_EIP+2;
+}
+
+/* ====================================================================
+ *  SSE r/m, MMX reg
+ * ==================================================================== */
+void __bea_callspec__ WxPx(PDISASM pMyDisasm)
+{
+    MOD_RM_SSE(&(*pMyDisasm).Argument1, pMyDisasm);
+    RegMMX_Opcode(&(*pMyDisasm).Argument2, pMyDisasm);
+    GV.EIP_ += GV.DECALAGE_EIP+2;
+}
+
+/* ====================================================================
+ *  MMX r/m, SSE reg
+ * ==================================================================== */
+void __bea_callspec__ QxVx(PDISASM pMyDisasm)
+{
+    MOD_RM_MMX(&(*pMyDisasm).Argument1, pMyDisasm);
+    RegSSE_Opcode(&(*pMyDisasm).Argument2, pMyDisasm);
+    GV.EIP_ += GV.DECALAGE_EIP+2;
+}
+
+/* ====================================================================
+ *  SSE reg, MMX r/m
+ * ==================================================================== */
+void __bea_callspec__ VxQx(PDISASM pMyDisasm)
+{
+    MOD_RM_MMX(&(*pMyDisasm).Argument2, pMyDisasm);
+    RegSSE_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
     GV.EIP_ += GV.DECALAGE_EIP+2;
 }
 
