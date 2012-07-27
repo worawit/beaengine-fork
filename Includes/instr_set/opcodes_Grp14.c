@@ -99,7 +99,7 @@ void __bea_callspec__ G14_(PDISASM pMyDisasm)
         else {
             FailDecode(pMyDisasm);
         }
-        GV.EIP_ += GV.DECALAGE_EIP+23;
+        GV.EIP_ += GV.DECALAGE_EIP+2;
         if (!Security(1, pMyDisasm)) return;
 
         MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_));
