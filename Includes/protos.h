@@ -67,7 +67,7 @@ void __bea_callspec__ AnalyzeOpcode (PDISASM);
 int __bea_callspec__ Security(int, PDISASM);
 int __bea_callspec__ Security1(PDISASM);
 void __bea_callspec__ CalculateRelativeAddress(UInt64 *, Int64, PDISASM);
-int __bea_callspec__ InitVariables (PDISASM);
+void __bea_callspec__ InitVariables (PDISASM);
 void __bea_callspec__ FillFlags(PDISASM, int);
 void __bea_callspec__ PrefOpSizeMandatory(PDISASM);
 

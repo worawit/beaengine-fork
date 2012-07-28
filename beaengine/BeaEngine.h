@@ -151,13 +151,10 @@ typedef struct  {
 #pragma pack(1)
 typedef struct {
    UIntPtr EIP_;
-   UInt64 EIP_VA;
    UInt64 EndOfBlock;
    Int32 OriginalOperandSize;
    Int32 MOD_;
    Int32 RM_;
-   Int32 MMX_;
-   Int32 SSE_;
    Int32 REGOPCODE;
    UInt32 DECALAGE_EIP;
    Int32 FORMATNUMBER;

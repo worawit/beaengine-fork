@@ -19,23 +19,19 @@
 /* ====================================================================
  *
  * ==================================================================== */
-int __bea_callspec__ Disasm (PDISASM pMyDisasm) {
-
-    if (InitVariables(pMyDisasm)) {
-        AnalyzeOpcode(pMyDisasm);
-        if (GV.ERROR_OPCODE) {
-            return -1;
-        }
-        if (!GV.OutOfBlock) {
-            //CompleteInstructionFields(pMyDisasm);
-            return (int) (GV.EIP_-(*pMyDisasm).EIP);
-        }
-        else {
-            return 0;
-        }
+int __bea_callspec__ Disasm (PDISASM pMyDisasm)
+{
+    InitVariables(pMyDisasm);
+    AnalyzeOpcode(pMyDisasm);
+    if (GV.ERROR_OPCODE) {
+        return -1;
+    }
+    if (!GV.OutOfBlock) {
+        //CompleteInstructionFields(pMyDisasm);
+        return (int) (GV.EIP_-(*pMyDisasm).EIP);
     }
     else {
-        return -1;
+        return 0;
     }
 }
 
@@ -49,7 +45,7 @@ void __bea_callspec__ CompleteInstructionFields (PDISASM pMyDisasm) {
 /* ====================================================================
  *
  * ==================================================================== */
-int __bea_callspec__ InitVariables (PDISASM pMyDisasm) {
+void __bea_callspec__ InitVariables (PDISASM pMyDisasm) {
     /* Note: no check Archi value. It must be 16,32,64 */
 
     (void) memset (&(*pMyDisasm).Instruction, 0, sizeof (INSTRTYPE));
@@ -59,7 +55,6 @@ int __bea_callspec__ InitVariables (PDISASM pMyDisasm) {
     (void) memset (&(*pMyDisasm).Prefix, 0, sizeof (PREFIXINFO));
     (void) memset (&GV, 0, sizeof (InternalDatas));
 
-    GV.EIP_VA = (*pMyDisasm).VirtualAddr;
     GV.EIP_ = (*pMyDisasm).EIP+1; /* +1 because it is at least 1 byte*/
     if ((*pMyDisasm).SecurityBlock == 0 || (*pMyDisasm).SecurityBlock > MAX_INSTR_LENGTH)
         GV.EndOfBlock = (*pMyDisasm).EIP+MAX_INSTR_LENGTH;
@@ -82,7 +77,6 @@ int __bea_callspec__ InitVariables (PDISASM pMyDisasm) {
     GV.SYNTAX_ = (UInt32)(*pMyDisasm).Options & 0xff00;
     GV.FORMATNUMBER = (UInt32)(*pMyDisasm).Options & 0xff0000;
     GV.SEGMENTREGS = (UInt32)(*pMyDisasm).Options & 0xff000000;
-    return 1;
 }
 
 /* ====================================================================
@@ -510,7 +504,7 @@ void __bea_callspec__ FillFlags(PDISASM pMyDisasm, int index)
  * ==================================================================== */
 void __bea_callspec__ CalculateRelativeAddress(UInt64 * pMyAddress, Int64 MyNumber, PDISASM pMyDisasm)
 {
-    *pMyAddress = (UInt64) (GV.EIP_VA+(UInt64) MyNumber);
+    *pMyAddress = (UInt64) ((*pMyDisasm).VirtualAddr+(UInt64) MyNumber);
 }
 
 /* ====================================================================

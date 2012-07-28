@@ -503,14 +503,14 @@ static const char Registers8Bits[16][8] = {
     "bpl",
     "sil",
     "dil",
-    "r8L",
-    "r9L",
-    "r10L",
-    "r11L",
-    "r12L",
-    "r13L",
-    "r14L",
-    "r15L",
+    "r8b",
+    "r9b",
+    "r10b",
+    "r11b",
+    "r12b",
+    "r13b",
+    "r14b",
+    "r15b",
 };
 /* =====================================================
  * MMX Registers
