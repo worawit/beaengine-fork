@@ -37,10 +37,10 @@ void __bea_callspec__ PrefLock(PDISASM pMyDisasm)
             (*pMyDisasm).Instruction.OperandSize = 32;
     }
 
+    if (!Security1(pMyDisasm)) return;
     GV.EIP_++;
-    if (!Security(1, pMyDisasm)) return;
-    (*pMyDisasm).Instruction.Opcode =  *((UInt8*) (UIntPtr)GV.EIP_);
-    (void) opcode_map1[*((UInt8*) (UIntPtr)GV.EIP_)](pMyDisasm);
+    (*pMyDisasm).Instruction.Opcode =  *((UInt8*) (UIntPtr)(GV.EIP_-1));
+    (void) opcode_map1[*((UInt8*) (UIntPtr)(GV.EIP_-1))](pMyDisasm);
 }
 
 /* ====================================================================
@@ -65,10 +65,10 @@ void __bea_callspec__ PrefREPNE(PDISASM pMyDisasm)
             (*pMyDisasm).Instruction.OperandSize = 32;
     }
 
+    if (!Security1(pMyDisasm)) return;
     GV.EIP_++;
-    if (!Security(1, pMyDisasm)) return;
-    (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_);
-    (void) opcode_map1[*((UInt8*) (UIntPtr)GV.EIP_)](pMyDisasm);
+    (*pMyDisasm).Instruction.Opcode =  *((UInt8*) (UIntPtr)(GV.EIP_-1));
+    (void) opcode_map1[*((UInt8*) (UIntPtr)(GV.EIP_-1))](pMyDisasm);
 }
 
 /* ====================================================================
@@ -93,10 +93,10 @@ void __bea_callspec__ PrefREPE(PDISASM pMyDisasm)
             (*pMyDisasm).Instruction.OperandSize = 32;
     }
 
+    if (!Security1(pMyDisasm)) return;
     GV.EIP_++;
-    if (!Security(1, pMyDisasm)) return;
-    (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_);
-    (void) opcode_map1[*((UInt8*) (UIntPtr)GV.EIP_)](pMyDisasm);
+    (*pMyDisasm).Instruction.Opcode =  *((UInt8*) (UIntPtr)(GV.EIP_-1));
+    (void) opcode_map1[*((UInt8*) (UIntPtr)(GV.EIP_-1))](pMyDisasm);
 }
 
 /* ====================================================================
@@ -125,10 +125,10 @@ void __bea_callspec__ PrefSEGCS(PDISASM pMyDisasm)
             (*pMyDisasm).Instruction.OperandSize = 32;
     }
 
+    if (!Security1(pMyDisasm)) return;
     GV.EIP_++;
-    if (!Security(1, pMyDisasm)) return;
-    (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_);
-    (void) opcode_map1[*((UInt8*) (UIntPtr)GV.EIP_)](pMyDisasm);
+    (*pMyDisasm).Instruction.Opcode =  *((UInt8*) (UIntPtr)(GV.EIP_-1));
+    (void) opcode_map1[*((UInt8*) (UIntPtr)(GV.EIP_-1))](pMyDisasm);
 }
 
 /* ====================================================================
@@ -157,10 +157,10 @@ void __bea_callspec__ PrefSEGDS(PDISASM pMyDisasm)
             (*pMyDisasm).Instruction.OperandSize = 32;
     }
 
+    if (!Security1(pMyDisasm)) return;
     GV.EIP_++;
-    if (!Security(1, pMyDisasm)) return;
-    (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_);
-    (void) opcode_map1[*((UInt8*) (UIntPtr)GV.EIP_)](pMyDisasm);
+    (*pMyDisasm).Instruction.Opcode =  *((UInt8*) (UIntPtr)(GV.EIP_-1));
+    (void) opcode_map1[*((UInt8*) (UIntPtr)(GV.EIP_-1))](pMyDisasm);
 }
 
 /* ====================================================================
@@ -188,10 +188,10 @@ void __bea_callspec__ PrefSEGES(PDISASM pMyDisasm)
             (*pMyDisasm).Instruction.OperandSize = 32;
     }
 
+    if (!Security1(pMyDisasm)) return;
     GV.EIP_++;
-    if (!Security(1, pMyDisasm)) return;
-    (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_);
-    (void) opcode_map1[*((UInt8*) (UIntPtr)GV.EIP_)](pMyDisasm);
+    (*pMyDisasm).Instruction.Opcode =  *((UInt8*) (UIntPtr)(GV.EIP_-1));
+    (void) opcode_map1[*((UInt8*) (UIntPtr)(GV.EIP_-1))](pMyDisasm);
 }
 
 /* ====================================================================
@@ -217,10 +217,10 @@ void __bea_callspec__ PrefSEGFS(PDISASM pMyDisasm)
             (*pMyDisasm).Instruction.OperandSize = 32;
     }
 
+    if (!Security1(pMyDisasm)) return;
     GV.EIP_++;
-    if (!Security(1, pMyDisasm)) return;
-    (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_);
-    (void) opcode_map1[*((UInt8*) (UIntPtr)GV.EIP_)](pMyDisasm);
+    (*pMyDisasm).Instruction.Opcode =  *((UInt8*) (UIntPtr)(GV.EIP_-1));
+    (void) opcode_map1[*((UInt8*) (UIntPtr)(GV.EIP_-1))](pMyDisasm);
 }
 
 /* ====================================================================
@@ -246,10 +246,10 @@ void __bea_callspec__ PrefSEGGS(PDISASM pMyDisasm)
             (*pMyDisasm).Instruction.OperandSize = 32;
     }
 
+    if (!Security1(pMyDisasm)) return;
     GV.EIP_++;
-    if (!Security(1, pMyDisasm)) return;
-    (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_);
-    (void) opcode_map1[*((UInt8*) (UIntPtr)GV.EIP_)](pMyDisasm);
+    (*pMyDisasm).Instruction.Opcode =  *((UInt8*) (UIntPtr)(GV.EIP_-1));
+    (void) opcode_map1[*((UInt8*) (UIntPtr)(GV.EIP_-1))](pMyDisasm);
 }
 
 
@@ -278,10 +278,10 @@ void __bea_callspec__ PrefSEGSS(PDISASM pMyDisasm)
             (*pMyDisasm).Instruction.OperandSize = 32;
     }
 
+    if (!Security1(pMyDisasm)) return;
     GV.EIP_++;
-    if (!Security(1, pMyDisasm)) return;
-    (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_);
-    (void) opcode_map1[*((UInt8*) (UIntPtr)GV.EIP_)](pMyDisasm);
+    (*pMyDisasm).Instruction.Opcode =  *((UInt8*) (UIntPtr)(GV.EIP_-1));
+    (void) opcode_map1[*((UInt8*) (UIntPtr)(GV.EIP_-1))](pMyDisasm);
 }
 
 /* ====================================================================
@@ -306,10 +306,10 @@ void __bea_callspec__ PrefOpSize(PDISASM pMyDisasm)
         (*pMyDisasm).Prefix.REXState = NotUsedPrefix;
     }
 
+    if (!Security1(pMyDisasm)) return;
     GV.EIP_++;
-    if (!Security(1, pMyDisasm)) return;
-    (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_);
-    (void) opcode_map1[*((UInt8*) (UIntPtr)GV.EIP_)](pMyDisasm);
+    (*pMyDisasm).Instruction.Opcode =  *((UInt8*) (UIntPtr)(GV.EIP_-1));
+    (void) opcode_map1[*((UInt8*) (UIntPtr)(GV.EIP_-1))](pMyDisasm);
 }
 
 /* ====================================================================
@@ -340,10 +340,10 @@ void __bea_callspec__ PrefAdSize(PDISASM pMyDisasm)
             (*pMyDisasm).Instruction.OperandSize = 32;
     }
 
+    if (!Security1(pMyDisasm)) return;
     GV.EIP_++;
-    if (!Security(1, pMyDisasm)) return;
-    (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_);
-    (void) opcode_map1[*((UInt8*) (UIntPtr)GV.EIP_)](pMyDisasm);
+    (*pMyDisasm).Instruction.Opcode =  *((UInt8*) (UIntPtr)(GV.EIP_-1));
+    (void) opcode_map1[*((UInt8*) (UIntPtr)(GV.EIP_-1))](pMyDisasm);
 }
 
 /* ====================================================================
@@ -351,10 +351,10 @@ void __bea_callspec__ PrefAdSize(PDISASM pMyDisasm)
  * ==================================================================== */
 void __bea_callspec__ Esc_2byte(PDISASM pMyDisasm)
 {
+    if (!Security1(pMyDisasm)) return;
     GV.EIP_++;
-    if (!Security(1, pMyDisasm)) return;
-    (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_)|0x0F00;
-    (void) opcode_map2[*((UInt8*) (UIntPtr)GV.EIP_)](pMyDisasm);
+    (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)(GV.EIP_-1))|0x0F00;
+    (void) opcode_map2[*((UInt8*) (UIntPtr)(GV.EIP_-1))](pMyDisasm);
 }
 
 /* ====================================================================
@@ -362,18 +362,18 @@ void __bea_callspec__ Esc_2byte(PDISASM pMyDisasm)
  * ==================================================================== */
 void __bea_callspec__ Esc_tableA4(PDISASM pMyDisasm)
 {
+    if (!Security1(pMyDisasm)) return;
     GV.EIP_++;
-    if (!Security(1, pMyDisasm)) return;
-    (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_)|0x0F3800;
-    (void) opcode_map3[*((UInt8*) (UIntPtr)GV.EIP_)](pMyDisasm);
+    (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)(GV.EIP_-1))|0x0F3800;
+    (void) opcode_map3[*((UInt8*) (UIntPtr)(GV.EIP_-1))](pMyDisasm);
 }
 /* ====================================================================
  *      Escape Prefix 0F3Ah-three bytes opcodes
  * ==================================================================== */
 void __bea_callspec__ Esc_tableA5(PDISASM pMyDisasm)
 {
+    if (!Security1(pMyDisasm)) return;
     GV.EIP_++;
-    if (!Security(1, pMyDisasm)) return;
-    (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)GV.EIP_)|0x0F3A00;
-    (void) opcode_map4[*((UInt8*) (UIntPtr)GV.EIP_)](pMyDisasm);
+    (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)(GV.EIP_-1))|0x0F3A00;
+    (void) opcode_map4[*((UInt8*) (UIntPtr)(GV.EIP_-1))](pMyDisasm);
 }

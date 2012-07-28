@@ -22,30 +22,31 @@
 void __bea_callspec__ G7_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = SYSTEM_INSTRUCTION;
-    GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
-    GV.MOD_= ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6) & 0x3;
-    GV.RM_  = (*((UInt8*)(UIntPtr) (GV.EIP_+1))) & 0x7;
+    if (!Security(1, pMyDisasm)) return;
+    GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 3) & 0x7;
+    GV.MOD_= ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 6) & 0x3;
+    GV.RM_  = (*((UInt8*)(UIntPtr) (GV.EIP_))) & 0x7;
     if (GV.REGOPCODE == 0) {
         if (GV.MOD_== 0x3) {
             if (GV.RM_ == 0x1) {
                 (*pMyDisasm).Instruction.Category = VM_INSTRUCTION;
                 (*pMyDisasm).Instruction.Mnemonic = I_VMCALL;
-                GV.EIP_+= GV.DECALAGE_EIP+2;
+                GV.EIP_++;
             }
             else if (GV.RM_ == 0x2) {
                 (*pMyDisasm).Instruction.Category = VM_INSTRUCTION;
                 (*pMyDisasm).Instruction.Mnemonic = I_VMLAUNCH;
-                GV.EIP_+= GV.DECALAGE_EIP+2;
+                GV.EIP_++;
             }
             else if (GV.RM_ == 0x3) {
                 (*pMyDisasm).Instruction.Category = VM_INSTRUCTION;
                 (*pMyDisasm).Instruction.Mnemonic = I_VMRESUME;
-                GV.EIP_+= GV.DECALAGE_EIP+2;
+                GV.EIP_++;
             }
             else if (GV.RM_ == 0x4) {
                 (*pMyDisasm).Instruction.Category = VM_INSTRUCTION;
                 (*pMyDisasm).Instruction.Mnemonic = I_VMXOFF;
-                GV.EIP_+= GV.DECALAGE_EIP+2;
+                GV.EIP_++;
             }
             else {
                 FailDecode(pMyDisasm);
@@ -57,7 +58,7 @@ void __bea_callspec__ G7_(PDISASM pMyDisasm)
             (*pMyDisasm).Instruction.Mnemonic = I_SGDT;
             (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+REGISTER_TYPE+MEMORY_MANAGEMENT_REG+REG0;
             (*pMyDisasm).Argument2.ArgSize = 48;
-            GV.EIP_+= GV.DECALAGE_EIP+2;
+            GV.EIP_+= GV.DECALAGE_EIP;
         }
     }
     else if (GV.REGOPCODE == 1) {
@@ -65,12 +66,12 @@ void __bea_callspec__ G7_(PDISASM pMyDisasm)
             if (GV.RM_ == 0x00) {
                 (*pMyDisasm).Instruction.Category = SSE3_INSTRUCTION+AGENT_SYNCHRONISATION;
                 (*pMyDisasm).Instruction.Mnemonic = I_MONITOR;
-                GV.EIP_+= GV.DECALAGE_EIP+2;
+                GV.EIP_++;
             }
             else if (GV.RM_ == 0x01) {
                 (*pMyDisasm).Instruction.Category = SSE3_INSTRUCTION+AGENT_SYNCHRONISATION;
                 (*pMyDisasm).Instruction.Mnemonic = I_MWAIT;
-                GV.EIP_+= GV.DECALAGE_EIP+2;
+                GV.EIP_++;
             }
             else {
                 FailDecode(pMyDisasm);
@@ -83,7 +84,7 @@ void __bea_callspec__ G7_(PDISASM pMyDisasm)
             (*pMyDisasm).Instruction.Mnemonic = I_SIDT;
             (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+REGISTER_TYPE+MEMORY_MANAGEMENT_REG+REG2;
             (*pMyDisasm).Argument2.ArgSize = 48;
-            GV.EIP_+= GV.DECALAGE_EIP+2;
+            GV.EIP_+= GV.DECALAGE_EIP;
         }
     }
     else if (GV.REGOPCODE == 2) {
@@ -91,12 +92,12 @@ void __bea_callspec__ G7_(PDISASM pMyDisasm)
             if (GV.RM_ == 0x0) {
                 (*pMyDisasm).Instruction.Category = VM_INSTRUCTION;
                 (*pMyDisasm).Instruction.Mnemonic = I_XGETBV;
-                GV.EIP_+= GV.DECALAGE_EIP+2;
+                GV.EIP_++;
             }
             else if (GV.RM_ == 0x1) {
                 (*pMyDisasm).Instruction.Category = VM_INSTRUCTION;
                 (*pMyDisasm).Instruction.Mnemonic = I_XSETBV;
-                GV.EIP_+= GV.DECALAGE_EIP+2;
+                GV.EIP_++;
             }
             else {
                 FailDecode(pMyDisasm);
@@ -109,7 +110,7 @@ void __bea_callspec__ G7_(PDISASM pMyDisasm)
             (*pMyDisasm).Instruction.Mnemonic = I_LGDT;
             (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+MEMORY_MANAGEMENT_REG+REG0;
             (*pMyDisasm).Argument1.ArgSize = 48;
-            GV.EIP_+= GV.DECALAGE_EIP+2;
+            GV.EIP_+= GV.DECALAGE_EIP;
         }
     }
     else if (GV.REGOPCODE == 3) {
@@ -117,42 +118,42 @@ void __bea_callspec__ G7_(PDISASM pMyDisasm)
             if (GV.RM_ == 0x0) {
                 (*pMyDisasm).Instruction.Category = VM_INSTRUCTION;
                 (*pMyDisasm).Instruction.Mnemonic = I_VMRUN;
-                GV.EIP_+= GV.DECALAGE_EIP+2;
+                GV.EIP_++;
             }
             else if (GV.RM_ == 0x1) {
                 (*pMyDisasm).Instruction.Category = VM_INSTRUCTION;
                 (*pMyDisasm).Instruction.Mnemonic = I_VMMCALL;
-                GV.EIP_+= GV.DECALAGE_EIP+2;
+                GV.EIP_++;
             }
             else if (GV.RM_ == 0x2) {
                 (*pMyDisasm).Instruction.Category = VM_INSTRUCTION;
                 (*pMyDisasm).Instruction.Mnemonic = I_VMLOAD;
-                GV.EIP_+= GV.DECALAGE_EIP+2;
+                GV.EIP_++;
             }
             else if (GV.RM_ == 0x3) {
                 (*pMyDisasm).Instruction.Category = VM_INSTRUCTION;
                 (*pMyDisasm).Instruction.Mnemonic = I_VMSAVE;
-                GV.EIP_+= GV.DECALAGE_EIP+2;
+                GV.EIP_++;
             }
             else if (GV.RM_ == 0x4) {
                 (*pMyDisasm).Instruction.Category = VM_INSTRUCTION;
                 (*pMyDisasm).Instruction.Mnemonic = I_STGI;
-                GV.EIP_+= GV.DECALAGE_EIP+2;
+                GV.EIP_++;
             }
             else if (GV.RM_ == 0x5) {
                 (*pMyDisasm).Instruction.Category = VM_INSTRUCTION;
                 (*pMyDisasm).Instruction.Mnemonic = I_CLGI;
-                GV.EIP_+= GV.DECALAGE_EIP+2;
+                GV.EIP_++;
             }
             else if (GV.RM_ == 0x6) {
                 (*pMyDisasm).Instruction.Category = VM_INSTRUCTION;
                 (*pMyDisasm).Instruction.Mnemonic = I_SKINIT;
-                GV.EIP_+= GV.DECALAGE_EIP+2;
+                GV.EIP_++;
             }
             else if (GV.RM_ == 0x7) {
                 (*pMyDisasm).Instruction.Category = VM_INSTRUCTION;
                 (*pMyDisasm).Instruction.Mnemonic = I_INVLPGA;
-                GV.EIP_+= GV.DECALAGE_EIP+2;
+                GV.EIP_++;
             }
             else {
                 FailDecode(pMyDisasm);
@@ -165,7 +166,7 @@ void __bea_callspec__ G7_(PDISASM pMyDisasm)
             (*pMyDisasm).Instruction.Mnemonic = I_LIDT;
             (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+MEMORY_MANAGEMENT_REG+REG2;
             (*pMyDisasm).Argument1.ArgSize = 48;
-            GV.EIP_+= GV.DECALAGE_EIP+2;
+            GV.EIP_+= GV.DECALAGE_EIP;
         }
     }
 
@@ -176,7 +177,7 @@ void __bea_callspec__ G7_(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.Mnemonic = I_SMSW;
         (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+CR_REG+REG0;
         (*pMyDisasm).Argument1.ArgSize = 16;
-        GV.EIP_+= GV.DECALAGE_EIP+2;
+        GV.EIP_+= GV.DECALAGE_EIP;
     }
 
     else if (GV.REGOPCODE == 6) {
@@ -186,7 +187,7 @@ void __bea_callspec__ G7_(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.Mnemonic = I_LMSW;
         (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+REGISTER_TYPE+CR_REG+REG0;
         (*pMyDisasm).Argument2.ArgSize = 16;
-        GV.EIP_+= GV.DECALAGE_EIP+2;
+        GV.EIP_+= GV.DECALAGE_EIP;
     }
     else if (GV.REGOPCODE == 7) {
         if (GV.MOD_== 0x3) {
@@ -194,7 +195,7 @@ void __bea_callspec__ G7_(PDISASM pMyDisasm)
                 if (GV.RM_ == 0x0) {
                     (*pMyDisasm).Instruction.Category = SYSTEM_INSTRUCTION;
                     (*pMyDisasm).Instruction.Mnemonic = I_SWAPGS;
-                    GV.EIP_+= GV.DECALAGE_EIP+2;
+                    GV.EIP_++;
                 }
                 else {
                     FailDecode(pMyDisasm);
@@ -204,7 +205,7 @@ void __bea_callspec__ G7_(PDISASM pMyDisasm)
                 if (GV.RM_ == 0x1) {
                     (*pMyDisasm).Instruction.Category = SYSTEM_INSTRUCTION;
                     (*pMyDisasm).Instruction.Mnemonic = I_RDTSCP;
-                    GV.EIP_+= GV.DECALAGE_EIP+2;
+                    GV.EIP_++;
                 }
                 else {
                     FailDecode(pMyDisasm);
@@ -216,7 +217,7 @@ void __bea_callspec__ G7_(PDISASM pMyDisasm)
             MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
             (*pMyDisasm).Instruction.Category = SYSTEM_INSTRUCTION;
             (*pMyDisasm).Instruction.Mnemonic = I_INVLPG;
-            GV.EIP_+= GV.DECALAGE_EIP+2;
+            GV.EIP_+= GV.DECALAGE_EIP;
         }
     }
     else {

@@ -23,12 +23,11 @@ void __bea_callspec__ G12_(PDISASM pMyDisasm)
 {
     Int32 MyNumber;
 
-    GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 3) & 0x7;
     if (GV.REGOPCODE == 2) {
         GV.ImmediatSize = 8;
         if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix) {
-            (*pMyDisasm).Instruction.OperandSize = GV.OriginalOperandSize;
-            (*pMyDisasm).Prefix.OperandSizeState = MandatoryPrefix;
+            PrefOpSizeMandatory(pMyDisasm);
             (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SHIFT_ROTATE;
             MOD_RM_SSE(&(*pMyDisasm).Argument1, pMyDisasm);
         }
@@ -43,20 +42,18 @@ void __bea_callspec__ G12_(PDISASM pMyDisasm)
         else {
             FailDecode(pMyDisasm);
         }
-        GV.EIP_ += GV.DECALAGE_EIP+2;
-        if (!Security(1, pMyDisasm)) return;
+        GV.EIP_ += 2;
+        if (!Security(0, pMyDisasm)) return;
 
-        MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_));
+        MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_-1));
         (*pMyDisasm).Instruction.Immediat = MyNumber;
         (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument2.ArgSize = 8;
-        GV.EIP_++;
     }
     else if (GV.REGOPCODE == 4) {
         GV.ImmediatSize = 8;
         if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix) {
-            (*pMyDisasm).Instruction.OperandSize = GV.OriginalOperandSize;
-            (*pMyDisasm).Prefix.OperandSizeState = MandatoryPrefix;
+            PrefOpSizeMandatory(pMyDisasm);
             (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SHIFT_ROTATE;
             MOD_RM_SSE(&(*pMyDisasm).Argument1, pMyDisasm);
         }
@@ -71,20 +68,18 @@ void __bea_callspec__ G12_(PDISASM pMyDisasm)
         else {
             FailDecode(pMyDisasm);
         }
-        GV.EIP_ += GV.DECALAGE_EIP+2;
-        if (!Security(1, pMyDisasm)) return;
+        GV.EIP_ += 2;
+        if (!Security(0, pMyDisasm)) return;
 
-        MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_));
+        MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_-1));
         (*pMyDisasm).Instruction.Immediat = MyNumber;
         (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument2.ArgSize = 8;
-        GV.EIP_++;
     }
     else if (GV.REGOPCODE == 6) {
         GV.ImmediatSize = 8;
         if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix) {
-            (*pMyDisasm).Instruction.OperandSize = GV.OriginalOperandSize;
-            (*pMyDisasm).Prefix.OperandSizeState = MandatoryPrefix;
+            PrefOpSizeMandatory(pMyDisasm);
             (*pMyDisasm).Instruction.Category = SSE_INSTRUCTION+SHIFT_ROTATE;
             MOD_RM_SSE(&(*pMyDisasm).Argument1, pMyDisasm);
         }
@@ -99,14 +94,13 @@ void __bea_callspec__ G12_(PDISASM pMyDisasm)
         else {
             FailDecode(pMyDisasm);
         }
-        GV.EIP_ += GV.DECALAGE_EIP+2;
-        if (!Security(1, pMyDisasm)) return;
+        GV.EIP_ += 2;
+        if (!Security(0, pMyDisasm)) return;
 
-        MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_));
+        MyNumber = *((UInt8*)(UIntPtr) (GV.EIP_-1));
         (*pMyDisasm).Instruction.Immediat = MyNumber;
         (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument2.ArgSize = 8;
-        GV.EIP_++;
     }
     else {
         FailDecode(pMyDisasm);

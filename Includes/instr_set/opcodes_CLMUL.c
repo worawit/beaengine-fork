@@ -23,15 +23,14 @@ void __bea_callspec__ pclmulqdq_(PDISASM pMyDisasm)
 {
     /* ========== 0x66 */
     if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix) {
-        (*pMyDisasm).Instruction.OperandSize = GV.OriginalOperandSize;
-        (*pMyDisasm).Prefix.OperandSizeState = MandatoryPrefix;
+        PrefOpSizeMandatory(pMyDisasm);
         (*pMyDisasm).Instruction.Category = CLMUL_INSTRUCTION;
 
         GV.ImmediatSize = 8;
-        VxWx(pMyDisasm);
-        if (!Security(1, pMyDisasm)) return;
-        (*pMyDisasm).Instruction.Immediat = *((UInt8*)(UIntPtr) (GV.EIP_));
+        XMMregXMMrm(pMyDisasm);
         GV.EIP_++;
+        if (!Security(0, pMyDisasm)) return;
+        (*pMyDisasm).Instruction.Immediat = *((UInt8*)(UIntPtr) (GV.EIP_-1));
 
         if ((*pMyDisasm).Instruction.Immediat == 0) {
             (*pMyDisasm).Instruction.Mnemonic = I_PCLMULLQLQDQ;

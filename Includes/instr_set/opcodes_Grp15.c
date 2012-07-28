@@ -21,7 +21,9 @@
  * ==================================================================== */
 void __bea_callspec__ G15_(PDISASM pMyDisasm)
 {
-    GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    GV.DECALAGE_EIP = 1;
+    if (!Security(1, pMyDisasm)) return;
+    GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 3) & 0x7;
     if (GV.REGOPCODE == 0) {
         MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
         if (GV.MOD_!= 0x3) {
@@ -85,7 +87,7 @@ void __bea_callspec__ G15_(PDISASM pMyDisasm)
     }
 
     else if (GV.REGOPCODE == 5) {
-        GV.MOD_= ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6) & 0x3;
+        GV.MOD_= ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 6) & 0x3;
         if (GV.MOD_== 0x3) {
             (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CACHEABILITY_CONTROL;
             (*pMyDisasm).Instruction.Mnemonic = I_LFENCE;
@@ -101,7 +103,7 @@ void __bea_callspec__ G15_(PDISASM pMyDisasm)
 
     }
     else if (GV.REGOPCODE == 6) {
-        GV.MOD_= ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6) & 0x3;
+        GV.MOD_= ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 6) & 0x3;
         if (GV.MOD_== 0x3) {
             (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CACHEABILITY_CONTROL;
             (*pMyDisasm).Instruction.Mnemonic = I_MFENCE;
@@ -111,7 +113,7 @@ void __bea_callspec__ G15_(PDISASM pMyDisasm)
         }
     }
     else if (GV.REGOPCODE == 7) {
-        GV.MOD_= ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6) & 0x3;
+        GV.MOD_= ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 6) & 0x3;
         if (GV.MOD_== 0x3) {
             (*pMyDisasm).Instruction.Category = SSE2_INSTRUCTION+CACHEABILITY_CONTROL;
             (*pMyDisasm).Instruction.Mnemonic = I_SFENCE;
@@ -129,5 +131,5 @@ void __bea_callspec__ G15_(PDISASM pMyDisasm)
     else {
         FailDecode(pMyDisasm);
     }
-    GV.EIP_+= GV.DECALAGE_EIP+2;
+    GV.EIP_+= GV.DECALAGE_EIP;
 }

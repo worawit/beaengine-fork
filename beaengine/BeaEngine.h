@@ -349,10 +349,9 @@ enum ARGUMENTS_TYPE
   SEGMENT_REG = 0x1000000,
   
   /* value for memory type */
-  MMX_MEM = 0x10000,
+  MM_MEM = 0x10000,
   GENERAL_MEM = 0x20000,
   FPU_MEM = 0x40000,
-  SSE_MEM = 0x80000,
 
   /* value for constant type */
   RELATIVE_ = 0x4000000,
@@ -865,10 +864,10 @@ enum SPECIAL_INFO
     MNEMONIC_DEF( I_POPFD, "popfd" ), \
     MNEMONIC_DEF( I_POPFQ, "popfq" ), \
     MNEMONIC_DEF( I_POR, "por" ), \
-    MNEMONIC_DEF( I_PREFETCHNTA, "prefetchNTA" ), \
-    MNEMONIC_DEF( I_PREFETCHT0, "prefetchT0" ), \
-    MNEMONIC_DEF( I_PREFETCHT1, "prefetchT1" ), \
-    MNEMONIC_DEF( I_PREFETCHT2, "prefetchT2" ), \
+    MNEMONIC_DEF( I_PREFETCHNTA, "prefetchnta" ), \
+    MNEMONIC_DEF( I_PREFETCHT0, "prefetcht0" ), \
+    MNEMONIC_DEF( I_PREFETCHT1, "prefetcht1" ), \
+    MNEMONIC_DEF( I_PREFETCHT2, "prefetcht2" ), \
     MNEMONIC_DEF( I_PSADBW, "psadbw" ), \
     MNEMONIC_DEF( I_PSHUFB, "pshufb" ), \
     MNEMONIC_DEF( I_PSHUFD, "pshufd" ), \

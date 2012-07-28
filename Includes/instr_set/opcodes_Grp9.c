@@ -22,7 +22,7 @@
  * ==================================================================== */
 void __bea_callspec__ G9_(PDISASM pMyDisasm)
 {
-    GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 3) & 0x7;
     (*pMyDisasm).Argument1.ArgSize = 64;
     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
     if (GV.MOD_ == 3) {
@@ -30,24 +30,19 @@ void __bea_callspec__ G9_(PDISASM pMyDisasm)
         return;
     }
     if (GV.REGOPCODE == 1) {
+        (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
         (*pMyDisasm).Argument1.AccessMode = READ+WRITE;
         if ((*pMyDisasm).Prefix.REX.W_) {
             (*pMyDisasm).Argument1.ArgSize = 128;
-            (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
             (*pMyDisasm).Instruction.Mnemonic = I_CMPXCHG16B;
-            (*pMyDisasm).Instruction.ImplicitUsedRegs = GENERAL_REG+REG0+REG2+REG1+REG3;
-            (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG0+REG2;
-            FillFlags(pMyDisasm, EFLAGS_CMPXCHGG8B);
-            GV.EIP_ += GV.DECALAGE_EIP+2;
         }
         else {
-            (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
             (*pMyDisasm).Instruction.Mnemonic = I_CMPXCHG8B;
-            (*pMyDisasm).Instruction.ImplicitUsedRegs = GENERAL_REG+REG0+REG2+REG1+REG3;
-            (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG0+REG2;
-            FillFlags(pMyDisasm, EFLAGS_CMPXCHGG8B);
-            GV.EIP_ += GV.DECALAGE_EIP+2;
         }
+        (*pMyDisasm).Instruction.ImplicitUsedRegs = GENERAL_REG+REG0+REG2+REG1+REG3;
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG0+REG2;
+        FillFlags(pMyDisasm, EFLAGS_CMPXCHGG8B);
+        GV.EIP_ += GV.DECALAGE_EIP;
         if ((*pMyDisasm).Prefix.LockState == InvalidPrefix) {
             (*pMyDisasm).Prefix.LockState = InUsePrefix;
         }
@@ -60,20 +55,19 @@ void __bea_callspec__ G9_(PDISASM pMyDisasm)
             (*pMyDisasm).Instruction.Mnemonic = I_VMXON;
         }
         else if ((*pMyDisasm).Prefix.OperandSizeState == InUsePrefix) {
-            (*pMyDisasm).Prefix.OperandSizeState = MandatoryPrefix;
-            (*pMyDisasm).Instruction.OperandSize = GV.OriginalOperandSize;
+            PrefOpSizeMandatory(pMyDisasm);
             (*pMyDisasm).Instruction.Mnemonic = I_VMCLEAR;
         }
         else {
             (*pMyDisasm).Instruction.Mnemonic = I_VMPTRLD;
         }
-        GV.EIP_ += GV.DECALAGE_EIP+2;
+        GV.EIP_ += GV.DECALAGE_EIP;
     }
     else if (GV.REGOPCODE == 7) {
         (*pMyDisasm).Instruction.Category = VM_INSTRUCTION;
         (*pMyDisasm).Instruction.Mnemonic = I_VMPTRST;
         (*pMyDisasm).Argument1.AccessMode = READ;
-        GV.EIP_ += GV.DECALAGE_EIP+2;
+        GV.EIP_ += GV.DECALAGE_EIP;
     }
     else {
         FailDecode(pMyDisasm);

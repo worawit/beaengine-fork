@@ -21,7 +21,7 @@
  * ==================================================================== */
 void __bea_callspec__ G16_(PDISASM pMyDisasm)
 {
-    GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 3) & 0x7;
     if (GV.REGOPCODE == 0) {
         MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
         if (GV.MOD_!= 0x3) {
@@ -73,5 +73,5 @@ void __bea_callspec__ G16_(PDISASM pMyDisasm)
     else {
         FailDecode(pMyDisasm);
     }
-    GV.EIP_+= GV.DECALAGE_EIP+2;
+    GV.EIP_+= GV.DECALAGE_EIP;
 }

@@ -49,17 +49,17 @@ static void _ModRM0(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
     else if (GV.RM_ == 5) {
         Int32 MyNumber;
         UInt64 MyAddress;
-        if (!Security(6, pMyDisasm)) return;
+        if (!Security(5, pMyDisasm)) return;
         GV.DECALAGE_EIP+=4;
-        MyNumber = *((Int32*)(UIntPtr) (GV.EIP_+2));
+        MyNumber = *((Int32*)(UIntPtr) (GV.EIP_+1));
         (*pMyArgument).Memory.Displacement = MyNumber;
         if ((*pMyDisasm).Archi == 64) {
-            MyNumber += 6 + 1;
+            MyNumber += 6;
             MyNumber += (int) (GV.EIP_-(*pMyDisasm).EIP);
             MyNumber += (GV.ImmediatSize >> 3);
             CalculateRelativeAddress(&MyAddress, (Int64)MyNumber, pMyDisasm);
             (*pMyDisasm).Instruction.AddrValue = MyAddress;
-            (*pMyArgument).ArgType = MEMORY_TYPE+RELATIVE_;
+            (*pMyArgument).ArgType |= RELATIVE_;
         }
         _FillSegmentDS(pMyArgument, pMyDisasm);
     }
@@ -77,12 +77,12 @@ static void _ModRM1(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
     GV.DECALAGE_EIP++;
     if (GV.RM_ == 4) {
         if (!Security(3, pMyDisasm)) return;
-        (*pMyArgument).Memory.Displacement = *((Int8*)(UIntPtr) (GV.EIP_+3));
+        (*pMyArgument).Memory.Displacement = *((Int8*)(UIntPtr) (GV.EIP_+2));
         _SIB(pMyArgument, pMyDisasm);
     }
     else {
         if (!Security(2, pMyDisasm)) return;
-        (*pMyArgument).Memory.Displacement = *((Int8*)(UIntPtr) (GV.EIP_+2));
+        (*pMyArgument).Memory.Displacement = *((Int8*)(UIntPtr) (GV.EIP_+1));
         (*pMyArgument).Memory.BaseRegister = REGVAL(GV.RM_|(*pMyDisasm).Prefix.REX.B_);
         if ((*pMyDisasm).Prefix.SegmentState == InUsePrefix) {
             (*pMyArgument).SegmentReg = (*pMyDisasm).Prefix.Segment;
@@ -104,12 +104,12 @@ static void _ModRM2(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
     GV.DECALAGE_EIP += 4;
     if (GV.RM_ == 4) {
         if (!Security(6, pMyDisasm)) return;
-        (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+3));
+        (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+2));
         _SIB(pMyArgument, pMyDisasm);
     }
     else {
         if (!Security(5, pMyDisasm)) return;
-        (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+2));
+        (*pMyArgument).Memory.Displacement = *((Int32*)(UIntPtr) (GV.EIP_+1));
         (*pMyArgument).Memory.BaseRegister = REGVAL(GV.RM_|(*pMyDisasm).Prefix.REX.B_);
         if ((*pMyDisasm).Prefix.SegmentState == InUsePrefix) {
             (*pMyArgument).SegmentReg = (*pMyDisasm).Prefix.Segment;
@@ -128,7 +128,7 @@ static void _ModRM2(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 static void _ModRM3(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    if (GV.MMX_) {
+    /*if (GV.MMX_) {
         (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[GV.RM_];
         (*pMyArgument).ArgSize = 64;
         return;
@@ -138,7 +138,7 @@ static void _ModRM3(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
         (*pMyArgument).ArgType = REGISTER_TYPE|SSE_REG|REGVAL(GV.RM_|(*pMyDisasm).Prefix.REX.B_);
         (*pMyArgument).ArgSize = 128;
         return;
-    }
+    }*/
     
     /* general purpose register */
     (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
@@ -207,8 +207,8 @@ static void _ModRM0_16(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
             break;
         case 6:
             GV.DECALAGE_EIP+=2;
-            if (!Security(2, pMyDisasm)) return;
-            (*pMyArgument).Memory.Displacement = *((UInt16*)(UIntPtr) (GV.EIP_+2));
+            if (!Security(3, pMyDisasm)) return;
+            (*pMyArgument).Memory.Displacement = *((UInt16*)(UIntPtr) (GV.EIP_+1));
             _FillSegmentDS(pMyArgument, pMyDisasm);
             break;
         case 7:
@@ -268,11 +268,11 @@ static void _ModRM12_16(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 
 void __bea_callspec__ MOD_RM(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    GV.DECALAGE_EIP = 0;
-    if (!Security(1, pMyDisasm)) return;
-    GV.MOD_ = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6);
+    GV.DECALAGE_EIP = 1;
+    if (!Security1(pMyDisasm)) return;
+    GV.MOD_ = ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 6);
     if ((*pMyDisasm).Instruction.AddressSize >= 32) {
-        GV.RM_  = (*((UInt8*)(UIntPtr) (GV.EIP_+1))) & 0x7;
+        GV.RM_  = (*((UInt8*)(UIntPtr) (GV.EIP_))) & 0x7;
         if (GV.MOD_ == 3) {
             _ModRM3(pMyArgument, pMyDisasm);
         }
@@ -290,7 +290,7 @@ void __bea_callspec__ MOD_RM(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
         }
     }
     else {
-        GV.RM_  = (*((UInt8*)(UIntPtr) (GV.EIP_+1))) & 0x7;
+        GV.RM_  = (*((UInt8*)(UIntPtr) (GV.EIP_))) & 0x7;
         if (GV.MOD_ == 0) {
             (*pMyArgument).ArgType = MEMORY_TYPE;
             _ModRM0_16(pMyArgument, pMyDisasm);
@@ -315,16 +315,16 @@ void __bea_callspec__ MOD_RM(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 
 void __bea_callspec__ MOD_RM_MMX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    GV.DECALAGE_EIP = 0;
+    GV.DECALAGE_EIP = 1;
     (*pMyArgument).ArgSize = 64;
-    if (!Security(1, pMyDisasm)) return;
-    GV.MOD_ = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6);
-    GV.RM_  = (*((UInt8*)(UIntPtr) (GV.EIP_+1))) & 0x7;
+    if (!Security1(pMyDisasm)) return;
+    GV.MOD_ = ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 6);
+    GV.RM_  = (*((UInt8*)(UIntPtr) (GV.EIP_))) & 0x7;
     if (GV.MOD_ == 3) {
         _ModRM3_MMX(pMyArgument, pMyDisasm);
     }
     else {
-        (*pMyArgument).ArgType = MEMORY_TYPE|MMX_MEM;
+        (*pMyArgument).ArgType = MEMORY_TYPE|MM_MEM;
         if (GV.MOD_ == 0) {
             _ModRM0(pMyArgument, pMyDisasm);
         }
@@ -339,16 +339,16 @@ void __bea_callspec__ MOD_RM_MMX(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 
 void __bea_callspec__ MOD_RM_SSE(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    GV.DECALAGE_EIP = 0;
+    GV.DECALAGE_EIP = 1;
     (*pMyArgument).ArgSize = 128;
-    if (!Security(1, pMyDisasm)) return;
-    GV.MOD_ = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 6);
-    GV.RM_  = (*((UInt8*)(UIntPtr) (GV.EIP_+1))) & 0x7;
+    if (!Security1(pMyDisasm)) return;
+    GV.MOD_ = ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 6);
+    GV.RM_  = (*((UInt8*)(UIntPtr) (GV.EIP_))) & 0x7;
     if (GV.MOD_ == 3) {
         _ModRM3_SSE(pMyArgument, pMyDisasm);
     }
     else {
-        (*pMyArgument).ArgType = MEMORY_TYPE|SSE_MEM;
+        (*pMyArgument).ArgType = MEMORY_TYPE|MM_MEM;
         if (GV.MOD_ == 0) {
             _ModRM0(pMyArgument, pMyDisasm);
         }
@@ -364,8 +364,8 @@ void __bea_callspec__ MOD_RM_SSE(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 void __bea_callspec__ RegSeg_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
     Int32 reg;
-    if (!Security(1, pMyDisasm)) return;
-    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    if (!Security1(pMyDisasm)) return;
+    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 3) & 0x7;
     if (reg < 6) {
         (*pMyArgument).ArgType = REGISTER_TYPE|SEGMENT_REG|REGVAL(reg);
         (*pMyArgument).ArgSize = 16;
@@ -378,8 +378,8 @@ void __bea_callspec__ RegSeg_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 void __bea_callspec__ RegCR_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
     Int32 reg;
-    if (!Security(1, pMyDisasm)) return;
-    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    if (!Security1(pMyDisasm)) return;
+    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 3) & 0x7;
     (*pMyArgument).ArgType = REGISTER_TYPE+CR_REG+REGVAL(reg|(*pMyDisasm).Prefix.REX.R_);
     (*pMyArgument).ArgSize = 32;
 }
@@ -387,8 +387,8 @@ void __bea_callspec__ RegCR_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 void __bea_callspec__ RegDR_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
     Int32 reg;
-    if (!Security(1, pMyDisasm)) return;
-    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    if (!Security1(pMyDisasm)) return;
+    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 3) & 0x7;
     (*pMyArgument).ArgType = REGISTER_TYPE+DR_REG+REGVAL(reg|(*pMyDisasm).Prefix.REX.R_);
     (*pMyArgument).ArgSize = 32;
 }
@@ -396,8 +396,8 @@ void __bea_callspec__ RegDR_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 void __bea_callspec__ RegMMX_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
     Int32 reg;
-    if (!Security(1, pMyDisasm)) return;
-    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    if (!Security1(pMyDisasm)) return;
+    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 3) & 0x7;
     (*pMyArgument).ArgType = REGISTER_TYPE|MMX_REG|REGVAL(reg);
     (*pMyArgument).ArgSize = 64;
 }
@@ -405,8 +405,8 @@ void __bea_callspec__ RegMMX_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 void __bea_callspec__ RegSSE_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
     Int32 reg;
-    if (!Security(1, pMyDisasm)) return;
-    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    if (!Security1(pMyDisasm)) return;
+    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 3) & 0x7;
     (*pMyArgument).ArgType = REGISTER_TYPE|SSE_REG|REGVAL(reg|(*pMyDisasm).Prefix.REX.R_);
     (*pMyArgument).ArgSize = 128;
 }
@@ -416,10 +416,10 @@ void __bea_callspec__ RegSSE_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 void __bea_callspec__ Reg_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
     Int32 reg;
-    if (!Security(1, pMyDisasm)) return;
-    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    if (!Security1(pMyDisasm)) return;
+    reg = ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 3) & 0x7;
     
-    if (GV.MMX_) {
+    /*if (GV.MMX_) {
         (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[reg];
         (*pMyArgument).ArgSize = 64;
         return;
@@ -429,7 +429,7 @@ void __bea_callspec__ Reg_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
         (*pMyArgument).ArgType = REGISTER_TYPE|SSE_REG|REGVAL(reg|(*pMyDisasm).Prefix.REX.R_);
         (*pMyArgument).ArgSize = 128;
         return;
-    }
+    }*/
     
     /* general purpose register */
     (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
@@ -452,14 +452,14 @@ void __bea_callspec__ _SIB(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
     
     GV.DECALAGE_EIP++;
     
-    base  = (*((UInt8*) (UIntPtr) (GV.EIP_+2))) & 0x7;
-    index = ((*((UInt8*)(UIntPtr) (GV.EIP_+2))) >> 3) & 0x7;
-    scale = 1 << ((*((UInt8*) (UIntPtr) (GV.EIP_+2))) >> 6);
+    base  = (*((UInt8*) (UIntPtr) (GV.EIP_+1))) & 0x7;
+    index = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    scale = 1 << ((*((UInt8*) (UIntPtr) (GV.EIP_+1))) >> 6);
     /* ========================= Interpret Base */
     if ((base == 5) && (GV.MOD_ == 0)) {
         GV.DECALAGE_EIP += 4;
-        if (!Security(7, pMyDisasm)) return;
-        (*pMyArgument).Memory.Displacement = *((UInt32*)(UIntPtr) (GV.EIP_+3));
+        if (!Security(6, pMyDisasm)) return;
+        (*pMyArgument).Memory.Displacement = *((UInt32*)(UIntPtr) (GV.EIP_+2));
         _FillSegmentDS(pMyArgument, pMyDisasm);
     }
     else {

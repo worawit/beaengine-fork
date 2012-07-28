@@ -50,16 +50,26 @@ void __bea_callspec__ GbEb(PDISASM);
 void __bea_callspec__ ALIb(PDISASM);
 void __bea_callspec__ eAX_Iv(PDISASM);
 
-void __bea_callspec__ QxPx(PDISASM);
-void __bea_callspec__ PxQx(PDISASM);
-void __bea_callspec__ VxWx(PDISASM);
-void __bea_callspec__ WxVx(PDISASM);
+void __bea_callspec__ MMrmMMreg(PDISASM);
+void __bea_callspec__ MMregMMrm(PDISASM);
+void __bea_callspec__ XMMrmXMMreg(PDISASM);
+void __bea_callspec__ XMMregXMMrm(PDISASM);
+void __bea_callspec__ XMMregXMMrm64(PDISASM);
+void __bea_callspec__ XMMrm64XMMreg(PDISASM);
+void __bea_callspec__ XMMregXMMrm32(PDISASM);
+void __bea_callspec__ XMMrm32XMMreg(PDISASM);
+void __bea_callspec__ MMregXMMrm(PDISASM);
+void __bea_callspec__ XMMregMMrm(PDISASM);
+void __bea_callspec__ MMrmXMMreg(PDISASM);
+void __bea_callspec__ XMMrmMMreg(PDISASM);
 
 void __bea_callspec__ AnalyzeOpcode (PDISASM);
 int __bea_callspec__ Security(int, PDISASM);
+int __bea_callspec__ Security1(PDISASM);
 void __bea_callspec__ CalculateRelativeAddress(UInt64 *, Int64, PDISASM);
 int __bea_callspec__ InitVariables (PDISASM);
 void __bea_callspec__ FillFlags(PDISASM, int);
+void __bea_callspec__ PrefOpSizeMandatory(PDISASM);
 
 /* ====================================== opcodes_prefix */
 void __bea_callspec__ PrefLock(PDISASM);

@@ -22,7 +22,7 @@
 void __bea_callspec__ G6_(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = SYSTEM_INSTRUCTION;
-    GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+    GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 3) & 0x7;
 
     if (GV.REGOPCODE == 0) {
         MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
@@ -32,7 +32,7 @@ void __bea_callspec__ G6_(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.Mnemonic = I_SLDT;
         (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+REGISTER_TYPE+MEMORY_MANAGEMENT_REG+REG1;
         (*pMyDisasm).Argument2.ArgSize = 32;
-        GV.EIP_+= GV.DECALAGE_EIP+2;
+        GV.EIP_+= GV.DECALAGE_EIP;
     }
     else if (GV.REGOPCODE == 1) {
         MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
@@ -42,7 +42,7 @@ void __bea_callspec__ G6_(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.Mnemonic = I_STR;
         (*pMyDisasm).Argument2.ArgType = IMPLICIT_ARG+REGISTER_TYPE+MEMORY_MANAGEMENT_REG+REG3;
         (*pMyDisasm).Argument2.ArgSize = 16;
-        GV.EIP_+= GV.DECALAGE_EIP+2;
+        GV.EIP_+= GV.DECALAGE_EIP;
     }
     else if (GV.REGOPCODE == 2) {
         (*pMyDisasm).Instruction.OperandSize = 16;
@@ -51,7 +51,7 @@ void __bea_callspec__ G6_(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.Mnemonic = I_LLDT;
         (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+MEMORY_MANAGEMENT_REG+REG1;
         (*pMyDisasm).Argument1.ArgSize = 16;
-        GV.EIP_+= GV.DECALAGE_EIP+2;
+        GV.EIP_+= GV.DECALAGE_EIP;
     }
     else if (GV.REGOPCODE == 3) {
         (*pMyDisasm).Instruction.OperandSize = 16;
@@ -60,21 +60,21 @@ void __bea_callspec__ G6_(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.Mnemonic = I_LTR;
         (*pMyDisasm).Argument1.ArgType = IMPLICIT_ARG+REGISTER_TYPE+MEMORY_MANAGEMENT_REG+REG3;
         (*pMyDisasm).Argument1.ArgSize = 16;
-        GV.EIP_+= GV.DECALAGE_EIP+2;
+        GV.EIP_+= GV.DECALAGE_EIP;
     }
     else if (GV.REGOPCODE == 4) {
         (*pMyDisasm).Instruction.OperandSize = 16;
         (*pMyDisasm).Argument1.ArgSize = 16;
         MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
         (*pMyDisasm).Instruction.Mnemonic = I_VERR;
-        GV.EIP_+= GV.DECALAGE_EIP+2;
+        GV.EIP_+= GV.DECALAGE_EIP;
     }
     else if (GV.REGOPCODE == 5) {
         (*pMyDisasm).Instruction.OperandSize = 16;
         (*pMyDisasm).Argument1.ArgSize = 16;
         MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
         (*pMyDisasm).Instruction.Mnemonic = I_VERW;
-        GV.EIP_+= GV.DECALAGE_EIP+2;
+        GV.EIP_+= GV.DECALAGE_EIP;
     }
     else if (GV.REGOPCODE == 6) {
         FailDecode(pMyDisasm);
