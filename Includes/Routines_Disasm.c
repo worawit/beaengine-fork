@@ -72,11 +72,6 @@ void __bea_callspec__ InitVariables (PDISASM pMyDisasm) {
     (*pMyDisasm).Argument1.AccessMode = WRITE;
     (*pMyDisasm).Argument2.AccessMode = READ;
     (*pMyDisasm).Argument3.AccessMode = READ;
-
-    GV.TAB_ = (UInt32)(*pMyDisasm).Options & 0xff;
-    GV.SYNTAX_ = (UInt32)(*pMyDisasm).Options & 0xff00;
-    GV.FORMATNUMBER = (UInt32)(*pMyDisasm).Options & 0xff0000;
-    GV.SEGMENTREGS = (UInt32)(*pMyDisasm).Options & 0xff000000;
 }
 
 /* ====================================================================
@@ -644,19 +639,19 @@ static size_t BuildHexString(Int64 num, Int32 bitShift, char *buffer) {
     return BuildHexString2(num, bitShift, buffer);
 }
 
-static size_t BuildHexNumber(Int64 num, int size, Int32 format, char *buffer)
+static size_t BuildHexNumber(Int64 num, int size, Int32 prefixedHex, char *buffer)
 {
     size_t i;
-    if (format == SuffixedNumeral) {
-        i = BuildHexString(num, size-4, buffer);
-        buffer[i] = 'h';
-        return i+1;
-    }
-    else {
+    if (prefixedHex) {
         buffer[0] = '0';
         buffer[1] = 'x';
         i = BuildHexString(num, size-4, buffer+2);
         return i+2;
+    }
+    else {
+        i = BuildHexString(num, size-4, buffer);
+        buffer[i] = 'h';
+        return i+1;
     }
     /* never reach */
     return 0;
@@ -676,7 +671,7 @@ static size_t BuildMemoryMnemonic(PDISASM pMyDisasm, ARGTYPE* arg, char *buffer)
     }
     
     /* segment prefix */
-    if (((*pMyDisasm).Prefix.SegmentState == InUsePrefix) || GV.SEGMENTREGS) {
+    if (((*pMyDisasm).Prefix.SegmentState == InUsePrefix) || (*pMyDisasm).AsmShowImplicitSegmentRegs) {
         i += BuildMemorySegment((*arg).SegmentReg, buffer+i);
     }
     
@@ -713,13 +708,13 @@ static size_t BuildMemoryMnemonic(PDISASM pMyDisasm, ARGTYPE* arg, char *buffer)
         if ((*arg).Memory.Displacement < 0 && has_base) {
             /* display displacement as signed only if there is base register */
             buffer[i++] = '-';
-            i += BuildHexNumber(-((*arg).Memory.Displacement), 32, GV.FORMATNUMBER, buffer+i);
+            i += BuildHexNumber(-((*arg).Memory.Displacement), 32, (*pMyDisasm).AsmPrefixedNumeral, buffer+i);
         }
         else {
             if (has_base || has_index) {
                 buffer[i++] = '+';
             }
-            i += BuildHexNumber((*arg).Memory.Displacement, 32, GV.FORMATNUMBER, buffer+i);
+            i += BuildHexNumber((*arg).Memory.Displacement, 32, (*pMyDisasm).AsmPrefixedNumeral, buffer+i);
         }
     }
     
@@ -768,7 +763,7 @@ static size_t BuildArgumentMnemonic(PDISASM pMyDisasm, ARGTYPE* arg, char *buffe
         if ((*arg).ArgType & RELATIVE_)
             return BuildHexString((Int64) (*pMyDisasm).Instruction.AddrValue, (*pMyDisasm).Instruction.AddressSize-4, buffer);
         else
-            return BuildHexNumber((*pMyDisasm).Instruction.Immediat, (*pMyDisasm).Instruction.OperandSize, GV.FORMATNUMBER, buffer);
+            return BuildHexNumber((*pMyDisasm).Instruction.Immediat, (*pMyDisasm).Instruction.OperandSize, (*pMyDisasm).AsmPrefixedNumeral, buffer);
     }
     return 0;
 }
@@ -803,7 +798,7 @@ void __bea_callspec__ BuildAssembly(PDISASM pMyDisasm, char *buffer)
     i += strlen(MNEMONICS[(*pMyDisasm).Instruction.Mnemonic]);
 
     /* =============== if TAB = 1, add tabulation */
-    if (GV.TAB_ == 1 && i < 10) {
+    if ((*pMyDisasm).AsmTabulation && (i < 10)) {
         (void) strcpy (buffer+i, space_tab[10-i]);
         i = 10;
     }

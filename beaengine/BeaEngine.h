@@ -157,11 +157,7 @@ typedef struct {
    Int32 RM_;
    Int32 REGOPCODE;
    UInt32 DECALAGE_EIP;
-   Int32 FORMATNUMBER;
-   Int32 SYNTAX_;
    Int32 ImmediatSize;
-   UInt32 SEGMENTREGS;
-   Int32 TAB_;
    Int32 ERROR_OPCODE;
    Int32 OutOfBlock;
 } InternalDatas;
@@ -174,7 +170,10 @@ typedef struct _Disasm {
    UInt64 VirtualAddr;
    UInt32 SecurityBlock;
    UInt32 Archi;
-   UInt64 Options;
+   Int32 AsmPrefixedNumeral;
+   Int32 AsmSyntax;
+   UInt32 AsmShowImplicitSegmentRegs;
+   Int32 AsmTabulation;
    INSTRTYPE Instruction;
    ARGTYPE Argument1;
    ARGTYPE Argument2;
