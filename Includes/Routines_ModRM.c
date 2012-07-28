@@ -128,18 +128,6 @@ static void _ModRM2(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
  * ======================================= */
 static void _ModRM3(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
 {
-    /*if (GV.MMX_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[GV.RM_];
-        (*pMyArgument).ArgSize = 64;
-        return;
-    }
-    
-    if (GV.SSE_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE|SSE_REG|REGVAL(GV.RM_|(*pMyDisasm).Prefix.REX.B_);
-        (*pMyArgument).ArgSize = 128;
-        return;
-    }*/
-    
     /* general purpose register */
     (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
     if ((*pMyDisasm).Instruction.OperandSize == 8 && (*pMyDisasm).Prefix.REXState == 0) {
@@ -418,18 +406,6 @@ void __bea_callspec__ Reg_Opcode(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
     Int32 reg;
     if (!Security1(pMyDisasm)) return;
     reg = ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 3) & 0x7;
-    
-    /*if (GV.MMX_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE+MMX_REG+REGS[reg];
-        (*pMyArgument).ArgSize = 64;
-        return;
-    }
-    
-    if (GV.SSE_) {
-        (*pMyArgument).ArgType = REGISTER_TYPE|SSE_REG|REGVAL(reg|(*pMyDisasm).Prefix.REX.R_);
-        (*pMyArgument).ArgSize = 128;
-        return;
-    }*/
     
     /* general purpose register */
     (*pMyArgument).ArgSize = (*pMyDisasm).Instruction.OperandSize;
