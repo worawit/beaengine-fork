@@ -662,26 +662,26 @@ void __bea_callspec__ callf_(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+CONTROL_TRANSFER;
         (*pMyDisasm).Instruction.BranchType = CallType;
         (*pMyDisasm).Instruction.Mnemonic = I_CALL_FAR;
-        if ((*pMyDisasm).Instruction.OperandSize ==32) {
+        (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize+16;
+        if ((*pMyDisasm).Instruction.OperandSize == 32) {
             if (!Security(6, pMyDisasm)) return;
             MyNumber = *((UInt16*)(UIntPtr) (GV.EIP_+4));
+            (*pMyDisasm).Argument1.SegmentReg = MyNumber;
+            MyAddress = MyNumber*16;
+            MyNumber = *((UInt32*)(UIntPtr) (GV.EIP_));
+            (*pMyDisasm).Instruction.Immediat = MyNumber;
+            GV.EIP_+=6;
         }
         else {
             if (!Security(4, pMyDisasm)) return;
             MyNumber = *((UInt16*)(UIntPtr) (GV.EIP_+2));
-        }
-        MyAddress = MyNumber*16;
-        MyNumber = *((UInt32*)(UIntPtr) (GV.EIP_));
-        if ((*pMyDisasm).Instruction.OperandSize == 16) {
-            MyNumber = MyNumber & 0xffff;
-        }
-        if ((*pMyDisasm).Instruction.OperandSize == 32) {
-            GV.EIP_+=6;
-        }
-        else {
+            (*pMyDisasm).Argument1.SegmentReg = MyNumber;
+            MyAddress = MyNumber*16;
+            MyNumber = *((UInt16*)(UIntPtr) (GV.EIP_));
+            (*pMyDisasm).Instruction.Immediat = MyNumber;
             GV.EIP_+=4;
         }
-        (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+ABSOLUTE_;
+        (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+FARPTR_;
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
         (*pMyDisasm).Instruction.AddrValue = MyAddress + MyNumber;
@@ -3019,28 +3019,30 @@ void __bea_callspec__ jmp_far(PDISASM pMyDisasm)
     }
     else {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+CONTROL_TRANSFER;
+        (*pMyDisasm).Instruction.Mnemonic = I_JMP_FAR;
         (*pMyDisasm).Instruction.BranchType = JmpType;
         (*pMyDisasm).Argument1.AccessMode = READ;
-        (*pMyDisasm).Instruction.Mnemonic = I_JMP_FAR;
-        if ((*pMyDisasm).Instruction.OperandSize ==32) {
+        (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+FARPTR_;
+        (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize+16;
+        if ((*pMyDisasm).Instruction.OperandSize == 32) {
             if (!Security(6, pMyDisasm)) return;
             MyNumber = *((UInt16*)(UIntPtr) (GV.EIP_+4));
+            (*pMyDisasm).Argument1.SegmentReg = MyNumber;
+            MyAddress = MyNumber*16;
+            MyNumber = *((UInt32*)(UIntPtr) (GV.EIP_));
+            (*pMyDisasm).Instruction.Immediat = MyNumber;
+            GV.EIP_+=6;
         }
         else {
             if (!Security(4, pMyDisasm)) return;
             MyNumber = *((UInt16*)(UIntPtr) (GV.EIP_+2));
-        }
-        MyAddress = MyNumber*16;
-        MyNumber = *((UInt32*)(UIntPtr) (GV.EIP_));
-        if ((*pMyDisasm).Instruction.OperandSize == 16) {
-            MyNumber = MyNumber & 0xffff;
-        }
-        if ((*pMyDisasm).Instruction.OperandSize == 32) {
-            GV.EIP_+=6;
-        }
-        else {
+            (*pMyDisasm).Argument1.SegmentReg = MyNumber;
+            MyAddress = MyNumber*16;
+            MyNumber = *((UInt16*)(UIntPtr) (GV.EIP_));
+            (*pMyDisasm).Instruction.Immediat = MyNumber;
             GV.EIP_+=4;
         }
+        
         (*pMyDisasm).Instruction.AddrValue = MyAddress + MyNumber;
     }
 }

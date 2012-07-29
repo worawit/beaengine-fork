@@ -349,6 +349,7 @@ enum ARGUMENTS_TYPE
   FARPTR_MEM = 0x20000,
 
   /* value for constant type */
+  FARPTR_ = 0x20000,
   RELATIVE_ = 0x4000000,
   ABSOLUTE_ = 0x8000000,
 
