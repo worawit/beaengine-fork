@@ -1411,8 +1411,8 @@ void __bea_callspec__ wait_(PDISASM pMyDisasm)
         else if (*((UInt8*) (UIntPtr)GV.EIP_) == 0xdd) {
             /* allow only memory argument */
             if (*((UInt8*)(UIntPtr) (GV.EIP_+1)) <= 0xbf) {
-                GV.EIP_++;
                 GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
+                GV.EIP_++;
                 if (GV.REGOPCODE == 6) {
                     (*pMyDisasm).Argument1.ArgSize = 0;
                     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
@@ -1435,5 +1435,12 @@ void __bea_callspec__ wait_(PDISASM pMyDisasm)
                 GV.EIP_ += 2;
             }
         }
+    }
+    
+    if (GV.OutOfBlock) {
+        (*pMyDisasm).Instruction.Mnemonic = I_WAIT;
+        (*pMyDisasm).Argument1.ArgType = 0;
+        GV.EIP_ = (*pMyDisasm).EIP+1;
+        GV.OutOfBlock = 0;
     }
 }
