@@ -388,6 +388,9 @@ static size_t BuildArgumentMnemonic(PDISASM pMyDisasm, ARGTYPE* arg, char *buffe
         if ((*arg).ArgType & RELATIVE_) {
             return BuildHexString((Int64) (*pMyDisasm).Instruction.AddrValue, (*pMyDisasm).Instruction.AddressSize-4, buffer);
         }
+        else if ((*arg).ArgType & ABSOLUTE_) {
+            return BuildHexNumber((*pMyDisasm).Instruction.Immediat, (*pMyDisasm).Instruction.OperandSize, (*pMyDisasm).AsmPrefixedNumeral, buffer);
+        }
         else if ((*arg).ArgType & FARPTR_) {
             size_t i = BuildHexString2((*arg).SegmentReg, 12, buffer);
             buffer[i] = ':';
@@ -395,8 +398,8 @@ static size_t BuildArgumentMnemonic(PDISASM pMyDisasm, ARGTYPE* arg, char *buffe
             i += BuildHexString2((*pMyDisasm).Instruction.Immediat, (*arg).ArgSize-20, buffer+i);
             return i;
         }
-        else {
-            return BuildHexNumber((*pMyDisasm).Instruction.Immediat, (*pMyDisasm).Instruction.OperandSize, (*pMyDisasm).AsmPrefixedNumeral, buffer);
+        else if ((*arg).ArgType & IMM_IN_TYPE) {
+            return BuildHexNumber((*arg).ArgType & 0xff, (*arg).ArgSize, (*pMyDisasm).AsmPrefixedNumeral, buffer);
         }
     }
     return 0;

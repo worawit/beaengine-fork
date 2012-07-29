@@ -1442,8 +1442,9 @@ void __bea_callspec__ enter_(PDISASM pMyDisasm)
     (*pMyDisasm).Argument1.ArgSize = 16;
     (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     (*pMyDisasm).Argument1.AccessMode = READ;
+    (*pMyDisasm).Instruction.Immediat = *((UInt16*)(UIntPtr) (GV.EIP_));
     (*pMyDisasm).Argument2.ArgSize = 8;
-    (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+ABSOLUTE_;
+    (*pMyDisasm).Argument2.ArgType = CONSTANT_TYPE+IMM_IN_TYPE+(*((UInt8*)(UIntPtr) (GV.EIP_+2)));
     GV.EIP_+=3;
 }
 

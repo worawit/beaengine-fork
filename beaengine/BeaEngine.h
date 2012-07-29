@@ -350,8 +350,9 @@ enum ARGUMENTS_TYPE
 
   /* value for constant type */
   FARPTR_ = 0x20000,
-  RELATIVE_ = 0x4000000,
-  ABSOLUTE_ = 0x8000000,
+  IMM_IN_TYPE = 0x40000,
+  RELATIVE_ = 0x100000, /* this is also for RIP-relative memory type*/
+  ABSOLUTE_ = 0x200000,
 
   /* argument access mode */
   READ = 0x1,
