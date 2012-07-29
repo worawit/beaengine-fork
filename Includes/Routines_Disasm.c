@@ -360,6 +360,19 @@ void __bea_callspec__ GvEv(PDISASM pMyDisasm)
 /* ====================================================================
  *
  * ==================================================================== */
+void __bea_callspec__ GvMptp(PDISASM pMyDisasm)
+{
+    MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
+    if (GV.MOD_ == 3) FailDecode(pMyDisasm);
+    Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
+    (*pMyDisasm).Argument2.ArgSize = (*pMyDisasm).Instruction.OperandSize + 16;
+    (*pMyDisasm).Argument2.ArgType = MEMORY_TYPE + FARPTR_MEM;
+    GV.EIP_ += GV.DECALAGE_EIP;
+}
+
+/* ====================================================================
+ *
+ * ==================================================================== */
 void __bea_callspec__ GvEd(PDISASM pMyDisasm)
 {
     MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);

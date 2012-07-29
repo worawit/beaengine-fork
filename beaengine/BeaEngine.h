@@ -346,8 +346,7 @@ enum ARGUMENTS_TYPE
   
   /* value for memory type */
   MM_MEM = 0x10000,
-  GENERAL_MEM = 0x20000,
-  FPU_MEM = 0x40000,
+  FARPTR_MEM = 0x20000,
 
   /* value for constant type */
   RELATIVE_ = 0x4000000,

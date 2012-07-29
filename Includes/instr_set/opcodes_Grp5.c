@@ -58,7 +58,11 @@ void __bea_callspec__ G5_Ev(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.BranchType = CallType;
         (*pMyDisasm).Instruction.Mnemonic = I_CALL_FAR;
         MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
+        if (GV.MOD_ == 3) {
+            FailDecode(pMyDisasm);
+        }
         (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize + 16;
+        (*pMyDisasm).Argument1.ArgType = MEMORY_TYPE+FARPTR_MEM;
         (*pMyDisasm).Argument1.AccessMode = READ;
         GV.EIP_ += GV.DECALAGE_EIP;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
@@ -78,7 +82,11 @@ void __bea_callspec__ G5_Ev(PDISASM pMyDisasm)
         (*pMyDisasm).Instruction.BranchType = JmpType;
         (*pMyDisasm).Instruction.Mnemonic = I_JMP_FAR;
         MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
+        if (GV.MOD_ == 3) {
+            FailDecode(pMyDisasm);
+        }
         (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize + 16;
+        (*pMyDisasm).Argument1.ArgType = MEMORY_TYPE+FARPTR_MEM;
         (*pMyDisasm).Argument1.AccessMode = READ;
         GV.EIP_ += GV.DECALAGE_EIP;
     }

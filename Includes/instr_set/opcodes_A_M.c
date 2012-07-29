@@ -3082,18 +3082,7 @@ void __bea_callspec__ lds_GvM(PDISASM pMyDisasm)
     else {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+SEGMENT_REGISTER;
         (*pMyDisasm).Instruction.Mnemonic = I_LDS;
-        if ((*pMyDisasm).Instruction.OperandSize == 32) {
-            MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
-            Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
-            (*pMyDisasm).Argument2.ArgSize = 48;
-            GV.EIP_+= GV.DECALAGE_EIP;
-        }
-        else {
-            MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
-            Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
-            (*pMyDisasm).Argument2.ArgSize = 32;
-            GV.EIP_+= GV.DECALAGE_EIP;
-        }
+        GvMptp(pMyDisasm);
     }
 }
 
@@ -3146,18 +3135,7 @@ void __bea_callspec__ les_GvM(PDISASM pMyDisasm)
     else {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+SEGMENT_REGISTER;
         (*pMyDisasm).Instruction.Mnemonic = I_LES;
-        if ((*pMyDisasm).Instruction.OperandSize == 32) {
-            MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
-            Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
-            (*pMyDisasm).Argument2.ArgSize = 48;
-            GV.EIP_+= GV.DECALAGE_EIP;
-        }
-        else {
-            MOD_RM(&(*pMyDisasm).Argument2, pMyDisasm);
-            Reg_Opcode(&(*pMyDisasm).Argument1, pMyDisasm);
-            (*pMyDisasm).Argument2.ArgSize = 32;
-            GV.EIP_+= GV.DECALAGE_EIP;
-        }
+        GvMptp(pMyDisasm);
     }
 }
 
@@ -3350,7 +3328,7 @@ void __bea_callspec__ lss_Mp(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+SEGMENT_REGISTER;
     (*pMyDisasm).Instruction.Mnemonic = I_LSS;
-    GvEv(pMyDisasm);
+    GvMptp(pMyDisasm);
 }
 
 /* =======================================
@@ -3360,7 +3338,7 @@ void __bea_callspec__ lfs_Mp(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+SEGMENT_REGISTER;
     (*pMyDisasm).Instruction.Mnemonic = I_LFS;
-    GvEv(pMyDisasm);
+    GvMptp(pMyDisasm);
 }
 
 /* =======================================
@@ -3370,7 +3348,7 @@ void __bea_callspec__ lgs_Mp(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+SEGMENT_REGISTER;
     (*pMyDisasm).Instruction.Mnemonic = I_LGS;
-    GvEv(pMyDisasm);
+    GvMptp(pMyDisasm);
 }
 
 /* =======================================
