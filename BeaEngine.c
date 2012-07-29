@@ -51,6 +51,7 @@
 #include "Includes/instr_set/opcodes_prefixes.c"
 #include "Includes/Routines_ModRM.c"
 #include "Includes/Routines_Disasm.c"
+#include "Includes/Routines_Operand.c"
 #include "Includes/BeaEngineVersion.c"
 
 void BeaEngine(void){return;}
