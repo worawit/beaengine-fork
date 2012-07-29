@@ -10,7 +10,7 @@ does not like my changes, at least you are can take bug patches.
 Note: This project is not compatitble with original BeaEngine.
 
 WARNING: This fork project is still under developement, public structures 
-are subjected to change.
+are not finalized.
 
 
 COMPILE
@@ -24,13 +24,19 @@ Windows: (reqires Windows SDK and (maybe) VC Express; tested on Windows 7 64bit)
 - cd /to/project/directory
 - nmake -f nmakefile
 
-The include files that used for using this project is /beaengine directory
+The library file is in /build directory. The include files that used for 
+using this project is /beaengine directory
 
 
 
 MODIFICATIONS
 --------------
 Here is a list of my modifications:
+
+### No default architecture to 32-bit
+
+Now, you have to set DISASM.Archi to 16, 32 or 64. Disasm() function does 
+not check this value. You have to make sure it is not other values.
 
 ### No more Mnemonic/ArgMnemonic/CompleteInstruction string
 
@@ -46,12 +52,24 @@ does not check for invalid value in DISASM structure. Do try to do it.
 
 Now, BuildAssembly() function supports only MASM syntax. But you can use
 decoded data to build your own assembly. You can see BuildAssembly() code
-as an example.
+in Includes/Routines_Disasm.c as an example.
 
-NOTE: There are 2 types of instruction that still cannot build assembly.
-I have to change ARGTYPE structure (later)
-- more than 1 immediate value (enter)
-- far pointer operand
+Because the Argument structure does not support to store far ptr type, I put
+the segment selector in ARGTYPE.SegmentReg and offset value in Immediat with
+setting subtype of CONSTANT_TYPE to FARPTR_.
+
+Similar to enter instruction, it uses 2 immediate operand but the structure
+supports only one. So I put the second operand, which size is 8 bit, to low word
+of ARGTYPE.ArgType with setting subtype of CONSTANT_TYPE to IMM_IN_TYPE.
+
+### DISASM.AsmXXX
+
+I remove Option from DISASM struct. Use below 4 value to set the assembly
+output format.
+- AsmPrefixedNumeral (0 for Suffixed with 'h'. Others for Prefixed with '0x')
+- AsmSyntax (ignored for now)
+- AsmShowImplicitSegmentRegs (non 0 for always display memory segment)
+- AsmTabulation (non 0 for Tabulation)
 
 ### INSTRTYPE.Mnemonic
 
