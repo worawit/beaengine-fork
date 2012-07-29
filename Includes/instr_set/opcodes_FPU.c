@@ -1383,14 +1383,17 @@ void __bea_callspec__ wait_(PDISASM pMyDisasm)
             /* allow only memory argument */
             if (*((UInt8*)(UIntPtr) (GV.EIP_+1)) <= 0xbf) {
                 GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
-                GV.EIP_++;
                 if (GV.REGOPCODE == 6) {
+                    GV.EIP_++;
+                    (*pMyDisasm).Instruction.Opcode = 0x9bd9;
                     (*pMyDisasm).Argument1.ArgSize = 0;
                     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
                     (*pMyDisasm).Instruction.Mnemonic = I_FSTENV;
                     GV.EIP_ += GV.DECALAGE_EIP;
                 }
                 else if (GV.REGOPCODE == 7) {
+                    GV.EIP_++;
+                    (*pMyDisasm).Instruction.Opcode = 0x9bd9;
                     (*pMyDisasm).Argument1.ArgSize = 16;
                     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
                     (*pMyDisasm).Instruction.Mnemonic = I_FSTCW;
@@ -1400,10 +1403,12 @@ void __bea_callspec__ wait_(PDISASM pMyDisasm)
         }
         else if (*((UInt8*) (UIntPtr)GV.EIP_) == 0xdb) {
             if (*((UInt8*)(UIntPtr) (GV.EIP_+1)) == 0xe2) {
+                (*pMyDisasm).Instruction.Opcode = 0x9bdbe2;
                 (*pMyDisasm).Instruction.Mnemonic = I_FCLEX;
                 GV.EIP_ += 2;
             }
             else if (*((UInt8*)(UIntPtr) (GV.EIP_+1)) == 0xe3) {
+                (*pMyDisasm).Instruction.Opcode = 0x9bdbe3;
                 (*pMyDisasm).Instruction.Mnemonic = I_FINIT;
                 GV.EIP_ += 2;
             }
@@ -1412,14 +1417,17 @@ void __bea_callspec__ wait_(PDISASM pMyDisasm)
             /* allow only memory argument */
             if (*((UInt8*)(UIntPtr) (GV.EIP_+1)) <= 0xbf) {
                 GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_+1))) >> 3) & 0x7;
-                GV.EIP_++;
                 if (GV.REGOPCODE == 6) {
+                    GV.EIP_++;
+                    (*pMyDisasm).Instruction.Opcode = 0x9bdd;
                     (*pMyDisasm).Argument1.ArgSize = 0;
                     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
                     (*pMyDisasm).Instruction.Mnemonic = I_FSAVE;
                     GV.EIP_ += GV.DECALAGE_EIP;
                 }
                 else if (GV.REGOPCODE == 7) {
+                    GV.EIP_++;
+                    (*pMyDisasm).Instruction.Opcode = 0x9bdd;
                     (*pMyDisasm).Argument1.ArgSize = 16;
                     MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
                     (*pMyDisasm).Instruction.Mnemonic = I_FSTSW;
@@ -1429,6 +1437,7 @@ void __bea_callspec__ wait_(PDISASM pMyDisasm)
         }
         else if (*((UInt8*) (UIntPtr)GV.EIP_) == 0xdf) {
             if (*((UInt8*)(UIntPtr) (GV.EIP_+1)) == 0xe0) {
+                (*pMyDisasm).Instruction.Opcode = 0x9bdfe0;
                 (*pMyDisasm).Instruction.Mnemonic = I_FSTSW;
                 (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REG0;
                 (*pMyDisasm).Argument1.ArgSize = 16;
