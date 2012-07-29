@@ -48,7 +48,7 @@ There is a new library API for building a complete instruction. It is
     BEA_API void __bea_callspec__ BuildAssembly(PDISASM pMyDisasm, char *buffer);
 
 This function must be called after Disasm() returns successfully. The function
-does not check for invalid value in DISASM structure. Do try to do it.
+does not check for invalid value in DISASM structure.
 
 Now, BuildAssembly() function supports only MASM syntax. But you can use
 decoded data to build your own assembly. You can see BuildAssembly() code
