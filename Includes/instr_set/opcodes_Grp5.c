@@ -21,8 +21,8 @@
  * ==================================================================== */
 void __bea_callspec__ G5_Ev(PDISASM pMyDisasm)
 {
-    GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 3) & 0x7;
-    if (GV.REGOPCODE == 0) {
+    UInt32 regopcode = ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 3) & 0x7;
+    if (regopcode == 0) {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         (*pMyDisasm).Instruction.Mnemonic = I_INC;
         Ev(pMyDisasm);
@@ -32,7 +32,7 @@ void __bea_callspec__ G5_Ev(PDISASM pMyDisasm)
             (*pMyDisasm).Prefix.LockState = InUsePrefix;
         }
     }
-    else if (GV.REGOPCODE == 1) {
+    else if (regopcode == 1) {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+ARITHMETIC_INSTRUCTION;
         (*pMyDisasm).Instruction.Mnemonic = I_DEC;
         Ev(pMyDisasm);
@@ -42,7 +42,7 @@ void __bea_callspec__ G5_Ev(PDISASM pMyDisasm)
             (*pMyDisasm).Prefix.LockState = InUsePrefix;
         }
     }
-    else if (GV.REGOPCODE == 2) {
+    else if (regopcode == 2) {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+CONTROL_TRANSFER;
         (*pMyDisasm).Instruction.BranchType = CallType;
         (*pMyDisasm).Instruction.Mnemonic = I_CALL;
@@ -53,7 +53,7 @@ void __bea_callspec__ G5_Ev(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
     }
-    else if (GV.REGOPCODE == 3) {
+    else if (regopcode == 3) {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+CONTROL_TRANSFER;
         (*pMyDisasm).Instruction.BranchType = CallType;
         (*pMyDisasm).Instruction.Mnemonic = I_CALL_FAR;
@@ -67,7 +67,7 @@ void __bea_callspec__ G5_Ev(PDISASM pMyDisasm)
         GV.EIP_ += GV.DECALAGE_EIP;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
     }
-    else if (GV.REGOPCODE == 4) {
+    else if (regopcode == 4) {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+CONTROL_TRANSFER;
         (*pMyDisasm).Instruction.BranchType = JmpType;
         (*pMyDisasm).Instruction.Mnemonic = I_JMP;
@@ -77,7 +77,7 @@ void __bea_callspec__ G5_Ev(PDISASM pMyDisasm)
         Ev(pMyDisasm);
         (*pMyDisasm).Argument1.AccessMode = READ;
     }
-    else if (GV.REGOPCODE == 5) {
+    else if (regopcode == 5) {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+CONTROL_TRANSFER;
         (*pMyDisasm).Instruction.BranchType = JmpType;
         (*pMyDisasm).Instruction.Mnemonic = I_JMP_FAR;
@@ -90,10 +90,10 @@ void __bea_callspec__ G5_Ev(PDISASM pMyDisasm)
         (*pMyDisasm).Argument1.AccessMode = READ;
         GV.EIP_ += GV.DECALAGE_EIP;
     }
-    else if (GV.REGOPCODE == 6) {
+    else if (regopcode == 6) {
         (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
         (*pMyDisasm).Instruction.Mnemonic = I_PUSH;
-        if ((*pMyDisasm).Archi == 64) {
+        if ((*pMyDisasm).Archi == 64 && (*pMyDisasm).Instruction.OperandSize != 16) {
             (*pMyDisasm).Instruction.OperandSize = 64;
         }
         Ev(pMyDisasm);

@@ -307,19 +307,15 @@ void __bea_callspec__ out_DXeAX(PDISASM pMyDisasm)
  * ======================================= */
 void __bea_callspec__ pop_Ev(PDISASM pMyDisasm)
 {
+    UInt32 regopcode;
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
-    GV.REGOPCODE = ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 3) & 0x7;
-    if (GV.REGOPCODE == 0) {
+    regopcode = ((*((UInt8*)(UIntPtr) (GV.EIP_))) >> 3) & 0x7;
+    if (regopcode == 0) {
         (*pMyDisasm).Instruction.Mnemonic = I_POP;
-        if ((*pMyDisasm).Archi == 64) {
+        if ((*pMyDisasm).Archi == 64 && (*pMyDisasm).Instruction.OperandSize != 16) {
             (*pMyDisasm).Instruction.OperandSize = 64;
-            (*pMyDisasm).Argument1.ArgSize = 64;
         }
-        else {
-            (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
-        }
-        MOD_RM(&(*pMyDisasm).Argument1, pMyDisasm);
-        GV.EIP_ += GV.DECALAGE_EIP;
+        Ev(pMyDisasm);
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
     }
     else {
@@ -341,12 +337,14 @@ void __bea_callspec__ pop_eax(PDISASM pMyDisasm)
         else {
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[0+8];
         }
-        (*pMyDisasm).Argument1.ArgSize = 64;
+        if ((*pMyDisasm).Instruction.OperandSize != 16) {
+            (*pMyDisasm).Instruction.OperandSize = 64;
+        }
     }
     else {
         (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[0];
-        (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     }
+    (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
 }
 
@@ -364,12 +362,14 @@ void __bea_callspec__ pop_ecx(PDISASM pMyDisasm)
         else {
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[1+8];
         }
-        (*pMyDisasm).Argument1.ArgSize = 64;
+        if ((*pMyDisasm).Instruction.OperandSize != 16) {
+            (*pMyDisasm).Instruction.OperandSize = 64;
+        }
     }
     else {
         (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[1];
-        (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     }
+    (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
 }
 
@@ -388,12 +388,14 @@ void __bea_callspec__ pop_edx(PDISASM pMyDisasm)
         else {
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[2+8];
         }
-        (*pMyDisasm).Argument1.ArgSize = 64;
+        if ((*pMyDisasm).Instruction.OperandSize != 16) {
+            (*pMyDisasm).Instruction.OperandSize = 64;
+        }
     }
     else {
         (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[2];
-        (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     }
+    (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
 }
 
@@ -411,12 +413,14 @@ void __bea_callspec__ pop_ebx(PDISASM pMyDisasm)
         else {
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[3+8];
         }
-        (*pMyDisasm).Argument1.ArgSize = 64;
+        if ((*pMyDisasm).Instruction.OperandSize != 16) {
+            (*pMyDisasm).Instruction.OperandSize = 64;
+        }
     }
     else {
         (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[3];
-        (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     }
+    (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
 }
 
@@ -434,12 +438,14 @@ void __bea_callspec__ pop_esp(PDISASM pMyDisasm)
         else {
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[4+8];
         }
-        (*pMyDisasm).Argument1.ArgSize = 64;
+        if ((*pMyDisasm).Instruction.OperandSize != 16) {
+            (*pMyDisasm).Instruction.OperandSize = 64;
+        }
     }
     else {
         (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[4];
-        (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     }
+    (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
 }
 
@@ -457,12 +463,14 @@ void __bea_callspec__ pop_ebp(PDISASM pMyDisasm)
         else {
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[5+8];
         }
-        (*pMyDisasm).Argument1.ArgSize = 64;
+        if ((*pMyDisasm).Instruction.OperandSize != 16) {
+            (*pMyDisasm).Instruction.OperandSize = 64;
+        }
     }
     else {
         (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[5];
-        (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     }
+    (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
 }
 
@@ -480,12 +488,14 @@ void __bea_callspec__ pop_esi(PDISASM pMyDisasm)
         else {
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[6+8];
         }
-        (*pMyDisasm).Argument1.ArgSize = 64;
+        if ((*pMyDisasm).Instruction.OperandSize != 16) {
+            (*pMyDisasm).Instruction.OperandSize = 64;
+        }
     }
     else {
         (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[6];
-        (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     }
+    (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
 }
 
@@ -503,12 +513,14 @@ void __bea_callspec__ pop_edi(PDISASM pMyDisasm)
         else {
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[7+8];
         }
-        (*pMyDisasm).Argument1.ArgSize = 64;
+        if ((*pMyDisasm).Instruction.OperandSize != 16) {
+            (*pMyDisasm).Instruction.OperandSize = 64;
+        }
     }
     else {
         (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[7];
-        (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     }
+    (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
 }
 
@@ -570,14 +582,12 @@ void __bea_callspec__ pop_fs(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     (*pMyDisasm).Instruction.Mnemonic = I_POP;
-    if ((*pMyDisasm).Archi == 64) {
-        FailDecode(pMyDisasm);
+    if ((*pMyDisasm).Archi == 64 && (*pMyDisasm).Prefix.OperandSizeState == NotUsedPrefix) {
+        (*pMyDisasm).Instruction.OperandSize = 64;
     }
-    else {
-        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+SEGMENT_REG+REGS[4];
-        (*pMyDisasm).Argument1.ArgSize = 16;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
-    }
+    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+SEGMENT_REG+REGS[4];
+    (*pMyDisasm).Argument1.ArgSize = 16;
+    (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
 }
 
 /* =======================================
@@ -587,14 +597,12 @@ void __bea_callspec__ pop_gs(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     (*pMyDisasm).Instruction.Mnemonic = I_POP;
-    if ((*pMyDisasm).Archi == 64) {
-        FailDecode(pMyDisasm);
+    if ((*pMyDisasm).Archi == 64 && (*pMyDisasm).Prefix.OperandSizeState == NotUsedPrefix) {
+        (*pMyDisasm).Instruction.OperandSize = 64;
     }
-    else {
-        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+SEGMENT_REG+REGS[5];
-        (*pMyDisasm).Argument1.ArgSize = 16;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
-    }
+    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+SEGMENT_REG+REGS[5];
+    (*pMyDisasm).Argument1.ArgSize = 16;
+    (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
 }
 
 /* =======================================
@@ -703,15 +711,13 @@ void __bea_callspec__ push_fs(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     (*pMyDisasm).Instruction.Mnemonic = I_PUSH;
-    if ((*pMyDisasm).Archi == 64) {
-        FailDecode(pMyDisasm);
+    if ((*pMyDisasm).Archi == 64 && (*pMyDisasm).Prefix.OperandSizeState == NotUsedPrefix) {
+        (*pMyDisasm).Instruction.OperandSize = 64;
     }
-    else {
-        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+SEGMENT_REG+REGS[4];
-        (*pMyDisasm).Argument1.ArgSize = 16;
-        (*pMyDisasm).Argument1.AccessMode = READ;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
-    }
+    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+SEGMENT_REG+REGS[4];
+    (*pMyDisasm).Argument1.ArgSize = 16;
+    (*pMyDisasm).Argument1.AccessMode = READ;
+    (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
 }
 
 /* =======================================
@@ -721,15 +727,13 @@ void __bea_callspec__ push_gs(PDISASM pMyDisasm)
 {
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
     (*pMyDisasm).Instruction.Mnemonic = I_PUSH;
-    if ((*pMyDisasm).Archi == 64) {
-        FailDecode(pMyDisasm);
+    if ((*pMyDisasm).Archi == 64 && (*pMyDisasm).Prefix.OperandSizeState == NotUsedPrefix) {
+        (*pMyDisasm).Instruction.OperandSize = 64;
     }
-    else {
-        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+SEGMENT_REG+REGS[5];
-        (*pMyDisasm).Argument1.ArgSize = 16;
-        (*pMyDisasm).Argument1.AccessMode = READ;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
-    }
+    (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+SEGMENT_REG+REGS[5];
+    (*pMyDisasm).Argument1.ArgSize = 16;
+    (*pMyDisasm).Argument1.AccessMode = READ;
+    (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
 }
 
 /* =======================================
@@ -766,18 +770,14 @@ void __bea_callspec__ push_eax(PDISASM pMyDisasm)
         else {
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[0+8];
         }
-        (*pMyDisasm).Argument1.ArgSize = 64;
+        if ((*pMyDisasm).Instruction.OperandSize != 16) {
+            (*pMyDisasm).Instruction.OperandSize = 64;
+        }
     }
     else {
-        if ((*pMyDisasm).Instruction.OperandSize == 32) {
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[0];
-            (*pMyDisasm).Argument1.ArgSize = 32;
-        }
-        else {
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[0];
-            (*pMyDisasm).Argument1.ArgSize = 16;
-        }
+        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[0];
     }
+    (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
 }
@@ -796,18 +796,14 @@ void __bea_callspec__ push_ecx(PDISASM pMyDisasm)
         else {
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[1+8];
         }
-        (*pMyDisasm).Argument1.ArgSize = 64;
+        if ((*pMyDisasm).Instruction.OperandSize != 16) {
+            (*pMyDisasm).Instruction.OperandSize = 64;
+        }
     }
     else {
-        if ((*pMyDisasm).Instruction.OperandSize == 32) {
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[1];
-            (*pMyDisasm).Argument1.ArgSize = 32;
-        }
-        else {
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[1];
-            (*pMyDisasm).Argument1.ArgSize = 16;
-        }
+        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[1];
     }
+    (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
 }
@@ -822,23 +818,18 @@ void __bea_callspec__ push_edx(PDISASM pMyDisasm)
     if ((*pMyDisasm).Archi == 64) {
         if ((*pMyDisasm).Prefix.REX.B_ == 0) {
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[2];
-
         }
         else {
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[2+8];
         }
-        (*pMyDisasm).Argument1.ArgSize = 64;
+        if ((*pMyDisasm).Instruction.OperandSize != 16) {
+            (*pMyDisasm).Instruction.OperandSize = 64;
+        }
     }
     else {
-        if ((*pMyDisasm).Instruction.OperandSize == 32) {
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[2];
-            (*pMyDisasm).Argument1.ArgSize = 32;
-        }
-        else {
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[2];
-            (*pMyDisasm).Argument1.ArgSize = 16;
-        }
+        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[2];
     }
+    (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
 }
@@ -857,18 +848,14 @@ void __bea_callspec__ push_ebx(PDISASM pMyDisasm)
         else {
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[3+8];
         }
-        (*pMyDisasm).Argument1.ArgSize = 64;
+        if ((*pMyDisasm).Instruction.OperandSize != 16) {
+            (*pMyDisasm).Instruction.OperandSize = 64;
+        }
     }
     else {
-        if ((*pMyDisasm).Instruction.OperandSize == 32) {
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[3];
-            (*pMyDisasm).Argument1.ArgSize = 32;
-        }
-        else {
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[3];
-            (*pMyDisasm).Argument1.ArgSize = 16;
-        }
+        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[3];
     }
+    (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
 }
@@ -887,18 +874,14 @@ void __bea_callspec__ push_esp(PDISASM pMyDisasm)
         else {
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[4+8];
         }
-        (*pMyDisasm).Argument1.ArgSize = 64;
+        if ((*pMyDisasm).Instruction.OperandSize != 16) {
+            (*pMyDisasm).Instruction.OperandSize = 64;
+        }
     }
     else {
-        if ((*pMyDisasm).Instruction.OperandSize == 32) {
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[4];
-            (*pMyDisasm).Argument1.ArgSize = 32;
-        }
-        else {
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[4];
-            (*pMyDisasm).Argument1.ArgSize = 16;
-        }
+        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[4];
     }
+    (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
 }
@@ -917,18 +900,14 @@ void __bea_callspec__ push_ebp(PDISASM pMyDisasm)
         else {
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[5+8];
         }
-        (*pMyDisasm).Argument1.ArgSize = 64;
+        if ((*pMyDisasm).Instruction.OperandSize != 16) {
+            (*pMyDisasm).Instruction.OperandSize = 64;
+        }
     }
     else {
-        if ((*pMyDisasm).Instruction.OperandSize == 32) {
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[5];
-            (*pMyDisasm).Argument1.ArgSize = 32;
-        }
-        else {
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[5];
-            (*pMyDisasm).Argument1.ArgSize = 16;
-        }
+        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[5];
     }
+    (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
 }
@@ -947,18 +926,14 @@ void __bea_callspec__ push_esi(PDISASM pMyDisasm)
         else {
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[6+8];
         }
-        (*pMyDisasm).Argument1.ArgSize = 64;
+        if ((*pMyDisasm).Instruction.OperandSize != 16) {
+            (*pMyDisasm).Instruction.OperandSize = 64;
+        }
     }
     else {
-        if ((*pMyDisasm).Instruction.OperandSize == 32) {
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[6];
-            (*pMyDisasm).Argument1.ArgSize = 32;
-        }
-        else {
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[6];
-            (*pMyDisasm).Argument1.ArgSize = 16;
-        }
+        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[6];
     }
+    (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
 }
@@ -977,18 +952,14 @@ void __bea_callspec__ push_edi(PDISASM pMyDisasm)
         else {
             (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[7+8];
         }
-        (*pMyDisasm).Argument1.ArgSize = 64;
+        if ((*pMyDisasm).Instruction.OperandSize != 16) {
+            (*pMyDisasm).Instruction.OperandSize = 64;
+        }
     }
     else {
-        if ((*pMyDisasm).Instruction.OperandSize == 32) {
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[7];
-            (*pMyDisasm).Argument1.ArgSize = 32;
-        }
-        else {
-            (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[7];
-            (*pMyDisasm).Argument1.ArgSize = 16;
-        }
+        (*pMyDisasm).Argument1.ArgType = REGISTER_TYPE+GENERAL_REG+REGS[7];
     }
+    (*pMyDisasm).Argument1.ArgSize = (*pMyDisasm).Instruction.OperandSize;
     (*pMyDisasm).Argument1.AccessMode = READ;
     (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
 }
@@ -1002,32 +973,32 @@ void __bea_callspec__ push_Iv(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Category = GENERAL_PURPOSE_INSTRUCTION+DATA_TRANSFER;
 
     (*pMyDisasm).Instruction.Mnemonic = I_PUSH;
-    if ((*pMyDisasm).Archi == 64) {
+    if ((*pMyDisasm).Archi == 64 && (*pMyDisasm).Instruction.OperandSize != 16) {
         GV.EIP_ += 4;
-        if (!Security(0, pMyDisasm)) return;
-        (*pMyDisasm).Instruction.Immediat = *((UInt32*)(UIntPtr) (GV.EIP_-4));
-        (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+ABSOLUTE_;
-        (*pMyDisasm).Argument1.ArgSize = 64;
-        (*pMyDisasm).Argument1.AccessMode = READ;
         (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
+        if (!Security(0, pMyDisasm)) return;
+        (*pMyDisasm).Instruction.Immediat = *((Int32*)(UIntPtr) (GV.EIP_-4));
+        (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+ABSOLUTE_;
+        (*pMyDisasm).Argument1.ArgSize = 32;
+        (*pMyDisasm).Argument1.AccessMode = READ;
     }
     else if ((*pMyDisasm).Instruction.OperandSize == 32) {
         GV.EIP_ += 4;
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
         if (!Security(0, pMyDisasm)) return;
         (*pMyDisasm).Instruction.Immediat = *((UInt32*)(UIntPtr) (GV.EIP_-4));
         (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument1.ArgSize = 32;
         (*pMyDisasm).Argument1.AccessMode = READ;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
     }
     else {
         GV.EIP_ += 2;
-        if (!Security(2, pMyDisasm)) return;
+        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
+        if (!Security(0, pMyDisasm)) return;
         (*pMyDisasm).Instruction.Immediat = *((UInt16*)(UIntPtr) (GV.EIP_-2));
         (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+ABSOLUTE_;
         (*pMyDisasm).Argument1.ArgSize = 16;
         (*pMyDisasm).Argument1.AccessMode = READ;
-        (*pMyDisasm).Instruction.ImplicitModifiedRegs = GENERAL_REG+REG4;
     }
 }
 
@@ -1040,7 +1011,7 @@ void __bea_callspec__ push_Ib(PDISASM pMyDisasm)
     (*pMyDisasm).Instruction.Mnemonic = I_PUSH;
     GV.EIP_++;
     if (!Security(0, pMyDisasm)) return;
-    (*pMyDisasm).Instruction.Immediat = *((UInt8*)(UIntPtr) (GV.EIP_-1));
+    (*pMyDisasm).Instruction.Immediat = *((Int8*)(UIntPtr) (GV.EIP_-1));
     (*pMyDisasm).Argument1.ArgType = CONSTANT_TYPE+ABSOLUTE_;
     (*pMyDisasm).Argument1.ArgSize = 8;
     (*pMyDisasm).Argument1.AccessMode = READ;

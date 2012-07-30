@@ -78,9 +78,10 @@ void __bea_callspec__ InitVariables (PDISASM pMyDisasm) {
  *
  * ==================================================================== */
 void __bea_callspec__ AnalyzeOpcode (PDISASM pMyDisasm) {
+    UInt32 opcode = *((UInt8*) (UIntPtr)(GV.EIP_-1));
     /* no need to check security here because length always at least 1 */
-    (*pMyDisasm).Instruction.Opcode = *((UInt8*) (UIntPtr)(GV.EIP_-1));
-    (void) opcode_map1[*((UInt8*) (UIntPtr)(GV.EIP_-1))](pMyDisasm);
+    (*pMyDisasm).Instruction.Opcode = opcode;
+    (void) opcode_map1[opcode](pMyDisasm);
 }
 
 /* ====================================================================
