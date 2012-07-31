@@ -8,17 +8,22 @@ OUTDIR = build
 SRC = BeaEngine.c
 ALLSRCS = $(SRC) beaengine/*.h Includes/* Includes/instr_set/*
 
+OUTNAME = BeaEngineFork
+OUTOBJ = $(OUTDIR)\$(OUTNAME).obj
+OUTDLL = $(OUTDIR)\$(OUTNAME).dll
+
 TARGET = shared
 
 all: $(TARGET)
 
-$(OUTDIR)/BeaEngineFork.obj: $(ALLSRCS)
+$(OUTOBJ): $(ALLSRCS)
 	$(CC) $(CFLAGS) -Fo"$@" $(SRC)
 
-$(OUTDIR)/BeaEngineFork.dll: $(OUTDIR)/BeaEngineFork.obj
+$(OUTDLL): $(OUTOBJ)
 	$(LD) $(LDFLAGS) -OUT:"$@" $**
+	copy /Y $@ python\beafork\ 
 
 $(OUTDIR):
 	mkdir $(OUTDIR)
 
-shared: $(OUTDIR) $(OUTDIR)/BeaEngineFork.dll
+shared: $(OUTDIR) $(OUTDLL)
