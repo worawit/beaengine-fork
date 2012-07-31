@@ -242,7 +242,7 @@ static size_t BuildArgRegGeneral(Int32 idx, Int32 size, Int32 pos, char *buffer)
 }
 
 /* real build hex string */
-static const char hexmap[16] = "0123456789abcdef";
+static const char hexmap[24] = "0123456789abcdef";
 static size_t BuildHexString2(Int64 num, Int32 bitShift, char *buffer)
 {
     size_t i = 0;
