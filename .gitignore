@@ -14,9 +14,24 @@
 *.lib
 *.exp
 
-# Build directory
+*~
+
+# build directory
 /build
 
 # tag file
 /tags
+
+# my private
+/scripts
+/mytest
+
+# python
+__pycache__
+*.pyc
+
+# example
+examples/*
+!examples/*.[ch]
+!examples/Makefile
 
