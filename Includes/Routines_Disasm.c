@@ -30,9 +30,10 @@ int __bea_callspec__ Disasm (PDISASM pMyDisasm)
         //CompleteInstructionFields(pMyDisasm);
         return (int) (GV.EIP_-(*pMyDisasm).EIP);
     }
-    else {
-        return 0;
-    }
+    // if all 15 bytes is used, it should be opcode error. not out of block
+    if ((*pMyDisasm).SecurityBlock == 0 || (*pMyDisasm).SecurityBlock >= MAX_INSTR_LENGTH)
+        return -1;
+    return 0;
 }
 
 /* ====================================================================
