@@ -9,7 +9,7 @@ STATIC_BEA = ../build/libBeaEngineFork.a
 
 all: diself
 
-diself: readcode.o diself.o
+diself: readcode.o diself.o $(STATIC_BEA)
 	$(CC) $(LDFLAGS) -o $@ diself.o readcode.o $(STATIC_BEA)
 
 diself.o: diself.c
