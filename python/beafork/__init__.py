@@ -231,7 +231,7 @@ class Operand(object):
                 s += "%s%s" % (op, self.index)
                 if self.scale > 1:
                     s += "*%d" % self.scale
-            if self.disp != 0:
+            if self.disp != 0 or (self.base is None and self.index is None):
                 if self.disp < 0:
                     s += "-%xh" % (-self.disp)
                 else:

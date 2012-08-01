@@ -331,7 +331,7 @@ static size_t BuildMemoryMnemonic(PDISASM pMyDisasm, ARGTYPE* arg, char *buffer)
     }
     
     /* displacement */
-    if ((*arg).Memory.Displacement) {
+    if ((*arg).Memory.Displacement || (!has_base && !has_index)) {
         if ((*arg).Memory.Displacement < 0 && has_base) {
             /* display displacement as signed only if there is base register */
             buffer[i++] = '-';
