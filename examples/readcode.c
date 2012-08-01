@@ -165,6 +165,7 @@ int readelf64_code(FILE *fp, CodeInfo *codeinfo)
             start = (uint32_t) shdr.sh_offset;
             end = start + (uint32_t) shdr.sh_size;
             vaddr = (uint64_t) shdr.sh_addr;
+            i++;
             break;
         }
     }
