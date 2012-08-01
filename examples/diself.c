@@ -4,6 +4,12 @@
 #include <beaengine/BeaEngine.h>
 #include "readcode.h"
 
+#if defined(__LP64__)
+#  define FMT64 "l"
+#else
+#  define FMT64 "ll"
+#endif
+
 static const char hexmap[20] = "0123456789ABCDEF";
 void bin2hex(unsigned char *bin, int len, char *buffer)
 {
@@ -42,7 +48,7 @@ void disassemble(CodeInfo *codeinfo)
         if (len == UNKNOWN_OPCODE) {
             /* skip to next byte for invalid opcode */
             bin2hex((unsigned char*) myDisasm.EIP, 1, instrhex);
-            printf("%8lx: %-32s  (FAIL)\n", myDisasm.VirtualAddr, instrhex);
+            printf("%8"FMT64"x: %-32s  (FAIL)\n", myDisasm.VirtualAddr, instrhex);
             myDisasm.EIP++;
             myDisasm.VirtualAddr++;
             left--;
@@ -51,7 +57,7 @@ void disassemble(CodeInfo *codeinfo)
         else {
             BuildAssembly(&myDisasm, assembly);
             bin2hex((unsigned char*) myDisasm.EIP, len, instrhex);
-            printf("%8lx: %-32s  %s\n", myDisasm.VirtualAddr, instrhex, assembly);
+            printf("%8"FMT64"x: %-32s  %s\n", myDisasm.VirtualAddr, instrhex, assembly);
             myDisasm.EIP += len;
             myDisasm.VirtualAddr += len;
             left -= len;
