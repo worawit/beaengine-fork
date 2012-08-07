@@ -18,7 +18,7 @@ diself.o: diself.c
 readcode.o: readcode.c
 	$(CC) $(CFLAGS) -o $@ readcode.c
 
-testbea.o diself.o readcode.o: readcode.h
+diself.o readcode.o: readcode.h
 
 
 clean:

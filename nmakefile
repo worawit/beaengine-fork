@@ -1,7 +1,8 @@
 
 CC = cl
-CFLAGS = -c -nologo -W3 -WX- -O2 -Oi -GL -Gy -D "_CRT_SECURE_NO_WARNINGS" -D "BUILD_BEA_ENGINE_DLL" -Gm- -Gd
+CFLAGS = -c -nologo -W3 -WX- -O2 -Oi -GL -Gy -D "_CRT_SECURE_NO_WARNINGS" -Gm- -Gd
 LD = link
+LDLIB = lib
 LDFLAGS = -DLL -INCREMENTAL:NO -NOLOGO -DYNAMICBASE -NXCOMPAT -LTCG
 
 OUTDIR = build
@@ -9,21 +10,30 @@ SRC = BeaEngine.c
 ALLSRCS = $(SRC) beaengine/*.h Includes/* Includes/instr_set/*
 
 OUTNAME = BeaEngineFork
-OUTOBJ = $(OUTDIR)\$(OUTNAME).obj
+OUTDLLOBJ = $(OUTDIR)\$(OUTNAME).obj
 OUTDLL = $(OUTDIR)\$(OUTNAME).dll
+OUTNAMESTATIC = BeaEngineForkStatic
+OUTSTATICOBJ = $(OUTDIR)\$(OUTNAMESTATIC).obj
+OUTSTATIC = $(OUTDIR)\$(OUTNAMESTATIC).lib
 
 TARGET = shared
 
 all: $(TARGET)
 
-$(OUTOBJ): $(ALLSRCS)
-	$(CC) $(CFLAGS) -Fo"$@" $(SRC)
+$(OUTDLLOBJ): $(ALLSRCS)
+	$(CC) $(CFLAGS) -D "BUILD_BEA_ENGINE_DLL" -Fo"$@" $(SRC)
 
-$(OUTDLL): $(OUTOBJ)
+$(OUTDLL): $(OUTDLLOBJ)
 	$(LD) $(LDFLAGS) -OUT:"$@" $**
 	copy /Y $@ python\beafork\ 
+	
+$(OUTSTATICOBJ): $(ALLSRCS)
+	$(CC) $(CFLAGS) -D "BEA_ENGINE_STATIC" -Fo"$@" $(SRC)
+
+$(OUTSTATIC): $(OUTSTATICOBJ)
+	$(LDLIB) -NOLOGO -LTCG -OUT:"$@" $**
 
 $(OUTDIR):
 	mkdir $(OUTDIR)
 
-shared: $(OUTDIR) $(OUTDLL)
+shared: $(OUTDIR) $(OUTDLL) $(OUTSTATIC)

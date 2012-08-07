@@ -1,0 +1,18 @@
+
+CC = cl
+CFLAGS = -I.. -c -nologo -W3 -WX- -O2 -Oi -GL -Gy -D "_CRT_SECURE_NO_WARNINGS" -Gm- -Gd
+LD = link
+LDFLAGS = -INCREMENTAL:NO -NOLOGO -DYNAMICBASE -NXCOMPAT -LTCG
+
+STATIC_BEA = ..\build\BeaEngineForkStatic.lib
+
+all: diself.exe
+
+diself.exe: readcode.obj diself.obj $(STATIC_BEA)
+	$(LD) $(LDFLAGS) -OUT:"$@" $**
+
+diself.obj: diself.c readcode.h $(STATIC_BEA)
+	$(CC) $(CFLAGS) -D "BEA_ENGINE_STATIC" -Fo"$@" diself.c $(STATIC_BEA)
+
+readcode.obj: readcode.c readcode.h
+	$(CC) $(CFLAGS) -Fo"$@" readcode.c

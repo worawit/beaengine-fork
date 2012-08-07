@@ -34,4 +34,5 @@ __pycache__
 examples/*
 !examples/*.[ch]
 !examples/Makefile
+!examples/nmakefile
 
