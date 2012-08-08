@@ -342,12 +342,12 @@ int readelf_code(char *filename, CodeInfo *codeinfo)
     if (elfIdent.class == 1) {
         /* 32 bit */
         codeinfo->archi = 32;
-        readelf32_code(fp, codeinfo);
+        ret = readelf32_code(fp, codeinfo);
     }
     else if (elfIdent.class == 2) {
         /* 64 bit */
         codeinfo->archi = 64;
-        readelf64_code(fp, codeinfo);
+        ret = readelf64_code(fp, codeinfo);
     }
     else {
         printf("Invalid ELF class\n");
