@@ -54,7 +54,7 @@ static void _ModRM0(ARGTYPE* pMyArgument, PDISASM pMyDisasm)
         MyNumber = *((Int32*)(UIntPtr) (GV.EIP_+1));
         (*pMyArgument).Memory.Displacement = MyNumber;
         if ((*pMyDisasm).Archi == 64) {
-            MyNumber += 6;
+            MyNumber += 5;
             MyNumber += (int) (GV.EIP_-(*pMyDisasm).EIP);
             MyNumber += (GV.ImmediatSize >> 3);
             CalculateRelativeAddress(&MyAddress, (Int64)MyNumber, pMyDisasm);
